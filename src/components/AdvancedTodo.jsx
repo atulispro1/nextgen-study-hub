@@ -1,0 +1,198 @@
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check, Trash2, Edit3 } from "lucide-react";
+
+export default function AdvancedTodo() {
+  const [tasks, setTasks] = useState([]);
+  const [text, setText] = useState("");
+  const [category, setCategory] = useState("Notes");
+  const [priority, setPriority] = useState("Medium");
+  const [dueDate, setDueDate] = useState("");
+  const [filter, setFilter] = useState("All");
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("nextgen_tasks");
+    if (saved) setTasks(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("nextgen_tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  const addTask = () => {
+    if (!text) return;
+
+    const newTask = {
+      id: Date.now(),
+      text,
+      category,
+      priority,
+      dueDate,
+      completed: false,
+    };
+
+    setTasks([newTask, ...tasks]);
+    setText("");
+    setDueDate("");
+  };
+
+  const toggleTask = (id) => {
+    setTasks(tasks.map(t =>
+      t.id === id ? { ...t, completed: !t.completed } : t
+    ));
+  };
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter(t => t.id !== id));
+  };
+
+  const filteredTasks = tasks
+    .filter(t =>
+      filter === "All"
+        ? true
+        : filter === "Completed"
+        ? t.completed
+        : !t.completed
+    )
+    .filter(t =>
+      t.text.toLowerCase().includes(search.toLowerCase())
+    );
+
+  const progress =
+    tasks.length === 0
+      ? 0
+      : Math.round(
+          (tasks.filter(t => t.completed).length / tasks.length) * 100
+        );
+
+  return (
+    <div className="glass" style={{ padding: "40px", marginTop: "60px" }}>
+      <h2 style={{ marginBottom: "30px", textAlign: "center" }}>
+        Smart Task Manager
+      </h2>
+
+      {/* INPUT SECTION */}
+      <div style={{ display: "grid", gap: "15px", marginBottom: "30px" }}>
+        <input
+          placeholder="Enter task..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          style={{ padding: "12px", borderRadius: "8px" }}
+        />
+
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option>Notes</option>
+            <option>Assignment</option>
+            <option>Practical</option>
+            <option>Personal</option>
+          </select>
+
+          <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+          />
+
+          <button className="btn-primary" onClick={addTask}>
+            Add Task
+          </button>
+        </div>
+      </div>
+
+      {/* SEARCH + FILTER */}
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <input
+          placeholder="Search..."
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <select onChange={(e) => setFilter(e.target.value)}>
+          <option>All</option>
+          <option>Completed</option>
+          <option>Pending</option>
+        </select>
+      </div>
+
+      {/* PROGRESS BAR */}
+      <div style={{ marginBottom: "20px" }}>
+        <div
+          style={{
+            height: "8px",
+            background: "rgba(255,255,255,0.1)",
+            borderRadius: "20px",
+            overflow: "hidden",
+          }}
+        >
+          <motion.div
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5 }}
+            style={{
+              height: "100%",
+              background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
+            }}
+          />
+        </div>
+        <p style={{ marginTop: "5px", fontSize: "14px" }}>
+          Progress: {progress}%
+        </p>
+      </div>
+
+      {/* TASK LIST */}
+      <AnimatePresence>
+        {filteredTasks.map(task => (
+          <motion.div
+            key={task.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="glass"
+            style={{
+              padding: "15px",
+              marginBottom: "10px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderLeft:
+                task.priority === "High"
+                  ? "4px solid red"
+                  : task.priority === "Medium"
+                  ? "4px solid orange"
+                  : "4px solid green",
+            }}
+          >
+            <div>
+              <h4
+                style={{
+                  textDecoration: task.completed ? "line-through" : "none",
+                }}
+              >
+                {task.text}
+              </h4>
+              <small>
+                {task.category} | Due: {task.dueDate || "No date"}
+              </small>
+            </div>
+
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button onClick={() => toggleTask(task.id)}>
+                <Check size={18} />
+              </button>
+
+              <button onClick={() => deleteTask(task.id)}>
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+}
