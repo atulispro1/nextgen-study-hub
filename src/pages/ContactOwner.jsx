@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function ContactOwner() {
-  const whatsappNumber = "91XXXXXXXXXX"; // 🔁 Replace with your real number
+  const whatsappNumber = "917060160754"; // 🔁 Replace with your real number
 
   const [form, setForm] = useState({
     name: "",

@@ -1,0 +1,519 @@
+import { useEffect, useState } from "react";
+import { supabase } from "../supabase";
+import { useAuth } from "../context/AuthContext";
+import CommentsSection from "../components/CommentsSection";
+import { confirmDelete } from "../utils/deleteConfirm";
+
+export default function NotesLibrary() {
+  const { role } = useAuth() || {};
+  const isAdmin = role === "owner" || role === "faculty";
+
+  const [notes, setNotes] = useState([]);
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const notesPerPage = 9;
+
+  const [semester, setSemester] = useState("All");
+  const [category, setCategory] = useState("All");
+  const [subject, setSubject] = useState("All");
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, semester, category, subject]);
+
+  const fetchNotes = async () => {
+    const { data } = await supabase
+      .from("materials")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    setNotes(data || []);
+  };
+
+  const deleteNote = async (id) => {
+    confirmDelete(async () => {
+      await supabase.from("materials").delete().eq("id", id);
+      fetchNotes();
+    });
+  };
+
+  const filtered = notes.filter((note) => {
+    const searchMatch =
+      (note.title || note.unit_name || "")
+        .toLowerCase()
+        .includes(search.toLowerCase()) ||
+      note.subject?.toLowerCase().includes(search.toLowerCase());
+
+    const semMatch = semester === "All" || note.semester === semester;
+
+    const catMatch = category === "All" || note.category === category;
+
+    const subMatch =
+      subject === "All" ||
+      note.subject?.toLowerCase().includes(subject.toLowerCase());
+
+    return searchMatch && semMatch && catMatch && subMatch;
+  });
+
+  const totalPages = Math.ceil(filtered.length / notesPerPage);
+
+  const startIndex = (currentPage - 1) * notesPerPage;
+  const endIndex = startIndex + notesPerPage;
+
+  const paginatedNotes = filtered.slice(startIndex, endIndex);
+  const subjects = ["All", ...new Set(notes.map((n) => n.subject))];
+  <select value={subject} onChange={(e) => setSubject(e.target.value)}>
+    {subjects.map((sub, index) => (
+      <option key={index} value={sub}>
+        {sub}
+      </option>
+    ))}
+  </select>;
+
+  return (
+    <section className="section">
+      {/* HEADER */}
+
+      <div
+        style={{
+          textAlign: "center",
+          marginBottom: "50px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            margin: "60px 0",
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "linear-gradient(90deg, transparent, #6366f1)",
+            }}
+          />
+
+          <span
+            style={{
+              padding: "0 15px",
+              fontWeight: "600",
+              fontSize: "40px",
+              color: "#6366f1",
+              letterSpacing: "1px",
+            }}
+          >
+            📚 Ultimate Notes Library
+          </span>
+
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "linear-gradient(90deg, #6366f1, transparent)",
+            }}
+          />
+        </div>
+
+        <p
+          style={{
+            maxWidth: "650px",
+            margin: "auto",
+            opacity: 0.7,
+            fontSize: "16px",
+          }}
+        >
+          Explore notes, assignments, practice sets and syllabus from all
+          semesters. Search instantly and access organized study materials.
+        </p>
+      </div>
+      {/* SEARCH */}
+
+      <div
+        style={{
+          maxWidth: "600px",
+          margin: "auto",
+          marginBottom: "30px",
+        }}
+      >
+        <input
+          placeholder="Search notes, subjects or topics..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "14px 18px",
+            borderRadius: "12px",
+            border: "1px solid rgba(99,102,241,0.3)",
+            outline: "none",
+            fontSize: "15px",
+            background: "rgba(255,255,255,0.03)",
+            backdropFilter: "blur(10px)",
+          }}
+        />
+      </div>
+
+      {/* FILTERS */}
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "12px",
+          flexWrap: "wrap",
+          marginBottom: "50px",
+        }}
+      >
+        <select
+          onChange={(e) => setSemester(e.target.value)}
+          className="glass"
+          style={{
+            padding: "10px 14px",
+            borderRadius: "10px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          <option>All</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+        </select>
+
+        <select
+          onChange={(e) => setCategory(e.target.value)}
+          className="glass"
+          style={{
+            padding: "10px 14px",
+            borderRadius: "10px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          <option>All</option>
+          <option>Syllabus</option>
+          <option>Notes</option>
+          <option>Practice</option>
+          <option>Assignment</option>
+        </select>
+
+        <select
+          onChange={(e) => setSubject(e.target.value)}
+          className="glass"
+          style={{
+            padding: "10px 14px",
+            borderRadius: "10px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          <option value="All">All Subjects</option>
+          <option value="Applied Chemistry">Applied Chemistry</option>
+          <option value="Engineering Mechanics">Engineering Mechanics</option>
+          <option value="Basic Electrical Engineering">
+            Basic Electrical Engineering
+          </option>
+          <option value="Applied Mathematics">Applied Mathematics</option>
+          <option value="Essential Language & Communication">
+            Essential Language & Communication
+          </option>
+          <option value="Environmental Science">Environmental Science</option>
+        </select>
+      </div>
+      <div
+        style={{
+          height: "2px",
+          width: "100%",
+          margin: "60px 0",
+          background:
+            "linear-gradient(90deg, transparent, #6366f1, #8b5cf6, #6366f1, transparent)",
+          borderRadius: "10px",
+        }}
+      />
+
+      <div
+        className="glass"
+        style={{
+          padding: "20px",
+          textAlign: "center",
+          margin: "70px 0 40px 0",
+        }}
+      >
+        <h2
+          style={{
+            margin: 0,
+            fontWeight: "700",
+            background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          📂 All Study Materials
+        </h2>
+
+        <p style={{ opacity: 0.7, marginTop: "6px", fontSize: "14px" }}>
+          Share your thoughts about these notes and help other students.
+        </p>
+      </div>
+
+      {/* NOTES GRID */}
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
+          gap: "25px",
+          marginTop: "20px",
+        }}
+      >
+        {paginatedNotes.map((note) => (
+          <div
+            key={note.id}
+            className="glass"
+            style={{
+              overflow: "hidden",
+              borderRadius: "14px",
+              transition: "all 0.25s ease",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            {/* IMAGE */}
+
+            <div
+              style={{
+                height: "150px",
+                overflow: "hidden",
+              }}
+            >
+              <img
+                src={note.image_url}
+                alt={note.title || note.unit_name}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+
+            {/* CONTENT */}
+
+            <div style={{ padding: "20px", textAlign: "center" }}>
+              <h4 style={{ marginBottom: "10px" }}>
+                {note.title || note.unit_name}
+              </h4>
+
+              <p style={{ fontSize: "13px", opacity: 0.7 }}>
+                Semester {note.semester} • {note.subject}
+              </p>
+
+              <p style={{ fontSize: "13px", marginTop: "5px" }}>
+                {note.category} • {note.note_type}
+              </p>
+
+              {/* BUTTONS */}
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  marginTop: "15px",
+                }}
+              >
+                <button
+                  onClick={() => window.open(note.file_url, "_blank")}
+                  className="btn-primary btn-small"
+                >
+                  Preview
+                </button>
+
+                <a
+                  href={note.file_url}
+                  download
+                  className="btn-primary btn-small"
+                  style={{ textDecoration: "none" }}
+                >
+                  Download
+                </a>
+
+                {isAdmin && (
+                  <button
+                    onClick={() => deleteNote(note.id)}
+                    style={{
+                      background: "crimson",
+                      color: "white",
+                      border: "none",
+                      padding: "6px 10px",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* PAGINATION ADDED HERE */}
+
+      <div
+        style={{
+          marginTop: "60px",
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          flexWrap: "wrap",
+        }}
+      >
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+          className="pagination-btn"
+        >
+          Prev
+        </button>
+
+        {[...Array(totalPages)].map((_, index) => {
+          const pageNumber = index + 1;
+          return (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(pageNumber)}
+              className={`pagination-btn ${
+                currentPage === pageNumber ? "active-page" : ""
+              }`}
+            >
+              {pageNumber}
+            </button>
+          );
+        })}
+
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+          className="pagination-btn"
+        >
+          Next
+        </button>
+      </div>
+
+      {/* DIVIDER */}
+
+      <div
+        style={{
+          height: "2px",
+          width: "100%",
+          margin: "60px 0",
+          background:
+            "linear-gradient(90deg, transparent, #6366f1, #8b5cf6, #6366f1, transparent)",
+          borderRadius: "10px",
+        }}
+      />
+
+      <CommentsSection />
+
+      <div
+        style={{
+          height: "2px",
+          width: "100%",
+          margin: "60px 0",
+          background:
+            "linear-gradient(90deg, transparent, #6366f1, #8b5cf6, #6366f1, transparent)",
+          borderRadius: "10px",
+        }}
+      />
+
+      <div
+        className="glass"
+        style={{
+          maxWidth: "800px",
+          margin: "80px auto",
+          padding: "50px 40px",
+          textAlign: "center",
+          borderRadius: "16px",
+        }}
+      >
+        {/* TITLE */}
+
+        <h2
+          style={{
+            fontSize: "28px",
+            fontWeight: "700",
+            marginBottom: "20px",
+            color: "#6366f1",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          🚀 More Powerful Features Coming Soon...
+        </h2>
+
+        {/* DESCRIPTION */}
+
+        <p
+          style={{
+            fontSize: "15px",
+            lineHeight: "1.7",
+            opacity: 0.8,
+            maxWidth: "650px",
+            margin: "auto",
+          }}
+        >
+          We're continuously improving the Student Tools section to make your
+          academic journey smarter, faster, and more productive 📚✨ If you have
+          an idea that could make this platform even better — don't keep it to
+          yourself! 💡 Share your suggestion through the contact section and
+          help us build the ultimate study companion together 🚀
+        </p>
+
+        {/* QUESTION */}
+
+        <p
+          style={{
+            marginTop: "25px",
+            fontSize: "15px",
+            opacity: 0.8,
+          }}
+        >
+          What features would you like to see next?
+        </p>
+
+        {/* BUTTON */}
+
+        <button
+          className="btn-primary"
+          style={{
+            marginTop: "25px",
+            padding: "14px 28px",
+            fontSize: "15px",
+            borderRadius: "30px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+          onClick={() => {
+            // add navigate here
+          }}
+        >
+          💬 Send Your Suggestion
+        </button>
+      </div>
+    </section>
+  );
+}

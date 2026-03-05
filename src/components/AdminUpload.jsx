@@ -24,18 +24,19 @@ export default function AdminUpload() {
     }
 
     // Get public URL
-    const { data } = supabase.storage
-      .from("pdfs")
-      .getPublicUrl(filePath);
+    const { data } = supabase.storage.from("pdfs").getPublicUrl(filePath);
 
     // Save to database
     await supabase.from("materials").insert([
       {
-        semester: "1",
-        subject: "Applied Chemistry",
-        category: "Notes",
-        title: file.name,
-        file_url: data.publicUrl,
+        semester,
+        subject,
+        category,
+        unit_name: unitName,
+        file_url: fileUrl,
+        image_url: imageUrl,
+        source: "notes",
+        note_type: noteType
       },
     ]);
 

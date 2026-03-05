@@ -12,6 +12,7 @@ import GPACalculator from "../components/GPACalculator";
 import AIAssistant from "../components/AIAssistant";
 import AdvancedTodo from "../components/AdvancedTodo";
 import QuizSection from "../components/QuizSection";
+import NotesLibrary from "../components/NotesLibrary";
 
 export default function Home() {
   return (
@@ -46,21 +47,32 @@ export default function Home() {
           margin: "80px 0",
         }}
       />
-      
+      <NotesLibrary />
+      <div
+        style={{
+          height: "3px",
+          background:
+            "linear-gradient(90deg, transparent, #6366f1, transparent)",
+          margin: "80px 0",
+        }}
+      />
+
       {/* Explore Students Tools */}
       <div style={{ textAlign: "center", margin: "60px 0" }}>
-        <h2 style={{ 
-          color: "var(--primary)", 
-          fontSize: "2.5rem", 
-          marginBottom: "20px",
-          fontWeight: "700"
-        }}>
+        <h2
+          style={{
+            color: "var(--primary)",
+            fontSize: "2.5rem",
+            marginBottom: "20px",
+            fontWeight: "700",
+          }}
+        >
           Explore Students Tools
         </h2>
       </div>
-      
+
       <GPACalculator />
-        <div
+      <div
         style={{
           height: "3px",
           background:
@@ -69,7 +81,7 @@ export default function Home() {
         }}
       />
       <AIAssistant />
-        <div
+      <div
         style={{
           height: "3px",
           background:
@@ -78,7 +90,7 @@ export default function Home() {
         }}
       />
       <AdvancedTodo />
-        <div
+      <div
         style={{
           height: "3px",
           background:
@@ -87,7 +99,7 @@ export default function Home() {
         }}
       />
       <QuizSection />
-        <div
+      <div
         style={{
           height: "3px",
           background:

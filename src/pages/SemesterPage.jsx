@@ -8,6 +8,7 @@ import { getProgress, toggleUnitProgress } from "../utils/progressUtils";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import SearchFilterBar from "../components/SearchFilterBar";
+import { confirmDelete } from "../utils/deleteConfirm";
 
 export default function SemesterPage() {
   const { id } = useParams();
@@ -235,79 +236,118 @@ export default function SemesterPage() {
             />
           )}
 
-          {/* UNITS GRID */}
-          <div className="grid">
-            {(() => {
-              const filteredMaterials = materials
-                .filter((item) => item.semester === id)
-                .filter((item) => item.subject === activeSubject)
-                .filter((item) => item.category === activeCategory)
-                .filter((item) =>
-                  categoryFilter === "All"
-                    ? true
-                    : item.category === categoryFilter,
-                )
-                .filter((item) =>
-                  item.unit_name.toLowerCase().includes(search.toLowerCase()),
-                )
-                .sort((a, b) => {
-                  if (sortOption === "newest") {
-                    return new Date(b.created_at) - new Date(a.created_at);
-                  }
-                  if (sortOption === "oldest") {
-                    return new Date(a.created_at) - new Date(b.created_at);
-                  }
-                  if (sortOption === "downloads") {
-                    return (b.downloads || 0) - (a.downloads || 0);
-                  }
-                  return 0;
-                });
+          {/* ================= TEACHER NOTES ================= */}
 
-              if (filteredMaterials.length === 0) {
-                return (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="glass"
-                    style={{
-                      padding: "60px",
-                      textAlign: "center",
-                      gridColumn: "1 / -1",
-                      border: "1px dashed rgba(99,102,241,0.3)",
-                    }}
-                  >
-                    <h3
-                      style={{
-                        marginBottom: "15px",
-                        color: "var(--primary)",
-                      }}
-                    >
-                      📂 Nothing Uploaded Yet
-                    </h3>
+          <h3 style={{ marginTop: "30px" }}>📘 Teacher Notes</h3>
+          <br />
 
-                    <p style={{ opacity: 0.7 }}>
-                      This section is currently empty. New study materials will
-                      appear here once they are uploaded. Stay tuned and keep
-                      learning 🚀
-                    </p>
-                  </motion.div>
-                );
-              }
+          {(() => {
+            const teacherNotes = materials
+              .filter((item) => item.semester === id)
+              .filter((item) => item.subject === activeSubject)
+              .filter((item) => item.category === activeCategory)
+              .filter((item) => item.note_type === "teacher")
+              .filter((item) =>
+                item.unit_name.toLowerCase().includes(search.toLowerCase()),
+              );
 
-              return filteredMaterials.map((item) => (
-                <ContentCard
-                  key={item.id}
-                  id={item.id}
-                  title={item.unit_name}
-                  image={item.image_url}
-                  file={item.file_url}
-                  subject={item.subject}
-                  isAdmin={isAdmin}
-                  refresh={fetchData}
-                />
-              ));
-            })()}
-          </div>
+            if (teacherNotes.length === 0) {
+              return (
+                <div
+                  className="glass"
+                  style={{
+                    padding: "60px",
+                    textAlign: "center",
+                    marginTop: "20px",
+                    border: "1px dashed rgba(99,102,241,0.3)",
+                  }}
+                >
+                  <h3 style={{ color: "#6366f1", marginBottom: "10px" }}>
+                    📂 No Teacher Notes Available
+                  </h3>
+
+                  <p style={{ opacity: 0.8 }}>
+                    Teacher notes for this subject haven't been uploaded yet.
+                    Once they are available, they will appear here
+                    automatically.
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <div className="grid">
+                {teacherNotes.map((item) => (
+                  <ContentCard
+                    key={item.id}
+                    id={item.id}
+                    title={item.unit_name}
+                    image={item.image_url}
+                    file={item.file_url}
+                    subject={item.subject}
+                    isAdmin={isAdmin}
+                    refresh={fetchData}
+                  />
+                ))}
+              </div>
+            );
+          })()}
+
+          {/* ================= EXTRA NOTES ================= */}
+
+          <h3 style={{ marginTop: "40px" }}>📗 Extra Notes</h3>
+          <br />
+
+          {(() => {
+            const extraNotes = materials
+              .filter((item) => item.semester === id)
+              .filter((item) => item.subject === activeSubject)
+              .filter((item) => item.category === activeCategory)
+              .filter((item) => item.note_type === "extra")
+              .filter((item) =>
+                item.unit_name.toLowerCase().includes(search.toLowerCase()),
+              );
+
+            if (extraNotes.length === 0) {
+              return (
+                <div
+                  className="glass"
+                  style={{
+                    padding: "60px",
+                    textAlign: "center",
+                    marginTop: "20px",
+                    border: "1px dashed rgba(99,102,241,0.3)",
+                  }}
+                >
+                  <h3 style={{ color: "#6366f1", marginBottom: "10px" }}>
+                    📂 No Extra Notes Available
+                  </h3>
+
+                  <p style={{ opacity: 0.8 }}>
+                    Additional study materials haven't been uploaded yet. Please
+                    check back later for new resources.
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <div className="grid">
+                {extraNotes.map((item) => (
+                  <ContentCard
+                    key={item.id}
+                    id={item.id}
+                    title={item.unit_name}
+                    image={item.image_url}
+                    file={item.file_url}
+                    subject={item.subject}
+                    isAdmin={isAdmin}
+                    refresh={fetchData}
+                  />
+                ))}
+              </div>
+            );
+          })()}
         </>
       )}
     </div>
@@ -322,8 +362,10 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
   const isCompleted = subjectProgress[id] === true;
 
   const handleDelete = async () => {
-    await supabase.from("materials").delete().eq("id", id);
-    refresh();
+    confirmDelete(async () => {
+      await supabase.from("materials").delete().eq("id", id);
+      refresh();
+    });
   };
 
   const handleContact = () => {

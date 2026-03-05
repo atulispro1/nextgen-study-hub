@@ -33,8 +33,6 @@ export default function QuizSection() {
     correct_answer: "A",
   });
 
-  // ================= FETCH QUESTIONS =================
-
   const fetchQuestions = async () => {
     const { data } = await supabase
       .from("quiz_questions")
@@ -83,34 +81,40 @@ export default function QuizSection() {
   };
 
   return (
-    <div style={{ marginTop: "120px" }}>
+    <div style={{ marginTop: "120px", padding: "0 20px" }}>
       {/* HEADER */}
+
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         style={{
           textAlign: "center",
           marginBottom: "70px",
+          maxWidth: "700px",
+          marginInline: "auto",
         }}
       >
         <h2
           style={{
-            fontSize: "40px",
+            fontSize: "42px",
+            fontWeight: "700",
             background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
             WebkitBackgroundClip: "text",
             color: "transparent",
-            marginBottom: "15px",
+            marginBottom: "10px",
           }}
         >
           Smart Quiz Arena
         </h2>
-        <p style={{ opacity: 0.7 }}>
-          Test your knowledge. Track performance. Improve daily.
+
+        <p style={{ opacity: 0.7, fontSize: "15px" }}>
+          Test your knowledge, challenge yourself, and track your learning
+          progress.
         </p>
       </motion.div>
 
-      {/* ================= ADMIN PANEL ================= */}
-      {/* ================= ADMIN PANEL ================= */}
+      {/* ADMIN PANEL */}
+
       {isAdmin && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -127,19 +131,21 @@ export default function QuizSection() {
           <h3 style={{ marginBottom: "30px" }}>🛠 Quiz Management Panel</h3>
 
           {/* TOTAL QUESTIONS */}
+
           <div
             style={{
-              marginBottom: "30px",
-              padding: "20px",
-              borderRadius: "12px",
+              marginBottom: "35px",
+              padding: "25px",
+              borderRadius: "14px",
               background: "rgba(99,102,241,0.08)",
               textAlign: "center",
             }}
           >
-            <h4 style={{ marginBottom: "10px" }}>Total Questions Added</h4>
+            <h4 style={{ marginBottom: "8px" }}>Total Questions Added</h4>
+
             <div
               style={{
-                fontSize: "28px",
+                fontSize: "30px",
                 fontWeight: "600",
                 color: "#6366f1",
               }}
@@ -148,14 +154,19 @@ export default function QuizSection() {
             </div>
           </div>
 
-          {/* ADD QUESTION FORM */}
+          {/* ADD QUESTION */}
+
           <div style={{ marginBottom: "50px" }}>
             <h4 style={{ marginBottom: "20px" }}>➕ Add New Question</h4>
 
-            <div style={{ display: "grid", gap: "15px" }}>
+            <div style={{ display: "grid", gap: "14px" }}>
               <textarea
                 placeholder="Enter Question"
-                style={{ padding: "15px", borderRadius: "10px" }}
+                style={{
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
                 onChange={(e) => setNewQ({ ...newQ, question: e.target.value })}
               />
 
@@ -163,12 +174,20 @@ export default function QuizSection() {
                 <input
                   key={opt}
                   placeholder={opt.replace("_", " ").toUpperCase()}
-                  style={{ padding: "12px", borderRadius: "8px" }}
+                  style={{
+                    padding: "12px",
+                    borderRadius: "10px",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                  }}
                   onChange={(e) => setNewQ({ ...newQ, [opt]: e.target.value })}
                 />
               ))}
 
               <select
+                style={{
+                  padding: "12px",
+                  borderRadius: "10px",
+                }}
                 onChange={(e) =>
                   setNewQ({ ...newQ, correct_answer: e.target.value })
                 }
@@ -191,6 +210,7 @@ export default function QuizSection() {
           </div>
 
           {/* QUESTION LIST */}
+
           <div>
             <h4 style={{ marginBottom: "20px" }}>📚 Added Questions</h4>
 
@@ -201,8 +221,8 @@ export default function QuizSection() {
                   whileHover={{ scale: 1.01 }}
                   style={{
                     padding: "20px",
-                    borderRadius: "12px",
-                    background: "rgba(255,255,255,0.05)",
+                    borderRadius: "14px",
+                    background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
                   }}
                 >
@@ -211,12 +231,10 @@ export default function QuizSection() {
                   </p>
 
                   <p style={{ opacity: 0.7, fontSize: "14px" }}>
-                    Correct: {q.correct_answer}
+                    Correct Answer: {q.correct_answer}
                   </p>
 
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={async () => {
                       await supabase
                         .from("quiz_questions")
@@ -227,15 +245,15 @@ export default function QuizSection() {
                     style={{
                       marginTop: "10px",
                       padding: "8px 16px",
-                      borderRadius: "6px",
+                      borderRadius: "8px",
                       border: "none",
                       cursor: "pointer",
                       background: "linear-gradient(90deg,#dc2626,#ef4444)",
                       color: "white",
                     }}
                   >
-                    🗑 Delete
-                  </motion.button>
+                    Delete
+                  </button>
                 </motion.div>
               ))}
             </div>
@@ -243,30 +261,43 @@ export default function QuizSection() {
         </motion.div>
       )}
 
-      {/* ================= QUIZ START ================= */}
+      {/* QUIZ START */}
 
       {!quizStarted && !quizFinished && (
         <motion.div
           className="glass"
           style={{
             padding: "60px",
-            maxWidth: "700px",
+            maxWidth: "650px",
             marginInline: "auto",
             textAlign: "center",
           }}
         >
-          <h3 style={{ marginBottom: "30px" }}>Choose Subject & Difficulty</h3>
+          <h3 style={{ marginBottom: "30px" }}>
+            Choose Subject & Difficulty
+          </h3>
 
           <div
-            style={{ display: "flex", gap: "20px", justifyContent: "center" }}
+            style={{
+              display: "flex",
+              gap: "15px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
           >
-            <select onChange={(e) => setSubject(e.target.value)}>
+            <select
+              style={{ padding: "10px", borderRadius: "10px" }}
+              onChange={(e) => setSubject(e.target.value)}
+            >
               {subjects.map((sub) => (
                 <option key={sub}>{sub}</option>
               ))}
             </select>
 
-            <select onChange={(e) => setDifficulty(e.target.value)}>
+            <select
+              style={{ padding: "10px", borderRadius: "10px" }}
+              onChange={(e) => setDifficulty(e.target.value)}
+            >
               <option>Easy</option>
               <option>Medium</option>
               <option>Hard</option>
@@ -285,7 +316,7 @@ export default function QuizSection() {
         </motion.div>
       )}
 
-      {/* ================= QUIZ PLAY ================= */}
+      {/* QUIZ PLAY */}
 
       {quizStarted && !quizFinished && questions.length > 0 && (
         <motion.div
@@ -301,14 +332,15 @@ export default function QuizSection() {
             marginTop: "40px",
           }}
         >
-          {/* Progress */}
+          {/* PROGRESS BAR */}
+
           <div
             style={{
               height: "10px",
               background: "rgba(255,255,255,0.1)",
               borderRadius: "20px",
               overflow: "hidden",
-              marginBottom: "25px",
+              marginBottom: "30px",
             }}
           >
             <motion.div
@@ -324,7 +356,7 @@ export default function QuizSection() {
             {questions[currentIndex].question}
           </h3>
 
-          <div style={{ display: "grid", gap: "15px" }}>
+          <div style={{ display: "grid", gap: "14px" }}>
             {["A", "B", "C", "D"].map((letter) => {
               const isCorrect =
                 selected === letter &&
@@ -350,13 +382,9 @@ export default function QuizSection() {
                     background: isCorrect
                       ? "linear-gradient(90deg,#16a34a,#22c55e)"
                       : isWrong
-                        ? "linear-gradient(90deg,#dc2626,#ef4444)"
-                        : "linear-gradient(90deg,#4f46e5,#6366f1)",
+                      ? "linear-gradient(90deg,#dc2626,#ef4444)"
+                      : "linear-gradient(90deg,#4f46e5,#6366f1)",
                     color: "white",
-                    boxShadow:
-                      isCorrect || isWrong
-                        ? "0 0 20px rgba(255,255,255,0.3)"
-                        : "0 5px 15px rgba(0,0,0,0.2)",
                   }}
                 >
                   {questions[currentIndex][`option_${letter.toLowerCase()}`]}
@@ -367,7 +395,7 @@ export default function QuizSection() {
         </motion.div>
       )}
 
-      {/* ================= RESULT ================= */}
+      {/* RESULT */}
 
       {quizFinished && (
         <motion.div
@@ -386,7 +414,7 @@ export default function QuizSection() {
 
           <div
             style={{
-              fontSize: "50px",
+              fontSize: "52px",
               margin: "30px 0",
               background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
               WebkitBackgroundClip: "text",

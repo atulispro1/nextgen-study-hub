@@ -9,6 +9,11 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [legalOpen, setLegalOpen] = useState(false);
+  const [contentOpen, setContentOpen] = useState(false);
+  const [contactsOpen, setContactsOpen] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const contentRef = useRef(null);
+  const notesRef = useRef(null);
   const goToSection = (sectionId) => {
     setToolsOpen(false);
 
@@ -133,6 +138,50 @@ export default function Navbar() {
           className="desktop-nav"
           style={{ display: "flex", gap: "20px", alignItems: "center" }}
         >
+          <div ref={notesRef} style={{ position: "relative" }}>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => setNotesOpen((prev) => !prev)}
+            >
+              📚 Notes ▾
+            </span>
+
+            {notesOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  position: "absolute",
+                  top: "45px",
+                  right: 0,
+                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
+                  borderRadius: "12px",
+                  padding: "15px",
+                  minWidth: "220px",
+                  boxShadow:
+                    theme === "dark"
+                      ? "0 15px 40px rgba(0,0,0,0.6)"
+                      : "0 15px 40px rgba(0,0,0,0.15)",
+                  border:
+                    theme === "dark"
+                      ? "1px solid rgba(255,255,255,0.08)"
+                      : "1px solid rgba(0,0,0,0.05)",
+                  zIndex: 9999,
+                }}
+              >
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => {
+                    navigate("/notes-library");
+                    setNotesOpen(false);
+                  }}
+                >
+                  📚 Notes Library
+                </div>
+              </motion.div>
+            )}
+          </div>
+
           {/* LEGAL PAGES */}
           <div style={{ position: "relative" }}>
             <span
@@ -184,12 +233,50 @@ export default function Navbar() {
               </motion.div>
             )}
           </div>
-          <span
-            onClick={() => scrollToSection("semester")}
-            style={{ cursor: "pointer" }}
-          >
-            Semesters
-          </span>
+
+          <div ref={contentRef} style={{ position: "relative" }}>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => setContentOpen((prev) => !prev)}
+            >
+              Content ▾
+            </span>
+
+            {contentOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  position: "absolute",
+                  top: "45px",
+                  right: 0,
+                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
+                  borderRadius: "12px",
+                  padding: "15px",
+                  minWidth: "220px",
+                  boxShadow:
+                    theme === "dark"
+                      ? "0 15px 40px rgba(0,0,0,0.6)"
+                      : "0 15px 40px rgba(0,0,0,0.15)",
+                  border:
+                    theme === "dark"
+                      ? "1px solid rgba(255,255,255,0.08)"
+                      : "1px solid rgba(0,0,0,0.05)",
+                  zIndex: 9999,
+                }}
+              >
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => {
+                    navigate("/blog");
+                    setContentOpen(false);
+                  }}
+                >
+                  📝 Blogs
+                </div>
+              </motion.div>
+            )}
+          </div>
 
           {/* STUDENT TOOLS */}
           <div style={{ position: "relative" }}>
@@ -260,7 +347,7 @@ export default function Navbar() {
               style={{ cursor: "pointer" }}
               onClick={() => setProgressDropdown((prev) => !prev)}
             >
-              See Progress ▾
+              See Progress (Semester) ▾
             </span>
 
             {progressDropdown && (
@@ -306,19 +393,59 @@ export default function Navbar() {
             )}
           </div>
 
-          <span
-            onClick={() => navigate("/contact-owner")}
-            style={{ cursor: "pointer" }}
-          >
-            Contact Owner
-          </span>
+          <div style={{ position: "relative" }}>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => setContactsOpen((prev) => !prev)}
+            >
+              Contacts ▾
+            </span>
 
-          <span
-            onClick={() => navigate("/contact-faculty")}
-            style={{ cursor: "pointer" }}
-          >
-            Contact Faculty
-          </span>
+            {contactsOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  position: "absolute",
+                  top: "45px",
+                  right: 0,
+                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
+                  borderRadius: "12px",
+                  padding: "15px",
+                  minWidth: "220px",
+                  boxShadow:
+                    theme === "dark"
+                      ? "0 15px 40px rgba(0,0,0,0.6)"
+                      : "0 15px 40px rgba(0,0,0,0.15)",
+                  border:
+                    theme === "dark"
+                      ? "1px solid rgba(255,255,255,0.08)"
+                      : "1px solid rgba(0,0,0,0.05)",
+                  zIndex: 9999,
+                }}
+              >
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => {
+                    navigate("/contact-owner");
+                    setContactsOpen(false);
+                  }}
+                >
+                  📬 Contact Owner
+                </div>
+
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => {
+                    navigate("/contact-faculty");
+                    setContactsOpen(false);
+                  }}
+                >
+                  👨‍🏫 Contact Faculty
+                </div>
+              </motion.div>
+            )}
+          </div>
 
           {/* ADMIN LOGIN */}
           {!isLoggedIn && (
@@ -503,14 +630,49 @@ export default function Navbar() {
           ) : null}
 
           {/* NAVIGATION LINKS */}
-          <span
-            onClick={() => {
-              scrollToSection("semester");
-              setMobileOpen(false);
-            }}
-          >
-            📚 Semesters
-          </span>
+          <div>
+            <strong>📚 Notes</strong>
+            <div
+              style={{
+                marginTop: "8px",
+                paddingLeft: "12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+              }}
+            >
+              <span
+                onClick={() => {
+                  navigate("/notes-library");
+                  setMobileOpen(false);
+                }}
+              >
+                📚 Notes Library
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <strong>📂 Content</strong>
+            <div
+              style={{
+                marginTop: "8px",
+                paddingLeft: "12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+              }}
+            >
+              <span
+                onClick={() => {
+                  navigate("/blog");
+                  setMobileOpen(false);
+                }}
+              >
+                📝 Blogs
+              </span>
+            </div>
+          </div>
 
           {/* STUDENT TOOLS */}
           <div>
