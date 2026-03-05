@@ -66,7 +66,7 @@ export default function StudentTools() {
 
       {/* GPA CALCULATOR SECTION */}
       <div id="gpa">
-        <GPACalculator />
+        <AIAssistant />
       </div>
       <div
         style={{
@@ -77,7 +77,7 @@ export default function StudentTools() {
         }}
       />
       <div id="ai">
-        <AIAssistant />
+        <QuizSection />
       </div>
       <div
         style={{
@@ -99,7 +99,7 @@ export default function StudentTools() {
         }}
       />
       <div id="quiz">
-        <QuizSection />
+        <GPACalculator />
       </div>
       <div
         style={{

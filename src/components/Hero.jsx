@@ -133,7 +133,7 @@ export default function Hero() {
             fontWeight: "600",
           }}
         >
-          ✨ Explore Features
+          ✨ Explore AI Tools
         </motion.button>
       </motion.div>
 
