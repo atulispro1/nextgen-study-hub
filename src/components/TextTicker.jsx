@@ -1,6 +1,6 @@
 export default function TextTicker() {
   const text =
-    "NextGen Study Hub • Smart Learning • Organized Resources • Premium Study Materials • Progress Tracking • Internship Updates • GPA Calculator • ";
+    "NextGen Study Hub • AI Tools • Smart Learning • Organized Resources • Premium Study Materials • Progress Tracking • Internship Updates • GPA Calculator • ";
 
   return (
     <div

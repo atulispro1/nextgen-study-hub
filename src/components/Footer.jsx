@@ -93,7 +93,7 @@ export default function Footer() {
 
         <div>
           <h4 style={{ marginBottom: "15px" }}>Contact</h4>
-          <p style={{ opacity: 0.7 }}>yuktisharma349@gmail.com</p>
+          <p style={{ opacity: 0.7 }}>atul.sharmas2806@gmail.com</p>
           <p style={{ opacity: 0.7 }}>Academic SaaS Platform</p>
         </div>
 

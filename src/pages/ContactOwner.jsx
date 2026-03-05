@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 export default function ContactOwner() {
   const whatsappNumber = "917060160754"; // 🔁 Replace with your real number
+  const gmailAddress = "atul.sharmas2806@gmail.com"; // replace with your real gmail
 
   const [form, setForm] = useState({
     name: "",
@@ -25,11 +26,27 @@ export default function ContactOwner() {
 ${form.message}
 `;
 
-    const url = `https://wa.me/${917060160754}?text=${encodeURIComponent(
-      text
-    )}`;
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 
     window.open(url, "_blank");
+  };
+
+  const handleEmailSubmit = () => {
+    const subject = "NextGen Study Hub Feedback / Suggestion";
+
+    const body = `
+Name: ${form.name}
+Email: ${form.email}
+Type: ${form.type}
+Rating: ${form.rating}/5
+
+Message:
+${form.message}
+`;
+
+    const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=${gmailAddress}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.open(gmailURL, "_blank");
   };
 
   return (
@@ -54,8 +71,8 @@ ${form.message}
           Contact Website Owner
         </h1>
         <p style={{ opacity: 0.7, marginTop: "15px" }}>
-          Got an idea? Found a bug? Want a new feature?  
-          Let’s build this platform better together 🚀
+          Got an idea? Found a bug? Want a new feature? Let’s build this
+          platform better together 🚀
         </p>
       </motion.div>
 
@@ -75,24 +92,18 @@ ${form.message}
         <div style={{ display: "grid", gap: "20px" }}>
           <input
             placeholder="Your Name"
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
             style={{ padding: "15px", borderRadius: "10px" }}
           />
 
           <input
             placeholder="Your Email"
-            onChange={(e) =>
-              setForm({ ...form, email: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
             style={{ padding: "15px", borderRadius: "10px" }}
           />
 
           <select
-            onChange={(e) =>
-              setForm({ ...form, type: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, type: e.target.value })}
             style={{ padding: "15px", borderRadius: "10px" }}
           >
             <option>Feature Request</option>
@@ -111,9 +122,7 @@ ${form.message}
               min="1"
               max="5"
               value={form.rating}
-              onChange={(e) =>
-                setForm({ ...form, rating: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, rating: e.target.value })}
               style={{ width: "100%" }}
             />
             <div style={{ textAlign: "right", opacity: 0.7 }}>
@@ -124,9 +133,7 @@ ${form.message}
           <textarea
             rows="5"
             placeholder="Write your suggestion or feedback here..."
-            onChange={(e) =>
-              setForm({ ...form, message: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, message: e.target.value })}
             style={{
               padding: "15px",
               borderRadius: "12px",
@@ -146,13 +153,29 @@ ${form.message}
               fontSize: "16px",
               fontWeight: "600",
               color: "white",
-              background:
-                "linear-gradient(90deg,#16a34a,#22c55e)",
-              boxShadow:
-                "0 10px 25px rgba(34,197,94,0.3)",
+              background: "linear-gradient(90deg,#16a34a,#22c55e)",
+              boxShadow: "0 10px 25px rgba(34,197,94,0.3)",
             }}
           >
             💬 Send via WhatsApp
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleEmailSubmit}
+            style={{
+              padding: "15px",
+              borderRadius: "30px",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "white",
+              background: "linear-gradient(90deg,#ea4335,#db4437)",
+              boxShadow: "0 10px 25px rgba(234,67,53,0.3)",
+            }}
+          >
+            📧 Send via Gmail
           </motion.button>
         </div>
       </motion.div>

@@ -63,13 +63,15 @@ export default function Hero() {
         </div>
       </div>
 
+
       {/* Main Heading */}
+      <br />
       <motion.h1
         initial={{ opacity: 0, y: -60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
         style={{
-          fontSize: "72px",
+          fontSize: "50px",
           fontWeight: "900",
           marginBottom: "20px",
           background: "linear-gradient(135deg,#6366f1,#8b5cf6,#22c55e)",
@@ -114,17 +116,17 @@ export default function Hero() {
           whileTap={{ scale: 0.95 }}
           className="btn-primary"
           style={{ padding: "16px 32px", fontSize: "17px" }}
-          onClick={() => navigate("/semester/2")}
+          onClick={() => navigate("/student-tools")}
         >
-          🚀 Get Started
+          ✨ Explore AI Tools
         </motion.button>
 
         <motion.button
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => navigate("/student-tools")}
+          onClick={() => navigate("/semester/2")}
           style={{
-            padding: "16px 32px",
+            padding: "16px 60px",
             borderRadius: "12px",
             border: "1px solid #6366f1",
             background: "transparent",
@@ -133,39 +135,8 @@ export default function Hero() {
             fontWeight: "600",
           }}
         >
-          ✨ Explore AI Tools
+          🚀 Get Started
         </motion.button>
-      </motion.div>
-
-      {/* FOUNDERS SECTION BIG HIGHLIGHT */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2 }}
-        style={{ marginTop: "80px" }}
-      >
-        <h3 style={{ marginBottom: "20px", opacity: 0.7 }}>
-          Founded By
-        </h3>
-
-        <motion.div
-          animate={{
-            backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-          style={{
-            fontSize: "40px",
-            fontWeight: "900",
-            background:
-              "linear-gradient(270deg,#6366f1,#8b5cf6,#22c55e,#6366f1)",
-            backgroundSize: "400% 400%",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            letterSpacing: "-1px",
-          }}
-        >
-          Atul Sharma & Sonal Kumar
-        </motion.div>
       </motion.div>
     </section>
   );

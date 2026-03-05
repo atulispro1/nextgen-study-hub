@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 export default function QuizSection() {
-  const subjects = [
-    "Applied Chemistry",
-    "Engineering Mechanics",
-    "Basic Electrical Engineering",
-    "Mathematics",
-    "Physics",
-    "Computer Programming",
-  ];
+const subjects = [
+  "🧪 Applied Chemistry",
+  "⚙️ Engineering Mechanics",
+  "⚡ Basic Electrical Engineering",
+  "📐 Mathematics",
+  "🔬 Physics",
+  "💻 Computer Programming",
+];
 
   const [subject, setSubject] = useState(subjects[0]);
   const [difficulty, setDifficulty] = useState("Easy");

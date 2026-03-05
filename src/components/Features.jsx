@@ -13,9 +13,9 @@ import {
 export default function Features() {
   const features = [
     {
-      icon: <BookOpen size={32} />,
-      title: "Semester-Wise Study Materials",
-      desc: "All notes, assignments, practicals, and syllabus organized clearly by semester and subject.",
+      icon: <ShieldCheck size={32} />,
+      title: "AI Students Tools",
+      desc: "In the Student Tools Section there are powerful AI tools which helps student to use and explore the world of studies easily ",
     },
     {
       icon: <FileText size={32} />,
@@ -51,6 +51,11 @@ export default function Features() {
       icon: <ShieldCheck size={32} />,
       title: "Admin Managed Resources",
       desc: "Study materials are uploaded and managed by admins to maintain structured and reliable resources.",
+    },
+    {
+      icon: <BookOpen size={32} />,
+      title: "Semester-Wise Study Materials",
+      desc: "All notes, assignments, practicals, and syllabus organized clearly by semester and subject.",
     },
   ];
 
