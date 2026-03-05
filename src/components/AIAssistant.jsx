@@ -49,7 +49,7 @@ export default function AIAssistant() {
       }}
     >
       <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
-        NextGen AI Academic Assistant (WORK IN PROGRESS..)
+        NextGen AI Academic Assistant
       </h2>
 
       {/* CONTROLS */}
@@ -102,7 +102,7 @@ export default function AIAssistant() {
         onClick={generateContent}
         disabled={loading}
       >
-        {loading ? "Generating..." : "Generate"}
+        {loading ? "Generating... pls wait only for max 20 seconds" : "Generate"}
       </button>
 
       {response && (
