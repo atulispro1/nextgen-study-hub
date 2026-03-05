@@ -38,6 +38,15 @@ export default function Home() {
           margin: "80px 0",
         }}
       />
+      <QuizSection />
+            <div
+        style={{
+          height: "3px",
+          background:
+            "linear-gradient(90deg, transparent, #6366f1, transparent)",
+          margin: "80px 0",
+        }}
+      />
       <SemesterSection />
       <div
         style={{

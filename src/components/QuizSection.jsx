@@ -1,89 +1,94 @@
 import { useState } from "react";
-import { supabase } from "../supabase";
 import { motion } from "framer-motion";
-import { useAuth } from "../context/AuthContext";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 export default function QuizSection() {
-  const { role } = useAuth();
-  const isAdmin = role === "owner" || role === "faculty";
-
   const subjects = [
     "Applied Chemistry",
     "Engineering Mechanics",
     "Basic Electrical Engineering",
+    "Mathematics",
+    "Physics",
+    "Computer Programming",
   ];
 
   const [subject, setSubject] = useState(subjects[0]);
   const [difficulty, setDifficulty] = useState("Easy");
+
   const [questions, setQuestions] = useState([]);
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizFinished, setQuizFinished] = useState(false);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState(null);
-  const [score, setScore] = useState(0);
 
-  const [newQ, setNewQ] = useState({
-    subject: subjects[0],
-    difficulty: "Easy",
-    question: "",
-    option_a: "",
-    option_b: "",
-    option_c: "",
-    option_d: "",
-    correct_answer: "A",
-  });
+  const [loadingQuiz, setLoadingQuiz] = useState(false);
 
-  const fetchQuestions = async () => {
-    const { data } = await supabase
-      .from("quiz_questions")
-      .select("*")
-      .eq("subject", subject)
-      .eq("difficulty", difficulty);
+  const [totalAnswered, setTotalAnswered] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
 
-    const shuffled = data?.sort(() => 0.5 - Math.random());
-    setQuestions(shuffled || []);
+  // AI QUIZ GENERATOR
+  const generateQuiz = async () => {
+    const res = await fetch(
+      "https://lryyihefzqpjiedtrdeg.supabase.co/functions/v1/ai-assistant",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "quiz",
+          subject,
+          difficulty,
+        }),
+      },
+    );
+
+    const data = await res.json();
+
+    const aiQuestions = JSON.parse(data.output || "[]");
+
+    setQuestions(aiQuestions);
+    setCurrentIndex(0);
   };
 
   const startQuiz = async () => {
-    await fetchQuestions();
+    setLoadingQuiz(true);
+
+    await generateQuiz();
+
     setQuizStarted(true);
     setQuizFinished(false);
-    setCurrentIndex(0);
-    setScore(0);
+    setTotalAnswered(0);
+    setCorrectAnswers(0);
+
+    setLoadingQuiz(false);
   };
 
-  const handleAnswer = (option) => {
+  const handleAnswer = async (option) => {
+    const isCorrect = option === questions[currentIndex].correct_answer;
+
     setSelected(option);
 
-    if (option === questions[currentIndex].correct_answer) {
-      setScore((prev) => prev + 1);
+    setTotalAnswered((prev) => prev + 1);
+
+    if (isCorrect) {
+      setCorrectAnswers((prev) => prev + 1);
     }
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setSelected(null);
+
       if (currentIndex + 1 < questions.length) {
         setCurrentIndex((prev) => prev + 1);
       } else {
-        setQuizFinished(true);
+        await generateQuiz();
       }
-    }, 600);
-  };
-
-  const progress =
-    questions.length === 0
-      ? 0
-      : Math.round((currentIndex / questions.length) * 100);
-
-  const addQuestion = async () => {
-    if (!newQ.question) return;
-    await supabase.from("quiz_questions").insert([newQ]);
-    alert("Question Added Successfully");
+    }, 500);
   };
 
   return (
     <div style={{ marginTop: "120px", padding: "0 20px" }}>
-      {/* HEADER */}
-
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -104,7 +109,7 @@ export default function QuizSection() {
             marginBottom: "10px",
           }}
         >
-          Smart Quiz Arena
+          🤖 AI Smart Quiz Arena
         </h2>
 
         <p style={{ opacity: 0.7, fontSize: "15px" }}>
@@ -112,154 +117,6 @@ export default function QuizSection() {
           progress.
         </p>
       </motion.div>
-
-      {/* ADMIN PANEL */}
-
-      {isAdmin && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="glass"
-          style={{
-            padding: "50px",
-            marginBottom: "80px",
-            maxWidth: "1000px",
-            marginInline: "auto",
-            border: "1px solid rgba(99,102,241,0.25)",
-          }}
-        >
-          <h3 style={{ marginBottom: "30px" }}>🛠 Quiz Management Panel</h3>
-
-          {/* TOTAL QUESTIONS */}
-
-          <div
-            style={{
-              marginBottom: "35px",
-              padding: "25px",
-              borderRadius: "14px",
-              background: "rgba(99,102,241,0.08)",
-              textAlign: "center",
-            }}
-          >
-            <h4 style={{ marginBottom: "8px" }}>Total Questions Added</h4>
-
-            <div
-              style={{
-                fontSize: "30px",
-                fontWeight: "600",
-                color: "#6366f1",
-              }}
-            >
-              {questions.length}
-            </div>
-          </div>
-
-          {/* ADD QUESTION */}
-
-          <div style={{ marginBottom: "50px" }}>
-            <h4 style={{ marginBottom: "20px" }}>➕ Add New Question</h4>
-
-            <div style={{ display: "grid", gap: "14px" }}>
-              <textarea
-                placeholder="Enter Question"
-                style={{
-                  padding: "16px",
-                  borderRadius: "12px",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                }}
-                onChange={(e) => setNewQ({ ...newQ, question: e.target.value })}
-              />
-
-              {["option_a", "option_b", "option_c", "option_d"].map((opt) => (
-                <input
-                  key={opt}
-                  placeholder={opt.replace("_", " ").toUpperCase()}
-                  style={{
-                    padding: "12px",
-                    borderRadius: "10px",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                  }}
-                  onChange={(e) => setNewQ({ ...newQ, [opt]: e.target.value })}
-                />
-              ))}
-
-              <select
-                style={{
-                  padding: "12px",
-                  borderRadius: "10px",
-                }}
-                onChange={(e) =>
-                  setNewQ({ ...newQ, correct_answer: e.target.value })
-                }
-              >
-                <option value="A">Correct Answer: A</option>
-                <option value="B">Correct Answer: B</option>
-                <option value="C">Correct Answer: C</option>
-                <option value="D">Correct Answer: D</option>
-              </select>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-primary"
-                onClick={addQuestion}
-              >
-                Add Question
-              </motion.button>
-            </div>
-          </div>
-
-          {/* QUESTION LIST */}
-
-          <div>
-            <h4 style={{ marginBottom: "20px" }}>📚 Added Questions</h4>
-
-            <div style={{ display: "grid", gap: "20px" }}>
-              {questions.map((q) => (
-                <motion.div
-                  key={q.id}
-                  whileHover={{ scale: 1.01 }}
-                  style={{
-                    padding: "20px",
-                    borderRadius: "14px",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                  }}
-                >
-                  <p style={{ marginBottom: "10px" }}>
-                    <strong>Q:</strong> {q.question}
-                  </p>
-
-                  <p style={{ opacity: 0.7, fontSize: "14px" }}>
-                    Correct Answer: {q.correct_answer}
-                  </p>
-
-                  <button
-                    onClick={async () => {
-                      await supabase
-                        .from("quiz_questions")
-                        .delete()
-                        .eq("id", q.id);
-                      fetchQuestions();
-                    }}
-                    style={{
-                      marginTop: "10px",
-                      padding: "8px 16px",
-                      borderRadius: "8px",
-                      border: "none",
-                      cursor: "pointer",
-                      background: "linear-gradient(90deg,#dc2626,#ef4444)",
-                      color: "white",
-                    }}
-                  >
-                    Delete
-                  </button>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      )}
 
       {/* QUIZ START */}
 
@@ -273,9 +130,7 @@ export default function QuizSection() {
             textAlign: "center",
           }}
         >
-          <h3 style={{ marginBottom: "30px" }}>
-            Choose Subject & Difficulty
-          </h3>
+          <h3 style={{ marginBottom: "30px" }}>Choose Subject & Difficulty</h3>
 
           <div
             style={{
@@ -310,8 +165,11 @@ export default function QuizSection() {
             className="btn-primary"
             style={{ marginTop: "40px", padding: "14px 40px" }}
             onClick={startQuiz}
+            disabled={loadingQuiz}
           >
-            Start Quiz
+            {loadingQuiz
+              ? "Generating... pls wait only for max 15 seconds"
+              : "Start Quiz"}
           </motion.button>
         </motion.div>
       )}
@@ -320,7 +178,6 @@ export default function QuizSection() {
 
       {quizStarted && !quizFinished && questions.length > 0 && (
         <motion.div
-          key={currentIndex}
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
@@ -332,29 +189,19 @@ export default function QuizSection() {
             marginTop: "40px",
           }}
         >
-          {/* PROGRESS BAR */}
+          {/* QUESTION COUNTER */}
 
-          <div
-            style={{
-              height: "10px",
-              background: "rgba(255,255,255,0.1)",
-              borderRadius: "20px",
-              overflow: "hidden",
-              marginBottom: "30px",
-            }}
-          >
-            <motion.div
-              animate={{ width: `${progress}%` }}
-              style={{
-                height: "100%",
-                background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
-              }}
-            />
-          </div>
+          <p style={{ opacity: 0.7, marginBottom: "10px" }}>
+            Question #{totalAnswered + 1}
+          </p>
+
+          {/* QUESTION */}
 
           <h3 style={{ marginBottom: "30px", fontSize: "20px" }}>
             {questions[currentIndex].question}
           </h3>
+
+          {/* OPTIONS */}
 
           <div style={{ display: "grid", gap: "14px" }}>
             {["A", "B", "C", "D"].map((letter) => {
@@ -382,8 +229,8 @@ export default function QuizSection() {
                     background: isCorrect
                       ? "linear-gradient(90deg,#16a34a,#22c55e)"
                       : isWrong
-                      ? "linear-gradient(90deg,#dc2626,#ef4444)"
-                      : "linear-gradient(90deg,#4f46e5,#6366f1)",
+                        ? "linear-gradient(90deg,#dc2626,#ef4444)"
+                        : "linear-gradient(90deg,#4f46e5,#6366f1)",
                     color: "white",
                   }}
                 >
@@ -392,50 +239,75 @@ export default function QuizSection() {
               );
             })}
           </div>
+
+          {/* STOP QUIZ */}
+
+          <button
+            onClick={() => {
+              setQuizFinished(true);
+              setQuizStarted(false);
+            }}
+            style={{
+              marginTop: "25px",
+              padding: "12px 28px",
+              borderRadius: "10px",
+              background: "linear-gradient(90deg,#dc2626,#ef4444)",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+              fontWeight: "600",
+            }}
+          >
+            Stop Quiz
+          </button>
         </motion.div>
       )}
 
       {/* RESULT */}
 
       {quizFinished && (
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+        <div
           className="glass"
           style={{
-            padding: "70px",
+            padding: "60px",
+            textAlign: "center",
             maxWidth: "600px",
             marginInline: "auto",
-            textAlign: "center",
-            marginTop: "50px",
+            marginTop: "40px",
           }}
         >
-          <h2>Quiz Completed 🎉</h2>
+          <h2>Quiz Result</h2>
 
-          <div
-            style={{
-              fontSize: "52px",
-              margin: "30px 0",
-              background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
-              WebkitBackgroundClip: "text",
-              color: "transparent",
-            }}
-          >
-            {score} / {questions.length}
-          </div>
+          <PieChart width={300} height={300}>
+            <Pie
+              data={[
+                { name: "Correct", value: correctAnswers },
+                { name: "Wrong", value: totalAnswered - correctAnswers },
+              ]}
+              dataKey="value"
+              outerRadius={100}
+            >
+              <Cell fill="#22c55e" />
+              <Cell fill="#ef4444" />
+            </Pie>
 
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-primary"
+            <Tooltip />
+          </PieChart>
+
+          <h3>
+            Score: {correctAnswers} / {totalAnswered}
+          </h3>
+
+          <button
             onClick={() => {
-              setQuizStarted(false);
               setQuizFinished(false);
+              setQuizStarted(false);
             }}
+            className="btn-primary"
           >
-            Retake Quiz
-          </motion.button>
-        </motion.div>
+            Play Again
+          </button>
+        </div>
       )}
     </div>
   );

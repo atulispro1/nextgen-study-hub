@@ -329,7 +329,7 @@ export default function Navbar() {
                   style={dropdownItemStyle}
                   onClick={() => goToSection("quiz")}
                 >
-                  🎯 Quiz Arena
+                  🎯 AI Quiz Arena
                 </div>
                 <div
                   style={dropdownItemStyle}
@@ -710,7 +710,7 @@ export default function Navbar() {
                   setMobileOpen(false);
                 }}
               >
-                🎯 Quiz Arena
+                🎯 AI Quiz Arena
               </span>
 
               <span

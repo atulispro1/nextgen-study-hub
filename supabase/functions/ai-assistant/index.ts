@@ -12,7 +12,6 @@ const openai = new OpenAI({
 });
 
 Deno.serve(async (req) => {
-  // Handle preflight request
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
@@ -21,9 +20,41 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { subject, type, topic } = await req.json();
+    // READ BODY ONLY ONCE
+    const { subject, difficulty, type, topic } = await req.json();
 
-    const prompt = `
+    let prompt = "";
+
+    if (type === "quiz") {
+      prompt = `
+Generate 5 multiple-choice quiz questions.
+
+Subject: ${subject}
+Difficulty: ${difficulty}
+
+IMPORTANT:
+Randomize the correct answer between A, B, C, and D.
+
+Return ONLY valid JSON in this format:
+
+[
+{
+"question": "Question text",
+"option_a": "Option A",
+"option_b": "Option B",
+"option_c": "Option C",
+"option_d": "Option D",
+"correct_answer": "A | B | C | D"
+}
+]
+
+Ensure the correct_answer varies randomly.
+Do not repeat the same answer letter.
+Do not add explanation.
+Return only JSON.
+`;
+    } else {
+      prompt = `
 You are an AI academic assistant helping engineering students.
 
 Subject: ${subject}
@@ -41,9 +72,10 @@ Create an engaging and well-structured response with:
 
 Make it visually structured and easy to read for students.
 `;
+    }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "openai/gpt-4o-mini",
       messages: [
         { role: "system", content: "You are a helpful academic assistant." },
         { role: "user", content: prompt },

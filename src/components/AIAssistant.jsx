@@ -37,6 +37,7 @@ export default function AIAssistant() {
   };
 
   return (
+    
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -102,7 +103,7 @@ export default function AIAssistant() {
         onClick={generateContent}
         disabled={loading}
       >
-        {loading ? "Generating... pls wait only for max 20 seconds" : "Generate"}
+        {loading ? "Generating... pls wait only for max 15 seconds" : "Generate"}
       </button>
 
       {response && (
