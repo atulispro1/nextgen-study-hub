@@ -171,28 +171,28 @@ export default function Navbar() {
                   style={dropdownItemStyle}
                   onClick={() => navigate("/Jobs")}
                 >
-                  Explore Jobs
+                  💼 Explore Jobs
                 </div>
 
                 <div
                   style={dropdownItemStyle}
                   onClick={() => navigate("/jobs?type=internship")}
                 >
-                  Internships
+                  🎓 Internships
                 </div>
 
                 <div
                   style={dropdownItemStyle}
                   onClick={() => navigate("/jobs?type=fresher")}
                 >
-                  Fresher Jobs
+                  👔 Fresher Jobs
                 </div>
 
                 <div
                   style={dropdownItemStyle}
                   onClick={() => navigate("/jobs?type=remote")}
                 >
-                  Remote Jobs
+                  💻 Remote Jobs
                 </div>
               </motion.div>
             )}
@@ -202,7 +202,7 @@ export default function Navbar() {
               style={{ cursor: "pointer" }}
               onClick={() => setNotesOpen((prev) => !prev)}
             >
-              📚 Notes ▾
+              Notes ▾
             </span>
 
             {notesOpen && (
@@ -615,379 +615,398 @@ export default function Navbar() {
       </motion.nav>
 
       {/* MOBILE PANEL */}
-      {mobileOpen && (
-        <motion.div
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ duration: 0.3 }}
+{mobileOpen && (
+  <motion.div
+    initial={{ x: "100%" }}
+    animate={{ x: 0 }}
+    exit={{ x: "100%" }}
+    transition={{ duration: 0.3 }}
+    style={{
+      position: "fixed",
+      top: 0,
+      right: 0,
+      width: "85%",
+      height: "100vh",
+      background: theme === "dark" ? "#12121a" : "#ffffff",
+      padding: "25px",
+      zIndex: 2000,
+      display: "flex",
+      flexDirection: "column",
+      gap: "18px",
+      boxShadow: "-5px 0 30px rgba(0,0,0,0.4)",
+      overflowY: "auto",
+    }}
+  >
+    {/* HEADER */}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingBottom: "10px",
+        borderBottom:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.1)"
+            : "1px solid rgba(0,0,0,0.1)",
+      }}
+    >
+      <div>
+        <div style={{ fontSize: "18px", fontWeight: "700" }}>
+          Explore Menu
+        </div>
+        <div style={{ fontSize: "12px", opacity: 0.7 }}>
+          Navigate your dashboard
+        </div>
+      </div>
+
+      <X
+        size={28}
+        style={{ cursor: "pointer" }}
+        onClick={() => setMobileOpen(false)}
+      />
+    </div>
+
+    {/* USER INFO SECTION */}
+    {isLoggedIn ? (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          padding: "12px",
+          borderRadius: "10px",
+          background:
+            theme === "dark"
+              ? "rgba(255,255,255,0.05)"
+              : "rgba(0,0,0,0.04)",
+        }}
+      >
+        <div
           style={{
-            position: "fixed",
-            top: 0,
-            right: 0,
-            width: "85%",
-            height: "100vh",
-            background: theme === "dark" ? "#12121a" : "#ffffff",
-            padding: "25px",
-            zIndex: 2000,
+            width: "45px",
+            height: "45px",
+            borderRadius: "50%",
+            background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
             display: "flex",
-            flexDirection: "column",
-            gap: "18px",
-            boxShadow: "-5px 0 30px rgba(0,0,0,0.4)",
-            overflowY: "auto",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            fontWeight: "600",
           }}
         >
-          {/* CLOSE BUTTON */}
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <X
-              size={28}
-              style={{ cursor: "pointer" }}
-              onClick={() => setMobileOpen(false)}
-            />
+          {user?.email?.charAt(0)?.toUpperCase()}
+        </div>
+
+        <div>
+          <div style={{ fontSize: "14px", fontWeight: "600" }}>
+            {user?.email}
           </div>
-
-          {/* USER INFO SECTION */}
-          {isLoggedIn ? (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                padding: "10px",
-                borderRadius: "10px",
-                background:
-                  theme === "dark"
-                    ? "rgba(255,255,255,0.05)"
-                    : "rgba(0,0,0,0.04)",
-              }}
-            >
-              <div
-                style={{
-                  width: "45px",
-                  height: "45px",
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "white",
-                  fontWeight: "600",
-                }}
-              >
-                {user?.email?.charAt(0)?.toUpperCase()}
-              </div>
-
-              <div>
-                <div style={{ fontSize: "14px", fontWeight: "600" }}>
-                  {user?.email}
-                </div>
-                <div style={{ fontSize: "12px", opacity: 0.7 }}>
-                  Role: {role}
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          {/* NAVIGATION LINKS */}
-          <div>
-            <strong>Jobs</strong>
-            <div
-              style={{
-                marginTop: "8px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              <span
-                onClick={() => {
-                  navigate("/jobs")
-                  setMobileOpen(false);
-                }}
-              >
-                Explore Jobs
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/jobs?type=internship");
-                  setMobileOpen(false);
-                }}
-              >
-                Interships
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/jobs?type=fresher");
-                  setMobileOpen(false);
-                }}
-              >
-                Fresher Jobs
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/jobs?type=remote")
-                  setMobileOpen(false);
-                }}
-              >
-                Remote Jobs
-              </span>
-            </div>
+          <div style={{ fontSize: "12px", opacity: 0.7 }}>
+            Role: {role}
           </div>
-          
-          <div>
-            <strong>📚 Notes</strong>
-            <div
-              style={{
-                marginTop: "8px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              <span
-                onClick={() => {
-                  navigate("/notes-library");
-                  setMobileOpen(false);
-                }}
-              >
-                📚 Notes Library
-              </span>
-            </div>
-          </div>
+        </div>
+      </div>
+    ) : null}
 
-          <div>
-            <strong>📂 Content</strong>
-            <div
-              style={{
-                marginTop: "8px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              <span
-                onClick={() => {
-                  navigate("/blog");
-                  setMobileOpen(false);
-                }}
-              >
-                📝 Blogs
-              </span>
-            </div>
-          </div>
+    {/* NAVIGATION LINKS */}
 
-          {/* STUDENT TOOLS */}
-          <div>
-            <strong>🛠 Student Tools</strong>
-            <div
-              style={{
-                marginTop: "8px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              <span
-                onClick={() => {
-                  goToSection("gpa");
-                  setMobileOpen(false);
-                }}
-              >
-                📊 GPA Calculator
-              </span>
+    {/* JOBS */}
+    <div
+      style={{
+        paddingTop: "10px",
+        borderTop:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.08)"
+            : "1px solid rgba(0,0,0,0.08)",
+      }}
+    >
+      <strong>💼 Jobs</strong>
 
-              <span
-                onClick={() => {
-                  goToSection("todo");
-                  setMobileOpen(false);
-                }}
-              >
-                ✅ Todo List
-              </span>
+      <div
+        style={{
+          marginTop: "10px",
+          paddingLeft: "12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        <span onClick={() => { navigate("/jobs"); setMobileOpen(false); }}>
+          💼 Explore Jobs
+        </span>
 
-              <span
-                onClick={() => {
-                  goToSection("quiz");
-                  setMobileOpen(false);
-                }}
-              >
-                🎯 AI Quiz Arena
-              </span>
+        <span onClick={() => { navigate("/jobs?type=internship"); setMobileOpen(false); }}>
+          🎓 Interships
+        </span>
 
-              <span
-                onClick={() => {
-                  goToSection("ai");
-                  setMobileOpen(false);
-                }}
-              >
-                🤖 AI Assistant
-              </span>
-            </div>
-          </div>
+        <span onClick={() => { navigate("/jobs?type=fresher"); setMobileOpen(false); }}>
+          👔 Fresher Jobs
+        </span>
 
-          {/* PROGRESS */}
-          <div>
-            <strong>📈 See Progress</strong>
-            <div
-              style={{
-                marginTop: "8px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              {[1, 2, 3, 4, 5, 6].map((sem) => (
-                <span
-                  key={sem}
-                  onClick={() => {
-                    navigate(`/semester/${sem}`);
-                    setMobileOpen(false);
-                  }}
-                >
-                  Semester {sem}
-                </span>
-              ))}
-            </div>
-          </div>
+        <span onClick={() => { navigate("/jobs?type=remote"); setMobileOpen(false); }}>
+          💻 Remote Jobs
+        </span>
+      </div>
+    </div>
 
+    {/* NOTES */}
+    <div
+      style={{
+        paddingTop: "10px",
+        borderTop:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.08)"
+            : "1px solid rgba(0,0,0,0.08)",
+      }}
+    >
+      <strong>📚 Notes</strong>
+
+      <div
+        style={{
+          marginTop: "10px",
+          paddingLeft: "12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        <span onClick={() => { navigate("/notes-library"); setMobileOpen(false); }}>
+          📚 Notes Library
+        </span>
+      </div>
+    </div>
+
+    {/* CONTENT */}
+    <div
+      style={{
+        paddingTop: "10px",
+        borderTop:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.08)"
+            : "1px solid rgba(0,0,0,0.08)",
+      }}
+    >
+      <strong>📂 Content</strong>
+
+      <div
+        style={{
+          marginTop: "10px",
+          paddingLeft: "12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        <span onClick={() => { navigate("/blog"); setMobileOpen(false); }}>
+          📝 Blogs
+        </span>
+      </div>
+    </div>
+
+    {/* STUDENT TOOLS */}
+    <div
+      style={{
+        paddingTop: "10px",
+        borderTop:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.08)"
+            : "1px solid rgba(0,0,0,0.08)",
+      }}
+    >
+      <strong>🛠 Student Tools</strong>
+
+      <div
+        style={{
+          marginTop: "10px",
+          paddingLeft: "12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        <span onClick={() => { goToSection("gpa"); setMobileOpen(false); }}>
+          📊 GPA Calculator
+        </span>
+
+        <span onClick={() => { goToSection("todo"); setMobileOpen(false); }}>
+          ✅ Todo List
+        </span>
+
+        <span onClick={() => { goToSection("quiz"); setMobileOpen(false); }}>
+          🎯 AI Quiz Arena
+        </span>
+
+        <span onClick={() => { goToSection("ai"); setMobileOpen(false); }}>
+          🤖 AI Assistant
+        </span>
+      </div>
+    </div>
+
+    {/* PROGRESS */}
+    <div
+      style={{
+        paddingTop: "10px",
+        borderTop:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.08)"
+            : "1px solid rgba(0,0,0,0.08)",
+      }}
+    >
+      <strong>📈 See Progress</strong>
+
+      <div
+        style={{
+          marginTop: "10px",
+          paddingLeft: "12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        {[1, 2, 3, 4, 5, 6].map((sem) => (
           <span
+            key={sem}
             onClick={() => {
-              navigate("/contact-owner");
+              navigate(`/semester/${sem}`);
               setMobileOpen(false);
             }}
           >
-            📬 Contact Owner
+            Semester {sem}
           </span>
+        ))}
+      </div>
+    </div>
 
-          <span
-            onClick={() => {
-              navigate("/contact-faculty");
-              setMobileOpen(false);
-            }}
-          >
-            👨‍🏫 Contact Faculty
-          </span>
-          {/* LEGAL SECTION */}
-          <div>
-            <strong>📄 Legal</strong>
+    {/* CONTACT */}
+    <div
+      style={{
+        paddingTop: "10px",
+        borderTop:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.08)"
+            : "1px solid rgba(0,0,0,0.08)",
+      }}
+    >
+      <strong>📞 Contacts</strong>
 
-            <div
-              style={{
-                marginTop: "8px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              <span
-                onClick={() => {
-                  navigate("/about");
-                  setMobileOpen(false);
-                }}
-              >
-                About
-              </span>
+      <div
+        style={{
+          marginTop: "10px",
+          paddingLeft: "12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        <span onClick={() => { navigate("/contact-owner"); setMobileOpen(false); }}>
+          📬 Contact Owner
+        </span>
 
-              <span
-                onClick={() => {
-                  navigate("/privacy-policy");
-                  setMobileOpen(false);
-                }}
-              >
-                Privacy Policy
-              </span>
+        <span onClick={() => { navigate("/contact-faculty"); setMobileOpen(false); }}>
+          👨‍🏫 Contact Faculty
+        </span>
+      </div>
+    </div>
+  
+    {/* LEGAL */}
+    <div
+      style={{
+        paddingTop: "10px",
+        borderTop:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.08)"
+            : "1px solid rgba(0,0,0,0.08)",
+      }}
+    >
+      <strong>📄 Legal</strong>
 
-              <span
-                onClick={() => {
-                  navigate("/terms");
-                  setMobileOpen(false);
-                }}
-              >
-                Terms & Conditions
-              </span>
-            </div>
-          </div>
+      <div
+        style={{
+          marginTop: "10px",
+          paddingLeft: "12px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        <span onClick={() => { navigate("/about"); setMobileOpen(false); }}>
+          About
+        </span>
 
-          {/* ADMIN SECTION */}
-          {!isLoggedIn && (
-            <button
-              onClick={() => {
-                navigate("/admin");
-                setMobileOpen(false);
-              }}
-              className="btn-primary"
-            >
-              Admin Login
-            </button>
-          )}
+        <span onClick={() => { navigate("/privacy-policy"); setMobileOpen(false); }}>
+          Privacy Policy
+        </span>
 
-          {isLoggedIn && (
-            <>
-              {isOwner && (
-                <button
-                  onClick={() => {
-                    navigate("/admin?mode=create");
-                    setMobileOpen(false);
-                  }}
-                  className="btn-primary"
-                >
-                  + Create Faculty
-                </button>
-              )}
+        <span onClick={() => { navigate("/terms"); setMobileOpen(false); }}>
+          Terms & Conditions
+        </span>
+      </div>
+    </div>
 
-              <button
-                onClick={() => {
-                  navigate("/admin");
-                  setMobileOpen(false);
-                }}
-                className="btn-primary"
-              >
-                Admin Panel
-              </button>
+    {/* ADMIN */}
+    {!isLoggedIn && (
+      <button
+        onClick={() => { navigate("/admin"); setMobileOpen(false); }}
+        className="btn-primary"
+      >
+        Admin Login
+      </button>
+    )}
 
-              <button
-                onClick={() => {
-                  logout();
-                  setMobileOpen(false);
-                }}
-                style={{
-                  padding: "10px",
-                  borderRadius: "8px",
-                  border: "none",
-                  background: "crimson",
-                  color: "white",
-                  cursor: "pointer",
-                }}
-              >
-                Logout
-              </button>
-            </>
-          )}
-
-          {/* THEME SWITCH */}
+    {isLoggedIn && (
+      <>
+        {isOwner && (
           <button
-            onClick={() => toggleTheme()}
-            style={{
-              background: "none",
-              border: "none",
-              textAlign: "left",
-              fontWeight: "600",
-              marginTop: "10px",
-            }}
+            onClick={() => { navigate("/admin?mode=create"); setMobileOpen(false); }}
+            className="btn-primary"
           >
-            {theme === "light" ? "🌙 Switch to Dark" : "☀ Switch to Light"}
+            + Create Faculty
           </button>
-        </motion.div>
-      )}
+        )}
+
+        <button
+          onClick={() => { navigate("/admin"); setMobileOpen(false); }}
+          className="btn-primary"
+        >
+          Admin Panel
+        </button>
+
+        <button
+          onClick={() => { logout(); setMobileOpen(false); }}
+          style={{
+            padding: "10px",
+            borderRadius: "8px",
+            border: "none",
+            background: "crimson",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          Logout
+        </button>
+      </>
+    )}
+
+    {/* THEME SWITCH */}
+    <button
+      onClick={() => toggleTheme()}
+      style={{
+        background: "none",
+        border: "none",
+        textAlign: "left",
+        fontWeight: "600",
+        marginTop: "10px",
+        paddingTop: "10px",
+        borderTop:
+          theme === "dark"
+            ? "1px solid rgba(255,255,255,0.08)"
+            : "1px solid rgba(0,0,0,0.08)",
+      }}
+    >
+      {theme === "light" ? "🌙 Switch to Dark" : "☀ Switch to Light"}
+    </button>
+  </motion.div>
+)}
     </>
   );
 }

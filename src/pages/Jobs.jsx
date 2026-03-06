@@ -144,6 +144,14 @@ export default function Jobs() {
           Find internships, fresher jobs and part-time opportunities
         </p>
       </div>
+      {!isAdmin && (
+        <div className="glass" style={{ padding: "25px", textAlign: "center" }}>
+          <p style={{ opacity: 0.7 }}>
+            Only faculty and admins can post job opportunities.
+          </p>
+        </div>
+      )}
+      <br />
 
       {/* SEARCH + FILTERS */}
 
@@ -244,7 +252,7 @@ export default function Jobs() {
       </div>
 
       {/* JOB CARDS */}
-      <UploadJobCard refreshJobs={fetchJobs} />
+      {isAdmin && <UploadJobCard refreshJobs={fetchJobs} />}
 
       {paginatedJobs.length === 0 ? (
         <div

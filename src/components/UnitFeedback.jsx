@@ -20,7 +20,7 @@ export default function UnitFeedback({ unitId, isAdmin }) {
     const { data } = await supabase
       .from("unit_feedback")
       .select("*")
-      .eq("unit_id", unitId)
+      .eq("subject_id", unitId)
       .order("created_at", { ascending: false });
 
     const all = data || [];
@@ -61,7 +61,7 @@ export default function UnitFeedback({ unitId, isAdmin }) {
 
     await supabase.from("unit_feedback").insert([
       {
-        unit_id: unitId,
+        subject_id: unitId,
         name,
         comment,
         rating_type: ratingType,
@@ -78,13 +78,48 @@ export default function UnitFeedback({ unitId, isAdmin }) {
   };
 
   return (
-    <div className="glass" style={{ padding: "25px", marginTop: "25px" }}>
-      <h4 style={{ marginBottom: "15px" }}>Rate & Comment</h4>
+    <div
+      className="glass"
+      style={{
+        padding: "30px",
+        marginTop: "60px",
+        maxWidth: "900px",
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}
+    >
+      <h2 style={{ marginBottom: "10px", textAlign: "center" }}>
+        💬 Student Discussion
+      </h2>
+
+      <p
+        style={{
+          opacity: 0.7,
+          marginBottom: "25px",
+          textAlign: "center",
+          fontSize: "14px",
+        }}
+      >
+        Ask doubts, share feedback, or help other students.
+      </p>
 
       {/* Stats */}
-      <div style={{ marginBottom: "15px", fontSize: "14px" }}>
-        ⭐ Avg Rating: <strong>{stats.avgStars}</strong> | 👍 {stats.likes} | ❤️{" "}
-        {stats.hearts} | 👎 {stats.unlikes}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "15px",
+          marginBottom: "20px",
+          fontSize: "14px",
+        }}
+      >
+        <span>
+          ⭐ Avg Rating: <strong>{stats.avgStars}</strong>
+        </span>
+        <span>👍 {stats.likes}</span>
+        <span>❤️ {stats.hearts}</span>
+        <span>👎 {stats.unlikes}</span>
       </div>
 
       {/* Star Rating */}
@@ -139,7 +174,13 @@ export default function UnitFeedback({ unitId, isAdmin }) {
           placeholder="Your Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          style={{
+            width: "100%",
+            padding: "10px",
+            borderRadius: "8px",
+            marginBottom: "10px",
+            border: "1px solid rgba(255,255,255,0.1)",
+          }}
         />
 
         <textarea
@@ -147,20 +188,31 @@ export default function UnitFeedback({ unitId, isAdmin }) {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows="3"
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          style={{
+            width: "100%",
+            padding: "10px",
+            borderRadius: "8px",
+            marginBottom: "12px",
+            border: "1px solid rgba(255,255,255,0.1)",
+          }}
         />
 
         <button className="btn-primary">Submit</button>
       </form>
 
       {/* Comments */}
+      <h4 style={{ marginTop: "30px", marginBottom: "15px" }}>
+        Student Comments
+      </h4>
       <div style={{ marginTop: "20px" }}>
         {feedbacks.map((item) => (
           <div
             key={item.id}
             style={{
-              padding: "12px",
-              borderBottom: "1px solid rgba(255,255,255,0.1)",
+              padding: "14px",
+              borderRadius: "10px",
+              marginBottom: "12px",
+              background: "rgba(255,255,255,0.04)",
               position: "relative",
             }}
           >
@@ -172,7 +224,16 @@ export default function UnitFeedback({ unitId, isAdmin }) {
                 {"⭐".repeat(item.star_rating)}
               </span>
             )}
-            <p style={{ marginTop: "5px", opacity: 0.8 }}>{item.comment}</p>
+            <p
+              style={{
+                marginTop: "6px",
+                opacity: 0.85,
+                lineHeight: "1.6",
+                fontSize: "14px",
+              }}
+            >
+              {item.comment}
+            </p>
             {/* 🔐 ADMIN DELETE BUTTON */}
             {isAdmin && (
               <button
