@@ -60,6 +60,7 @@ import TopCareerOptionsAfterDiploma from "./pages/blog/TopCareerOptionsAfterDipl
 import DailyStudyRoutine from "./pages/blog/DailyStudyRoutine";
 import NotesLibrary from "./components/NotesLibrary";
 import NotFound from "./pages/NotFound";
+import Jobs from "./pages/Jobs";
 
 /* ================================================= */
 
@@ -99,6 +100,7 @@ function App() {
         <Route path="/notes-library" element={<NotesLibrary />} />
 
         <Route path="*" element={<NotFound />} />
+        <Route path="/jobs" element={<Jobs />} />
 
       </Routes>
 

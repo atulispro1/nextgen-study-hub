@@ -3,8 +3,10 @@ import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import CommentsSection from "../components/CommentsSection";
 import { confirmDelete } from "../utils/deleteConfirm";
+import { useNavigate } from "react-router-dom";
 
 export default function NotesLibrary() {
+  const navigate = useNavigate();
   const { role } = useAuth() || {};
   const isAdmin = role === "owner" || role === "faculty";
 
@@ -507,9 +509,7 @@ export default function NotesLibrary() {
             alignItems: "center",
             gap: "8px",
           }}
-          onClick={() => {
-            // add navigate here
-          }}
+          onClick={() => navigate("/contact-owner")}
         >
           💬 Send Your Suggestion
         </button>

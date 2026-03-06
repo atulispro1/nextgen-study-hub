@@ -12,6 +12,7 @@ export default function Navbar() {
   const [contentOpen, setContentOpen] = useState(false);
   const [contactsOpen, setContactsOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
+  const [jobsOpen, setJobsOpen] = useState(false);
   const contentRef = useRef(null);
   const notesRef = useRef(null);
   const goToSection = (sectionId) => {
@@ -134,10 +135,68 @@ export default function Navbar() {
         </h2>
 
         {/* DESKTOP NAV */}
+
         <div
           className="desktop-nav"
           style={{ display: "flex", gap: "20px", alignItems: "center" }}
         >
+          <div style={{ position: "relative" }}>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => setJobsOpen((prev) => !prev)}
+            >
+              Jobs ▾
+            </span>
+
+            {jobsOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  position: "absolute",
+                  top: "45px",
+                  right: 0,
+                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
+                  borderRadius: "12px",
+                  padding: "15px",
+                  minWidth: "220px",
+                  boxShadow:
+                    theme === "dark"
+                      ? "0 15px 40px rgba(0,0,0,0.6)"
+                      : "0 15px 40px rgba(0,0,0,0.15)",
+                  zIndex: 9999,
+                }}
+              >
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => navigate("/Jobs")}
+                >
+                  Explore Jobs
+                </div>
+
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => navigate("/jobs?type=internship")}
+                >
+                  Internships
+                </div>
+
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => navigate("/jobs?type=fresher")}
+                >
+                  Fresher Jobs
+                </div>
+
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => navigate("/jobs?type=remote")}
+                >
+                  Remote Jobs
+                </div>
+              </motion.div>
+            )}
+          </div>
           <div ref={notesRef} style={{ position: "relative" }}>
             <span
               style={{ cursor: "pointer" }}
@@ -630,6 +689,55 @@ export default function Navbar() {
           ) : null}
 
           {/* NAVIGATION LINKS */}
+          <div>
+            <strong>Jobs</strong>
+            <div
+              style={{
+                marginTop: "8px",
+                paddingLeft: "12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+              }}
+            >
+              <span
+                onClick={() => {
+                  navigate("/jobs")
+                  setMobileOpen(false);
+                }}
+              >
+                Explore Jobs
+              </span>
+
+              <span
+                onClick={() => {
+                  navigate("/jobs?type=internship");
+                  setMobileOpen(false);
+                }}
+              >
+                Interships
+              </span>
+
+              <span
+                onClick={() => {
+                  navigate("/jobs?type=fresher");
+                  setMobileOpen(false);
+                }}
+              >
+                Fresher Jobs
+              </span>
+
+              <span
+                onClick={() => {
+                  navigate("/jobs?type=remote")
+                  setMobileOpen(false);
+                }}
+              >
+                Remote Jobs
+              </span>
+            </div>
+          </div>
+          
           <div>
             <strong>📚 Notes</strong>
             <div
