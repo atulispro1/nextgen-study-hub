@@ -263,7 +263,6 @@ export default function Navbar() {
               style={{ cursor: "pointer" }}
               onClick={() => {
                 setLegalOpen((prev) => !prev);
-                closeAllDropdowns();
               }}
             >
               Legal ▾
@@ -289,7 +288,7 @@ export default function Navbar() {
               >
                 <div
                   style={dropdownItemStyle}
-                                    onClick={() => {
+                  onClick={() => {
                     navigate("/about");
                     closeAllDropdowns();
                   }}
@@ -299,17 +298,18 @@ export default function Navbar() {
 
                 <div
                   style={dropdownItemStyle}
-                  onClick={() => {navigate("/privacy-policy")
+                  onClick={() => {
+                    navigate("/privacy-policy");
                     closeAllDropdowns();
                   }}
-                  
                 >
                   Privacy Policy
                 </div>
 
                 <div
                   style={dropdownItemStyle}
-                  onClick={() => {navigate("/terms")
+                  onClick={() => {
+                    navigate("/terms");
                     closeAllDropdowns();
                   }}
                 >
@@ -398,7 +398,8 @@ export default function Navbar() {
               >
                 <div
                   style={dropdownItemStyle}
-                  onClick={() => {goToSection("gpa")
+                  onClick={() => {
+                    goToSection("gpa");
                     closeAllDropdowns();
                   }}
                 >
@@ -406,7 +407,8 @@ export default function Navbar() {
                 </div>
                 <div
                   style={dropdownItemStyle}
-                  onClick={() => {goToSection("todo")
+                  onClick={() => {
+                    goToSection("todo");
                     closeAllDropdowns();
                   }}
                 >
@@ -414,7 +416,8 @@ export default function Navbar() {
                 </div>
                 <div
                   style={dropdownItemStyle}
-                  onClick={() => {goToSection("quiz")
+                  onClick={() => {
+                    goToSection("quiz");
                     closeAllDropdowns();
                   }}
                 >
@@ -422,7 +425,8 @@ export default function Navbar() {
                 </div>
                 <div
                   style={dropdownItemStyle}
-                  onClick={() => {goToSection("ai")
+                  onClick={() => {
+                    goToSection("ai");
                     closeAllDropdowns();
                   }}
                 >
