@@ -22,8 +22,10 @@ export default function Home() {
     paddingTop: "120px",
     paddingBottom: "120px",
   };
+  
   return (
     <>
+    
       <Helmet>
         <title>
           NextGen Study Hub – Study Tips, Diploma Notes, Study Materials,
@@ -34,6 +36,7 @@ export default function Home() {
           name="description"
           content="NextGen Study Hub helps students succeed with study tips, motivation strategies, diploma engineering notes, learning resources, internships and productivity tools designed for academic success."
         />
+        
 
         <meta
           name="keywords"
