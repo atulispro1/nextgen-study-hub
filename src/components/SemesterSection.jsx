@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import { useNavigate } from "react-router-dom";
 
 export default function SemesterSection() {
@@ -14,12 +14,10 @@ export default function SemesterSection() {
   ];
 
   return (
-    <motion.section
+    <section
       className="section"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
+
+    
     >
       <div id="semester" style={{ textAlign: "center", marginBottom: "60px" }}>
         <h2 style={{ fontSize: "36px", marginBottom: "15px" }}>
@@ -38,10 +36,8 @@ export default function SemesterSection() {
         }}
       >
         {semesters.map((sem, index) => (
-          <motion.div
+          <div 
             key={sem.id}
-            whileHover={{ y: -12, scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 200 }}
             onClick={() => navigate(`/semester/${sem.id}`)}
             className="glass"
             style={{
@@ -51,7 +47,8 @@ export default function SemesterSection() {
               border: "1px solid rgba(99,102,241,0.2)",
               overflow: "hidden",
             }}
-          >
+            >
+          
             {/* Gradient Hover Glow */}
             <div
               style={{
@@ -87,9 +84,9 @@ export default function SemesterSection() {
             >
               Notes • Assignments • Practicals • Premium
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 import { Heart, ThumbsUp, ThumbsDown, Star } from "lucide-react";
-import { motion } from "framer-motion";
+
 
 export default function UnitFeedback({ unitId, isAdmin }) {
   const [name, setName] = useState("");
@@ -125,46 +125,47 @@ export default function UnitFeedback({ unitId, isAdmin }) {
       {/* Star Rating */}
       <div style={{ display: "flex", gap: "6px", marginBottom: "10px" }}>
         {[1, 2, 3, 4, 5].map((star) => (
-          <motion.div
+          <div className="fade-in"
             key={star}
-            whileTap={{ scale: 1.4 }}
+      
             style={{ cursor: "pointer" }}
             onClick={() => setStarRating(star)}
-          >
+            >
+          
             <Star
               size={20}
               color={star <= starRating ? "#facc15" : "gray"}
               fill={star <= starRating ? "#facc15" : "none"}
             />
-          </motion.div>
+          </div>
         ))}
       </div>
 
       {/* Reaction Buttons */}
       <div style={{ display: "flex", gap: "15px", marginBottom: "15px" }}>
-        <motion.div whileTap={{ scale: 1.3 }}>
+        <div className="fade-in"> 
           <Heart
             color={ratingType === "heart" ? "red" : "gray"}
             style={{ cursor: "pointer" }}
             onClick={() => setRatingType("heart")}
           />
-        </motion.div>
+        </div>
 
-        <motion.div whileTap={{ scale: 1.3 }}>
+        <div className="fade-in">
           <ThumbsUp
             color={ratingType === "like" ? "green" : "gray"}
             style={{ cursor: "pointer" }}
             onClick={() => setRatingType("like")}
           />
-        </motion.div>
+        </div>
 
-        <motion.div whileTap={{ scale: 1.3 }}>
+        <div className="fade-in">
           <ThumbsDown
             color={ratingType === "unlike" ? "crimson" : "gray"}
             style={{ cursor: "pointer" }}
             onClick={() => setRatingType("unlike")}
           />
-        </motion.div>
+        </div>
       </div>
 
       {/* Form */}

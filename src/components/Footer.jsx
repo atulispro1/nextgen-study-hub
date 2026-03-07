@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
@@ -8,10 +8,8 @@ export default function Footer() {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <motion.footer
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+    <footer
+
       style={{
         marginTop: "120px",
         padding: "80px 8%",
@@ -98,8 +96,7 @@ export default function Footer() {
         </div>
 
         {/* FOUNDERS PREMIUM CARD */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
+        <div className="fade-in"
           style={{
             padding: "30px",
             borderRadius: "20px",
@@ -111,14 +108,11 @@ export default function Footer() {
             border: "1px solid rgba(99,102,241,0.3)",
             textAlign: "center",
           }}
-        >
+          >
+        
           <h4 style={{ marginBottom: "20px" }}>Founders</h4>
 
-          <motion.div
-            animate={{
-              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-            }}
-            transition={{ duration: 6, repeat: Infinity }}
+          <div className="fade-in"
             style={{
               fontSize: "28px",
               fontWeight: "900",
@@ -128,11 +122,12 @@ export default function Footer() {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
-          >
+            >
+          
             Atul Sharma
-          </motion.div>
+          </div>
 
-          <motion.div
+          <div className="fade-in"
             style={{
               fontSize: "28px",
               fontWeight: "900",
@@ -143,14 +138,11 @@ export default function Footer() {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
-            animate={{
-              backgroundPosition: ["100% 50%", "0% 50%", "100% 50%"],
-            }}
-            transition={{ duration: 6, repeat: Infinity }}
-          >
+            >
+          
             Sonal Kumar
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
       <div
@@ -163,6 +155,6 @@ export default function Footer() {
       >
         © 2026 NextGen Study Hub — Built with Vision & Innovation.
       </div>
-    </motion.footer>
+    </footer>
   );
 }

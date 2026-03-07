@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import {
   BookOpen,
   FileText,
@@ -60,12 +60,9 @@ export default function Features() {
   ];
 
   return (
-    <motion.section
+    <section
       className="section"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
+    
     >
       <h2 style={{ textAlign: "center", marginBottom: "50px" }}>
         Why Use NextGen Study Hub?
@@ -79,9 +76,8 @@ export default function Features() {
         }}
       >
         {features.map((feature, index) => (
-          <motion.div
+          <div 
             key={index}
-            whileHover={{ scale: 1.05 }}
             className="glass"
             style={{
               padding: "30px",
@@ -96,9 +92,9 @@ export default function Features() {
             <h3 style={{ marginBottom: "10px" }}>{feature.title}</h3>
 
             <p style={{ opacity: 0.8 }}>{feature.desc}</p>
-          </motion.div>
+          </div>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 }

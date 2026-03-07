@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 
 export default function AIAssistant() {
   const [subject, setSubject] = useState("Applied Chemistry");
@@ -38,17 +37,16 @@ export default function AIAssistant() {
 
   return (
     
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
+    <div 
+
       className="glass"
       style={{
         padding: "40px",
         maxWidth: "900px",
         margin: "auto",
       }}
-    >
+      >
+
       <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
         NextGen AI Academic Assistant
       </h2>
@@ -107,9 +105,8 @@ export default function AIAssistant() {
       </button>
 
       {response && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+        <div className="fade-in"
+
           style={{
             marginTop: "40px",
             padding: "20px",
@@ -117,10 +114,11 @@ export default function AIAssistant() {
             borderRadius: "10px",
             whiteSpace: "pre-wrap",
           }}
-        >
+          >
+        
           {response}
-        </motion.div>
+        </div>
       )}
-    </motion.div>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
@@ -78,7 +79,92 @@ export default function NotesLibrary() {
   </select>;
 
   return (
+    <>
+      <Helmet>
+        <title>
+          Diploma Engineering Semester Notes – Study Materials & Subject Notes
+        </title>
+
+        <meta
+          name="description"
+          content="Browse semester-wise diploma engineering notes and study materials including electrical engineering, physics, environmental science and other core subjects. Download free study resources for engineering students."
+        />
+
+        <meta
+          name="keywords"
+          content="
+diploma engineering notes,
+engineering semester notes,
+semester wise engineering notes,
+diploma semester study materials,
+engineering subject notes,
+engineering study materials,
+electrical engineering notes,
+environmental science engineering notes,
+engineering physics notes,
+diploma subject notes,
+engineering academic notes,
+engineering course notes,
+semester study resources,
+engineering study guide,
+engineering exam preparation notes,
+engineering revision notes,
+engineering syllabus notes,
+technical subject notes,
+engineering learning materials,
+engineering education resources,
+engineering lecture notes,
+engineering notes pdf,
+engineering notes download,
+study materials for engineering students,
+engineering subject study resources,
+diploma engineering study guide,
+engineering notes website,
+engineering study platform,
+semester wise subject notes
+"
+        />
+
+        <link rel="canonical" href="https://www.atulsharmas.in/semester" />
+      </Helmet>
     <section className="section">
+      <section
+        className="glass"
+        style={{
+          padding: "clamp(40px,6vw,80px)",
+          borderRadius: "24px",
+          marginBottom: "70px",
+          textAlign: "center",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "clamp(2.2rem,5vw,3rem)",
+            fontWeight: "900",
+            marginBottom: "20px",
+            background: "linear-gradient(135deg,#6366f1,#8b5cf6,#22c55e)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Engineering Notes Library – Diploma Study Materials & Subject Notes
+        </h1>
+
+        <p
+          style={{
+            maxWidth: "780px",
+            margin: "auto",
+            fontSize: "clamp(15px,2vw,18px)",
+            opacity: "0.85",
+            lineHeight: "1.8",
+          }}
+        >
+          Browse organized engineering study notes and diploma semester
+          materials designed to help students understand subjects clearly,
+          revise concepts quickly and prepare effectively for exams.
+        </p>
+      </section>
+
       {/* HEADER */}
 
       <div
@@ -102,17 +188,29 @@ export default function NotesLibrary() {
             }}
           />
 
-          <span
-            style={{
-              padding: "0 15px",
-              fontWeight: "600",
-              fontSize: "40px",
-              color: "#6366f1",
-              letterSpacing: "1px",
-            }}
-          >
-            📚 Ultimate Notes Library
-          </span>
+          <div style={{ textAlign: "center", marginBottom: "50px" }}>
+            <h2
+              style={{
+                fontSize: "clamp(1.8rem,4vw,2.2rem)",
+                fontWeight: "800",
+                color: "var(--primary)",
+                marginBottom: "10px",
+              }}
+            >
+              Explore Subject Notes
+            </h2>
+
+            <p
+              style={{
+                opacity: "0.75",
+                maxWidth: "650px",
+                margin: "auto",
+              }}
+            >
+              Access carefully organized notes covering important engineering
+              subjects and semester topics.
+            </p>
+          </div>
 
           <div
             style={{
@@ -122,18 +220,6 @@ export default function NotesLibrary() {
             }}
           />
         </div>
-
-        <p
-          style={{
-            maxWidth: "650px",
-            margin: "auto",
-            opacity: 0.7,
-            fontSize: "16px",
-          }}
-        >
-          Explore notes, assignments, practice sets and syllabus from all
-          semesters. Search instantly and access organized study materials.
-        </p>
       </div>
       {/* SEARCH */}
 
@@ -299,6 +385,7 @@ export default function NotesLibrary() {
               <img
                 src={note.image_url}
                 alt={note.title || note.unit_name}
+                loading="lazy"
                 style={{
                   width: "100%",
                   height: "100%",
@@ -438,6 +525,32 @@ export default function NotesLibrary() {
           borderRadius: "10px",
         }}
       />
+      <div
+        style={{
+          padding: "40px",
+          borderRadius: "22px",
+          marginTop: "80px",
+          textAlign: "center",
+        }}
+      >
+        <h2 style={{ fontWeight: "700", marginBottom: "15px" }}>
+          Why Study Notes Help Students Learn Faster
+        </h2>
+
+        <p
+          style={{
+            maxWidth: "760px",
+            margin: "auto",
+            opacity: "0.85",
+            lineHeight: "1.7",
+          }}
+        >
+          Well-organized study notes help students revise topics quickly and
+          focus on key concepts before exams. Structured notes make learning
+          easier by summarizing important ideas, formulas and definitions that
+          students need for academic success.
+        </p>
+      </div>
 
       <div
         className="glass"
@@ -515,5 +628,6 @@ export default function NotesLibrary() {
         </button>
       </div>
     </section>
+    </>
   );
 }

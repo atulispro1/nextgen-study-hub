@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import { useNavigate } from "react-router-dom";
 
 export default function NotFound() {
@@ -18,13 +18,12 @@ export default function NotFound() {
       <div className="glass" style={{ padding: "60px", maxWidth: "650px" }}>
         
         {/* Floating animation */}
-        <motion.div
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 3, repeat: Infinity }}
+        <div className="fade-in"
           style={{ fontSize: "70px", marginBottom: "20px" }}
-        >
+          >
+        
           🚧
-        </motion.div>
+        </div>
 
         {/* 404 Title */}
         <h1
@@ -72,17 +71,16 @@ export default function NotFound() {
         </button>
 
         {/* Floating particles */}
-        <motion.div
-          animate={{ x: [0, 20, 0] }}
-          transition={{ duration: 6, repeat: Infinity }}
+        <div className="fade-in"
           style={{
             fontSize: "20px",
             marginTop: "30px",
             opacity: 0.6,
           }}
-        >
+          >
+        
           ✨ 📚 🚀
-        </motion.div>
+        </div>
 
       </div>
     </div>

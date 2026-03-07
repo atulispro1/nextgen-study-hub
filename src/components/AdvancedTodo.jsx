@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Check, Trash2 } from "lucide-react";
 
 export default function AdvancedTodo() {
@@ -38,32 +37,30 @@ export default function AdvancedTodo() {
   };
 
   const toggleTask = (id) => {
-    setTasks(tasks.map(t =>
-      t.id === id ? { ...t, completed: !t.completed } : t
-    ));
+    setTasks(
+      tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
+    );
   };
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter(t => t.id !== id));
+    setTasks(tasks.filter((t) => t.id !== id));
   };
 
   const filteredTasks = tasks
-    .filter(t =>
+    .filter((t) =>
       filter === "All"
         ? true
         : filter === "Completed"
-        ? t.completed
-        : !t.completed
+          ? t.completed
+          : !t.completed,
     )
-    .filter(t =>
-      t.text.toLowerCase().includes(search.toLowerCase())
-    );
+    .filter((t) => t.text.toLowerCase().includes(search.toLowerCase()));
 
   const progress =
     tasks.length === 0
       ? 0
       : Math.round(
-          (tasks.filter(t => t.completed).length / tasks.length) * 100
+          (tasks.filter((t) => t.completed).length / tasks.length) * 100,
         );
 
   return (
@@ -112,14 +109,20 @@ export default function AdvancedTodo() {
             gap: "10px",
           }}
         >
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <option>Notes</option>
             <option>Assignment</option>
             <option>Practical</option>
             <option>Personal</option>
           </select>
 
-          <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
             <option>Low</option>
             <option>Medium</option>
             <option>High</option>
@@ -181,12 +184,13 @@ export default function AdvancedTodo() {
             overflow: "hidden",
           }}
         >
-          <motion.div
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5 }}
+          <div
+            className="fade-in"
             style={{
               height: "100%",
+              width: `${progress}%`,
               background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
+
             }}
           />
         </div>
@@ -204,15 +208,12 @@ export default function AdvancedTodo() {
 
       {/* TASK LIST */}
 
-      <AnimatePresence>
-        {filteredTasks.map(task => (
-          <motion.div
+
+        {filteredTasks.map((task) => (
+          <div 
             key={task.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="glass"
-            style={{
+            className="glass" style=
+            {{
               padding: "16px 18px",
               marginBottom: "12px",
               display: "flex",
@@ -222,10 +223,10 @@ export default function AdvancedTodo() {
                 task.priority === "High"
                   ? "4px solid #ef4444"
                   : task.priority === "Medium"
-                  ? "4px solid #f59e0b"
-                  : "4px solid #22c55e",
+                    ? "4px solid #f59e0b"
+                    : "4px solid #22c55e",
             }}
-          >
+            >
             <div>
               <h4
                 style={{
@@ -240,7 +241,6 @@ export default function AdvancedTodo() {
                 {task.category} • Due: {task.dueDate || "No date"}
               </small>
             </div>
-
             <div
               style={{
                 display: "flex",
@@ -270,9 +270,8 @@ export default function AdvancedTodo() {
                 <Trash2 size={18} />
               </button>
             </div>
-          </motion.div>
+          </div>
         ))}
-      </AnimatePresence>
     </div>
   );
 }

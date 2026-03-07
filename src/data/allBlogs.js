@@ -5,7 +5,7 @@ export const allBlogs = [
     title: "How to Score 8+ CGPA in Diploma CS",
     category: "Study Tips",
     description: "Proven semester strategy to boost grades without burnout.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_11 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_11 PM.webp",
   },
   {
     id: 2,
@@ -13,7 +13,7 @@ export const allBlogs = [
     title: "How to Prepare for Semester Exams in 7 Days",
     category: "Exam Preparation",
     description: "Last-minute smart revision techniques that work.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_13 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_13 PM.webp",
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ export const allBlogs = [
     title: "Best Programming Language for Beginners in 2026",
     category: "Programming",
     description: "C, C++, Python — what should you start with?",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_14 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_14 PM.webp",
   },
   {
     id: 4,
@@ -29,7 +29,7 @@ export const allBlogs = [
     title: "How to Crack SSC CGL While Studying in College",
     category: "Government Exams",
     description: "Smart preparation plan for SSC aspirants.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_16 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_16 PM.webp",
   },
   {
     id: 5,
@@ -37,7 +37,7 @@ export const allBlogs = [
     title: "Railway Exams Preparation Strategy for Beginners",
     category: "Government Exams",
     description: "Step-by-step guide to crack RRB exams.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_18 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_18 PM.webp",
   },
   {
     id: 6,
@@ -45,7 +45,7 @@ export const allBlogs = [
     title: "UPSC Preparation Guide for Beginners (Realistic Strategy)",
     category: "Government Exams",
     description: "Understand syllabus, strategy & mindset.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_20 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_20 PM.webp",
   },
   {
     id: 7,
@@ -53,7 +53,7 @@ export const allBlogs = [
     title: "How to Prepare for Banking Exams While Studying",
     category: "Government Exams",
     description: "Balance college and IBPS/SBI prep smartly.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_22 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_22 PM.webp",
   },
   {
     id: 8,
@@ -61,7 +61,7 @@ export const allBlogs = [
     title: "Complete Beginner Guide to Data Structures",
     category: "Programming",
     description: "Understand stacks, queues & trees simply.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_24 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_24 PM.webp",
   },
   {
     id: 9,
@@ -69,7 +69,7 @@ export const allBlogs = [
     title: "HTML vs CSS vs JavaScript Explained Clearly",
     category: "Programming",
     description: "Understand frontend basics without confusion.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_25 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_25 PM.webp",
   },
   {
     id: 10,
@@ -77,7 +77,7 @@ export const allBlogs = [
     title: "Resume Format for Diploma Students (With Examples)",
     category: "Career",
     description: "How to build a strong resume as a fresher.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_16_27 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_16_27 PM.webp",
   },
 
   {
@@ -86,7 +86,7 @@ export const allBlogs = [
     title: "How to Get Internship in 2nd Year of Diploma",
     category: "Career",
     description: "Smart ways to land internships early.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_17_56 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_17_56 PM.webp",
   },
   {
     id: 12,
@@ -94,7 +94,7 @@ export const allBlogs = [
     title: "Time Management for Engineering Students",
     category: "Productivity",
     description: "Balance coding, exams & personal life.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_17_59 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_17_59 PM.webp",
   },
   {
     id: 13,
@@ -102,7 +102,7 @@ export const allBlogs = [
     title: "How to Stop Procrastinating During Exams",
     category: "Productivity",
     description: "Practical techniques to focus better.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_18_02 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_18_02 PM.webp",
   },
   {
     id: 14,
@@ -110,7 +110,7 @@ export const allBlogs = [
     title: "How to Pass Backlog Subjects Easily",
     category: "Exam Preparation",
     description: "Clear backlogs with smart revision strategy.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_18_05 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_18_05 PM.webp",
   },
   {
     id: 15,
@@ -118,7 +118,7 @@ export const allBlogs = [
     title: "Best Government Jobs After Diploma in CS",
     category: "Government Exams",
     description: "Explore top govt job options.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_18_07 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_18_07 PM.webp",
   },
   {
     id: 16,
@@ -126,7 +126,7 @@ export const allBlogs = [
     title: "How to Improve General Knowledge for Govt Exams",
     category: "Government Exams",
     description: "Daily GK strategy for competitive exams.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_18_09 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_18_09 PM.webp",
   },
   {
     id: 17,
@@ -134,7 +134,7 @@ export const allBlogs = [
     title: "Communication Skills Every Engineer Must Have",
     category: "Career",
     description: "Improve speaking & interview confidence.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_18_12 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_18_12 PM.webp",
   },
   {
     id: 18,
@@ -142,7 +142,7 @@ export const allBlogs = [
     title: "How to Prepare for Viva Exams Confidently",
     category: "Exam Preparation",
     description: "Answer viva questions smartly.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_19_11 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_19_11 PM.webp",
   },
   {
     id: 19,
@@ -150,7 +150,7 @@ export const allBlogs = [
     title: "Top Final Year Project Ideas for Diploma CS",
     category: "Programming",
     description: "Trending & innovative project ideas.",
-    image: "/ChatGPT Image Mar 3, 2026, 10_19_18 PM.png",
+    image: "/ChatGPT Image Mar 3, 2026, 10_19_18 PM.webp",
   },
   {
     id: 20,
@@ -158,7 +158,7 @@ export const allBlogs = [
     title: "How to Learn C++ Fast as a Beginner",
     category: "Programming",
     description: "Structured roadmap to master C++.",
-    image: "/crop1.png",
+    image: "/crop1.webp",
   },
 
   {
@@ -167,7 +167,7 @@ export const allBlogs = [
     title: "Digital Marketing Career Guide for Students",
     category: "Career",
     description: "Is digital marketing worth it in 2026?",
-    image: "/crop2.png",
+    image: "/crop2.webp",
   },
   {
     id: 22,
@@ -175,7 +175,7 @@ export const allBlogs = [
     title: "How to Prepare for State PSC Exams",
     category: "Government Exams",
     description: "Strategy for state civil services.",
-    image: "/crop3.png",
+    image: "/crop3.webp",
   },
   {
     id: 23,
@@ -183,7 +183,7 @@ export const allBlogs = [
     title: "Government Job vs Private Job: Which is Better?",
     category: "Career",
     description: "Compare salary, stability & growth.",
-    image: "/crop4.png",
+    image: "/crop4.webp",
   },
   {
     id: 24,
@@ -191,7 +191,7 @@ export const allBlogs = [
     title: "Best Platforms to Practice Coding in 2026",
     category: "Programming",
     description: "LeetCode, HackerRank, CodeStudio comparison.",
-    image: "/crop5.png",
+    image: "/crop5.webp",
   },
   {
     id: 25,
@@ -199,7 +199,7 @@ export const allBlogs = [
     title: "SSC CHSL Complete Preparation Guide",
     category: "Government Exams",
     description: "Tier 1 & Tier 2 strategy explained.",
-    image: "/crop6.png",
+    image: "/crop6.webp",
   },
   {
     id: 26,
@@ -207,7 +207,7 @@ export const allBlogs = [
     title: "Railway NTPC Preparation Guide",
     category: "Government Exams",
     description: "Syllabus + exam pattern explained.",
-    image: "/crop7.png",
+    image: "/crop7.webp",
   },
   {
     id: 27,
@@ -215,7 +215,7 @@ export const allBlogs = [
     title: "How to Study Effectively Without Coaching",
     category: "Study Tips",
     description: "Self-study roadmap for toppers.",
-    image: "/crop8.png",
+    image: "/crop8.webp",
   },
   {
     id: 28,
@@ -223,7 +223,7 @@ export const allBlogs = [
     title: "How to Handle Exam Stress",
     category: "Productivity",
     description: "Stay calm & focused during exams.",
-    image: "/crop9.png",
+    image: "/crop9.webp",
   },
   {
     id: 29,
@@ -231,7 +231,7 @@ export const allBlogs = [
     title: "Top Interview Questions for Freshers",
     category: "Career",
     description: "Prepare for HR & technical rounds.",
-    image: "/crop10.png",
+    image: "/crop10.webp",
   },
   {
     id: 30,
@@ -239,7 +239,7 @@ export const allBlogs = [
     title: "How to Build a Powerful LinkedIn Profile",
     category: "Career",
     description: "Optimize LinkedIn for job search.",
-    image: "/crop11.png",
+    image: "/crop11.webp",
   },
 
   {
@@ -248,7 +248,7 @@ export const allBlogs = [
     title: "Applied Chemistry Complete Guide for Diploma",
     category: "Study Tips",
     description: "Important topics & exam approach.",
-    image: "/crop12.png",
+    image: "/crop12.webp",
   },
   {
     id: 32,
@@ -256,7 +256,7 @@ export const allBlogs = [
     title: "How to Study Engineering Mathematics Easily",
     category: "Study Tips",
     description: "Understand maths without fear.",
-    image: "/crop13.png",
+    image: "/crop13.webp",
   },
   {
     id: 33,
@@ -264,7 +264,7 @@ export const allBlogs = [
     title: "Operating System Basics Explained Simply",
     category: "Programming",
     description: "Concepts every CS student must know.",
-    image: "/crop14.png",
+    image: "/crop14.webp",
   },
   {
     id: 34,
@@ -272,7 +272,7 @@ export const allBlogs = [
     title: "DBMS Explained for Beginners",
     category: "Programming",
     description: "Normalization, keys & queries simplified.",
-    image: "/crop15.png",
+    image: "/crop15.webp",
   },
   {
     id: 35,
@@ -280,7 +280,7 @@ export const allBlogs = [
     title: "Government Job Salary List in India 2026",
     category: "Government Exams",
     description: "Updated salary comparison.",
-    image: "/crop16.png",
+    image: "/crop16.webp",
   },
   {
     id: 36,
@@ -288,7 +288,7 @@ export const allBlogs = [
     title: "Best Books for SSC Preparation",
     category: "Government Exams",
     description: "Subject-wise recommended books.",
-    image: "/crop17.png",
+    image: "/crop17.webp",
   },
   {
     id: 37,
@@ -296,7 +296,7 @@ export const allBlogs = [
     title: "Complete Coding Roadmap for 2026",
     category: "Programming",
     description: "Step-by-step developer roadmap.",
-    image: "/crop18.png",
+    image: "/crop18.webp",
   },
   {
     id: 38,
@@ -304,7 +304,7 @@ export const allBlogs = [
     title: "How to Improve English Speaking Skills",
     category: "Career",
     description: "Practical daily practice plan.",
-    image: "/crop19.png",
+    image: "/crop19.webp",
   },
   {
     id: 39,
@@ -312,7 +312,7 @@ export const allBlogs = [
     title: "Top Career Options After Diploma in CS",
     category: "Career",
     description: "Private + Govt + Higher studies.",
-    image: "/crop20.png",
+    image: "/crop20.webp",
   },
   {
     id: 40,

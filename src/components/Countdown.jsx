@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+
 
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState("");
@@ -18,17 +18,15 @@ export default function Countdown() {
   }, []);
 
   return (
-    <motion.section
+    <section
       className="section"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
+
+ 
     >
       <section className="section" style={{ textAlign: "center" }}>
         <h2>Upcoming Semester Exams</h2>
         <h3 style={{ marginTop: "20px", color: "#4f46e5" }}>{timeLeft}</h3>
       </section>
-    </motion.section>
+    </section>
   );
 }

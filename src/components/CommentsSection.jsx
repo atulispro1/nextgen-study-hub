@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
-import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { confirmDelete } from "../utils/deleteConfirm";
 
@@ -173,15 +172,15 @@ export default function CommentsSection() {
         }}
       >
         {comments.map((c) => (
-          <motion.div
+          <div 
             key={c.id}
-            whileHover={{ y: -4 }}
             className="glass"
             style={{
               padding: "22px",
               borderRadius: "14px",
             }}
-          >
+            >
+          
             {/* HEADER */}
 
             <div
@@ -247,7 +246,7 @@ export default function CommentsSection() {
                 </button>
               )}
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>

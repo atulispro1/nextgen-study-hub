@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import {
   Search,
   Download,
@@ -71,24 +71,24 @@ export default function PlatformActions() {
         }}
       >
         {actions.map((item, index) => (
-          <motion.div
+          <div 
             key={index}
             className="glass"
-            whileHover={{ scale: 1.04 }}
             style={{
               padding: "25px",
               display: "flex",
               gap: "15px",
               alignItems: "flex-start",
             }}
-          >
+            >
+          
             <div style={{ color: "#6366f1" }}>{item.icon}</div>
 
             <div>
               <h4 style={{ marginBottom: "6px" }}>{item.title}</h4>
               <p style={{ opacity: 0.8, fontSize: "14px" }}>{item.desc}</p>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>

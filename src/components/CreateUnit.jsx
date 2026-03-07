@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../supabase";
 import Swal from "sweetalert2";
+import imageCompression from "browser-image-compression";
 
 export default function CreateUnit({ semester, subject, category, onSuccess }) {
   const [unitName, setUnitName] = useState("");
@@ -138,132 +139,164 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
 
     setLoading(false);
   };
+  const handleImageUpload = async (file) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1200,
+      useWebWorker: true,
+      fileType: "image/webp",
+    };
+
+    const compressedFile = await imageCompression(file, options);
+
+    return compressedFile;
+  };
+
+  const uploadImage = async (file) => {
+
+  const webpFile = await handleImageUpload(file);
+
+  const fileName = `${Date.now()}.webp`;
+
+  const { data, error } = await supabase.storage
+    .from("notes-images")
+    .upload(fileName, webpFile);
+
+};
 
   return (
-  <div
-    className="glass"
-    style={{
-      padding: "35px",
-      marginBottom: "40px",
-      maxWidth: "600px",
-      marginInline: "auto",
-      borderRadius: "16px",
-    }}
-  >
-    {/* HEADER */}
-
-    <h2
+    <div
+      className="glass"
       style={{
-        marginBottom: "25px",
-        fontWeight: "700",
-        textAlign: "center",
+        padding: "35px",
+        marginBottom: "40px",
+        maxWidth: "600px",
+        marginInline: "auto",
+        borderRadius: "16px",
       }}
     >
-      Create New Unit
-    </h2>
+      {/* HEADER */}
 
-    {/* NOTE TYPE */}
-
-    <div style={{ marginBottom: "20px" }}>
-      <label style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}>
-        Type of Notes
-      </label>
-
-      <select
-        value={noteType}
-        onChange={(e) => setNoteType(e.target.value)}
+      <h2
         style={{
-          width: "100%",
-          padding: "10px",
-          borderRadius: "8px",
-          border: "1px solid rgba(255,255,255,0.15)",
-          background: "transparent",
+          marginBottom: "25px",
+          fontWeight: "700",
+          textAlign: "center",
         }}
       >
-        <option value="teacher">Teacher Notes</option>
-        <option value="extra">Extra Notes</option>
-      </select>
-    </div>
+        Create New Unit
+      </h2>
 
-    {/* UNIT NAME */}
+      {/* NOTE TYPE */}
 
-    <div style={{ marginBottom: "20px" }}>
-      <label style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}>
-        Unit Name
-      </label>
+      <div style={{ marginBottom: "20px" }}>
+        <label
+          style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}
+        >
+          Type of Notes
+        </label>
 
-      <input
-        type="text"
-        placeholder="Enter Unit Name"
-        value={unitName}
-        onChange={(e) => setUnitName(e.target.value)}
+        <select
+          value={noteType}
+          onChange={(e) => setNoteType(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "10px",
+            borderRadius: "8px",
+            border: "1px solid rgba(255,255,255,0.15)",
+            background: "transparent",
+          }}
+        >
+          <option value="teacher">Teacher Notes</option>
+          <option value="extra">Extra Notes</option>
+        </select>
+      </div>
+
+      {/* UNIT NAME */}
+
+      <div style={{ marginBottom: "20px" }}>
+        <label
+          style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}
+        >
+          Unit Name
+        </label>
+
+        <input
+          type="text"
+          placeholder="Enter Unit Name"
+          value={unitName}
+          onChange={(e) => setUnitName(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "12px",
+            borderRadius: "8px",
+            border: "1px solid rgba(255,255,255,0.15)",
+            background: "transparent",
+          }}
+        />
+      </div>
+
+      {/* PDF UPLOAD */}
+
+      <div style={{ marginBottom: "20px" }}>
+        <label
+          style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}
+        >
+          Upload PDF (Required)
+        </label>
+
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={(e) => setPdfFile(e.target.files[0])}
+          style={{
+            width: "100%",
+            padding: "8px",
+            borderRadius: "6px",
+          }}
+        />
+
+        <p style={{ fontSize: "12px", opacity: 0.7, marginTop: "4px" }}>
+          Maximum file size: 20MB
+        </p>
+      </div>
+
+      {/* IMAGE UPLOAD */}
+
+      <div style={{ marginBottom: "25px" }}>
+        <label
+          style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}
+        >
+          Upload Image (Optional)
+        </label>
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
+          style={{
+            width: "100%",
+            padding: "8px",
+            borderRadius: "6px",
+          }}
+        />
+      </div>
+
+      {/* BUTTON */}
+
+      <button
+        className="btn-primary"
+        onClick={handlePublish}
+        disabled={loading}
         style={{
           width: "100%",
           padding: "12px",
-          borderRadius: "8px",
-          border: "1px solid rgba(255,255,255,0.15)",
-          background: "transparent",
+          fontWeight: "600",
+          fontSize: "15px",
         }}
-      />
+      >
+        {loading ? "Publishing..." : "Publish Unit"}
+      </button>
     </div>
-
-    {/* PDF UPLOAD */}
-
-    <div style={{ marginBottom: "20px" }}>
-      <label style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}>
-        Upload PDF (Required)
-      </label>
-
-      <input
-        type="file"
-        accept="application/pdf"
-        onChange={(e) => setPdfFile(e.target.files[0])}
-        style={{
-          width: "100%",
-          padding: "8px",
-          borderRadius: "6px",
-        }}
-      />
-
-      <p style={{ fontSize: "12px", opacity: 0.7, marginTop: "4px" }}>
-        Maximum file size: 20MB
-      </p>
-    </div>
-
-    {/* IMAGE UPLOAD */}
-
-    <div style={{ marginBottom: "25px" }}>
-      <label style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}>
-        Upload Image (Optional)
-      </label>
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImageFile(e.target.files[0])}
-        style={{
-          width: "100%",
-          padding: "8px",
-          borderRadius: "6px",
-        }}
-      />
-    </div>
-
-    {/* BUTTON */}
-
-    <button
-      className="btn-primary"
-      onClick={handlePublish}
-      disabled={loading}
-      style={{
-        width: "100%",
-        padding: "12px",
-        fontWeight: "600",
-        fontSize: "15px",
-      }}
-    >
-      {loading ? "Publishing..." : "Publish Unit"}
-    </button>
-  </div>
-);
+  );
 }

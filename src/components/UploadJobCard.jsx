@@ -214,6 +214,7 @@ export default function UploadJobCard({ refreshJobs }) {
           <img
             src={form.logo}
             alt="logo preview"
+            loading="lazy"
             style={{
               width: "60px",
               height: "60px",

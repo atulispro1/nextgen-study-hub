@@ -61,7 +61,7 @@ export default function BlogLayout({
 
       {/* Featured Image */}
       <div className="blog-image-wrapper">
-        <img src={image || "/notes.jpg"} alt={title} />
+        <img src={image || "/notes.jpg"} alt={title} loading="lazy" />
       </div>
 
       {/* CONTENT AREA */}
@@ -106,7 +106,7 @@ export default function BlogLayout({
                 onClick={() => navigate(`/blog/${item.slug}`)}
               >
                 <div className="related-image">
-                  <img src={item.image || "/notes.jpg"} alt={item.title} />
+                  <img src={item.image || "/notes.jpg"} alt={item.title} loading="lazy" />
                 </div>
 
                 <div className="related-content">

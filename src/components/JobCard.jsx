@@ -1,5 +1,3 @@
-import { FaStar, FaMapMarkerAlt, FaClock } from "react-icons/fa";
-
 export default function JobCard({
   jobs,
   bookmarks,
@@ -56,6 +54,7 @@ export default function JobCard({
                 <img
                   src={job.logo}
                   alt={job.company}
+                  loading="lazy"
                   style={{
                     width: "100%",
                     height: "100%",
@@ -85,11 +84,11 @@ export default function JobCard({
             }}
           >
             <span style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-              <FaMapMarkerAlt /> {job.location}
+              <span>📍</span> {job.location}
             </span>
 
             <span style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-              <FaClock /> {job.time}
+              <span>⏱</span> {job.time}
             </span>
           </div>
 
@@ -187,11 +186,16 @@ export default function JobCard({
               </button>
             </div>
 
-            <FaStar
-              style={{ cursor: "pointer" }}
-              color={bookmarks.includes(job.id) ? "#facc15" : "#9ca3af"}
+            <span
+              style={{
+                cursor: "pointer",
+                fontSize: "20px",
+                color: bookmarks.includes(job.id) ? "#facc15" : "#9ca3af",
+              }}
               onClick={() => toggleBookmark(job.id)}
-            />
+            >
+              ⭐
+            </span>
             {isAdmin && (
               <button
                 onClick={() => deleteJob(job.id)}

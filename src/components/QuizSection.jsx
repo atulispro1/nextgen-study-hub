@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { PieChart, Pie, Cell, Tooltip } from "recharts";
+
 
 export default function QuizSection() {
-const subjects = [
-  "🧪 Applied Chemistry",
-  "⚙️ Engineering Mechanics",
-  "⚡ Basic Electrical Engineering",
-  "📐 Mathematics",
-  "🔬 Physics",
-  "💻 Computer Programming",
-];
+  const subjects = [
+    "🧪 Applied Chemistry",
+    "⚙️ Engineering Mechanics",
+    "⚡ Basic Electrical Engineering",
+    "📐 Mathematics",
+    "🔬 Physics",
+    "💻 Computer Programming",
+  ];
 
   const [subject, setSubject] = useState(subjects[0]);
   const [difficulty, setDifficulty] = useState("Easy");
@@ -89,16 +88,16 @@ const subjects = [
 
   return (
     <div style={{ marginTop: "120px", padding: "0 20px" }}>
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div className="fade-in"
+
         style={{
           textAlign: "center",
           marginBottom: "70px",
           maxWidth: "700px",
           marginInline: "auto",
         }}
-      >
+        >
+      
         <h2
           style={{
             fontSize: "42px",
@@ -116,12 +115,12 @@ const subjects = [
           Test your knowledge, challenge yourself, and track your learning
           progress.
         </p>
-      </motion.div>
+      </div>
 
       {/* QUIZ START */}
 
       {!quizStarted && !quizFinished && (
-        <motion.div
+        <div 
           className="glass"
           style={{
             padding: "60px",
@@ -129,7 +128,8 @@ const subjects = [
             marginInline: "auto",
             textAlign: "center",
           }}
-        >
+          >
+        
           <h3 style={{ marginBottom: "30px" }}>Choose Subject & Difficulty</h3>
 
           <div
@@ -159,9 +159,8 @@ const subjects = [
             </select>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
+          <button
+  
             className="btn-primary"
             style={{ marginTop: "40px", padding: "14px 40px" }}
             onClick={startQuiz}
@@ -170,17 +169,15 @@ const subjects = [
             {loadingQuiz
               ? "Generating... pls wait only for max 15 seconds"
               : "Start Quiz"}
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
       )}
 
       {/* QUIZ PLAY */}
 
       {quizStarted && !quizFinished && questions.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
+        <div 
+
           className="glass"
           style={{
             padding: "60px",
@@ -188,7 +185,8 @@ const subjects = [
             marginInline: "auto",
             marginTop: "40px",
           }}
-        >
+          >
+        
           {/* QUESTION COUNTER */}
 
           <p style={{ opacity: 0.7, marginBottom: "10px" }}>
@@ -214,10 +212,9 @@ const subjects = [
                 letter !== questions[currentIndex].correct_answer;
 
               return (
-                <motion.button
+                <button
                   key={letter}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+        
                   onClick={() => handleAnswer(letter)}
                   style={{
                     padding: "15px",
@@ -235,7 +232,7 @@ const subjects = [
                   }}
                 >
                   {questions[currentIndex][`option_${letter.toLowerCase()}`]}
-                </motion.button>
+                </button>
               );
             })}
           </div>
@@ -260,7 +257,7 @@ const subjects = [
           >
             Stop Quiz
           </button>
-        </motion.div>
+        </div>
       )}
 
       {/* RESULT */}
@@ -278,21 +275,42 @@ const subjects = [
         >
           <h2>Quiz Result</h2>
 
-          <PieChart width={300} height={300}>
-            <Pie
-              data={[
-                { name: "Correct", value: correctAnswers },
-                { name: "Wrong", value: totalAnswered - correctAnswers },
-              ]}
-              dataKey="value"
-              outerRadius={100}
+          <div
+            style={{
+              marginTop: "30px",
+              marginBottom: "20px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "50px",
+                fontWeight: "700",
+                color: "#6366f1",
+              }}
             >
-              <Cell fill="#22c55e" />
-              <Cell fill="#ef4444" />
-            </Pie>
+              {correctAnswers} / {totalAnswered}
+            </div>
 
-            <Tooltip />
-          </PieChart>
+            <p style={{ opacity: 0.7 }}>Correct Answers</p>
+
+            <div
+              style={{
+                marginTop: "20px",
+                height: "12px",
+                background: "#e5e7eb",
+                borderRadius: "10px",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  width: `${(correctAnswers / totalAnswered) * 100}%`,
+                  height: "100%",
+                  background: "linear-gradient(90deg,#22c55e,#16a34a)",
+                }}
+              />
+            </div>
+          </div>
 
           <h3>
             Score: {correctAnswers} / {totalAnswered}

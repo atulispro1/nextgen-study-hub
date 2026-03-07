@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase";
@@ -5,7 +6,7 @@ import CreateUnit from "../components/CreateUnit";
 import UnitFeedback from "../components/UnitFeedback";
 import { useAuth } from "../context/AuthContext";
 import { getProgress, toggleUnitProgress } from "../utils/progressUtils";
-import { motion } from "framer-motion";
+
 import { Check } from "lucide-react";
 import SearchFilterBar from "../components/SearchFilterBar";
 import { confirmDelete } from "../utils/deleteConfirm";
@@ -107,352 +108,490 @@ export default function SemesterPage() {
   }, [materials, id]);
 
   return (
-    <div className="section">
-      <button
-        className="btn-primary"
-        style={{ marginBottom: "30px" }}
-        onClick={() => navigate("/")}
+    <>
+      <Helmet>
+        <title>
+          Diploma Engineering Semester Notes – Study Materials & Subject Notes
+        </title>
+
+        <meta
+          name="description"
+          content="Browse semester-wise diploma engineering notes and study materials including electrical engineering, physics, environmental science and other core subjects. Download free study resources for engineering students."
+        />
+
+        <meta
+          name="keywords"
+          content="
+diploma engineering notes,
+engineering semester notes,
+semester wise engineering notes,
+diploma semester study materials,
+engineering subject notes,
+engineering study materials,
+electrical engineering notes,
+environmental science engineering notes,
+engineering physics notes,
+diploma subject notes,
+engineering academic notes,
+engineering course notes,
+semester study resources,
+engineering study guide,
+engineering exam preparation notes,
+engineering revision notes,
+engineering syllabus notes,
+technical subject notes,
+engineering learning materials,
+engineering education resources,
+engineering lecture notes,
+engineering notes pdf,
+engineering notes download,
+study materials for engineering students,
+engineering subject study resources,
+diploma engineering study guide,
+engineering notes website,
+engineering study platform,
+semester wise subject notes
+"
+        />
+
+        <link rel="canonical" href="https://www.atulsharmas.in/semester" />
+      </Helmet>
+
+      <section
+        style={{
+          padding: "clamp(40px,6vw,80px)",
+          borderRadius: "24px",
+          marginBottom: "70px",
+          textAlign: "center",
+        }}
       >
-        ← Back to Home
-      </button>
-
-      <h1 style={{ marginBottom: "40px" }}>Semester {id} – Computer Science</h1>
-
-      {/* SEMESTER OVERALL PROGRESS */}
-      <div id="smester-progress" style={{ marginBottom: "40px" }}>
-        <h3 style={{ marginBottom: "10px" }}>Semester Overall Progress</h3>
-
-        <div
+        <h1
           style={{
-            height: "14px",
-            width: "100%",
-            background: "rgba(255,255,255,0.1)",
-            borderRadius: "20px",
-            overflow: "hidden",
+            fontSize: "clamp(2.2rem,5vw,3rem)",
+            fontWeight: "900",
+            marginBottom: "20px",
+            background: "linear-gradient(135deg,#6366f1,#8b5cf6,#22c55e)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
           }}
         >
-          <motion.div
-            key={semesterProgress}
-            initial={{ width: 0 }}
-            animate={{ width: `${semesterProgress}%` }}
-            transition={{ duration: 0.7 }}
-            style={{
-              height: "100%",
-              background:
-                semesterProgress === 100
-                  ? "linear-gradient(90deg,#22c55e,#16a34a)"
-                  : "linear-gradient(90deg,#0ea5e9,#6366f1)",
-              borderRadius: "20px",
-            }}
-          />
-        </div>
+          Diploma Engineering Semester Notes & Study Materials
+        </h1>
 
-        <p style={{ marginTop: "8px", fontSize: "14px" }}>
-          Overall Completion: {semesterProgress}%
+        <p
+          style={{
+            maxWidth: "780px",
+            margin: "auto",
+            fontSize: "clamp(15px,2vw,18px)",
+            opacity: "0.85",
+            lineHeight: "1.8",
+          }}
+        >
+          Access organized semester-wise diploma engineering notes, study
+          materials and subject resources designed to help students understand
+          concepts faster and prepare effectively for exams.
         </p>
-      </div>
+      </section>
 
-      {/* CATEGORY LEVEL */}
-      {!activeCategory && (
-        <div className="grid">
-          {categories.map((cat) => (
-            <div
-              key={cat}
-              className="glass"
-              style={{
-                padding: "30px",
-                textAlign: "center",
-                cursor: "pointer",
-              }}
-              onClick={() => setActiveCategory(cat)}
-            >
-              <h3>{cat}</h3>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="section">
+        <button
+          className="btn-primary"
+          style={{ marginBottom: "30px" }}
+          onClick={() => navigate("/")}
+        >
+          ← Back to Home
+        </button>
 
-      {/* SUBJECT LEVEL */}
-      {activeCategory && !activeSubject && (
-        <>
-          <button
-            className="btn-primary"
-            style={{ marginBottom: "20px" }}
-            onClick={() => setActiveCategory(null)}
+        <h1 style={{ marginBottom: "40px" }}>
+          Semester {id} – Computer Science
+        </h1>
+
+        {/* SEMESTER OVERALL PROGRESS */}
+        <div id="smester-progress" style={{ marginBottom: "40px" }}>
+          <h3 style={{ marginBottom: "10px" }}>Semester Overall Progress</h3>
+
+          <div
+            style={{
+              height: "14px",
+              width: "100%",
+              background: "rgba(255,255,255,0.1)",
+              borderRadius: "20px",
+              overflow: "hidden",
+            }}
           >
-            ← Back
-          </button>
+            <div
+              className="fade-in"
+              style={{
+                height: "100%",
+                width: `${semesterProgress}%`,
+                background:
+                  semesterProgress === 100
+                    ? "linear-gradient(90deg,#22c55e,#16a34a)"
+                    : "linear-gradient(90deg,#0ea5e9,#6366f1)",
+                borderRadius: "20px",
+                transition: "width 0.7s",
+              }}
+            ></div>
+          </div>
 
-          <h2 style={{ marginBottom: "30px" }}>{activeCategory} – Subjects</h2>
+          <p style={{ marginTop: "8px", fontSize: "14px" }}>
+            Overall Completion: {semesterProgress}%
+          </p>
+        </div>
 
+        {/* CATEGORY LEVEL */}
+        {!activeCategory && (
           <div className="grid">
-            {subjects.map((sub) => (
+            {categories.map((cat) => (
               <div
-                key={sub}
+                key={cat}
                 className="glass"
                 style={{
                   padding: "30px",
                   textAlign: "center",
                   cursor: "pointer",
                 }}
-                onClick={() => setActiveSubject(sub)}
+                onClick={() => setActiveCategory(cat)}
               >
-                <h3>{sub}</h3>
+                <h3>{cat}</h3>
               </div>
             ))}
           </div>
-        </>
-      )}
+        )}
 
-      {/* CONTENT LEVEL */}
-      {activeSubject && (
-        <>
-          <button
-            className="btn-primary"
-            style={{ marginBottom: "20px" }}
-            onClick={() => setActiveSubject(null)}
-          >
-            ← Back to Subjects
-          </button>
-
-          <h2 style={{ marginBottom: "20px" }}>{activeSubject}</h2>
-
-          {/* 🔍 SEARCH + FILTER BAR (ADD HERE) */}
-          <SearchFilterBar
-            search={search}
-            setSearch={setSearch}
-            categoryFilter={categoryFilter}
-            setCategoryFilter={setCategoryFilter}
-            sortOption={sortOption}
-            setSortOption={setSortOption}
-          />
-
-          {/* ADMIN CREATE UNIT */}
-          {isAdmin && (
-            <CreateUnit
-              semester={id}
-              subject={activeSubject}
-              category={activeCategory}
-              onSuccess={fetchData}
-            />
-          )}
-          {!isAdmin && (
-            <div
-              className="glass"
-              style={{ padding: "25px", textAlign: "center" }}
+        {/* SUBJECT LEVEL */}
+        {activeCategory && !activeSubject && (
+          <>
+            <button
+              className="btn-primary"
+              style={{ marginBottom: "20px" }}
+              onClick={() => setActiveCategory(null)}
             >
-              <p style={{ opacity: 0.7 }}>
-                Only faculty and admins can post Notes and Assignments.
-              </p>
-            </div>
-          )}
+              ← Back
+            </button>
 
-          {/* ================= TEACHER NOTES ================= */}
-
-          <h3 style={{ marginTop: "30px" }}>📘 Teacher Notes</h3>
-          <br />
-
-          {(() => {
-            const teacherNotes = materials
-              .filter((item) => item.semester === id)
-              .filter((item) => item.subject === activeSubject)
-              .filter((item) => item.category === activeCategory)
-              .filter((item) => item.note_type === "teacher")
-              .filter((item) =>
-                item.unit_name.toLowerCase().includes(search.toLowerCase()),
-              );
-
-            if (teacherNotes.length === 0) {
-              return (
-                <div
-                  className="glass"
-                  style={{
-                    padding: "60px",
-                    textAlign: "center",
-                    marginTop: "20px",
-                    border: "1px dashed rgba(99,102,241,0.3)",
-                  }}
-                >
-                  <h3 style={{ color: "#6366f1", marginBottom: "10px" }}>
-                    📂 No Teacher Notes Available
-                  </h3>
-
-                  <p style={{ opacity: 0.8 }}>
-                    Teacher notes for this subject haven't been uploaded yet.
-                    Once they are available, they will appear here
-                    automatically.
-                  </p>
-                </div>
-              );
-            }
-
-            return (
-              <div className="grid">
-                {teacherNotes.map((item) => (
-                  <ContentCard
-                    key={item.id}
-                    id={item.id}
-                    title={item.unit_name}
-                    image={item.image_url}
-                    file={item.file_url}
-                    subject={item.subject}
-                    isAdmin={isAdmin}
-                    refresh={fetchData}
-                  />
-                ))}
-              </div>
-            );
-          })()}
-          <div
-            style={{
-              height: "3px",
-              background:
-                "linear-gradient(90deg, transparent, #6366f1, transparent)",
-              margin: "80px 0",
-            }}
-          />
-
-          {/* ================= EXTRA NOTES ================= */}
-
-          <h3 style={{ marginTop: "40px" }}>📗 Extra Notes</h3>
-          <br />
-
-          {(() => {
-            const extraNotes = materials
-              .filter((item) => item.semester === id)
-              .filter((item) => item.subject === activeSubject)
-              .filter((item) => item.category === activeCategory)
-              .filter((item) => item.note_type === "extra")
-              .filter((item) =>
-                item.unit_name.toLowerCase().includes(search.toLowerCase()),
-              );
-
-            if (extraNotes.length === 0) {
-              return (
-                <div
-                  className="glass"
-                  style={{
-                    padding: "60px",
-                    textAlign: "center",
-                    marginTop: "20px",
-                    border: "1px dashed rgba(99,102,241,0.3)",
-                  }}
-                >
-                  <h3 style={{ color: "#6366f1", marginBottom: "10px" }}>
-                    📂 No Extra Notes Available
-                  </h3>
-
-                  <p style={{ opacity: 0.8 }}>
-                    Additional study materials haven't been uploaded yet. Please
-                    check back later for new resources.
-                  </p>
-                </div>
-              );
-            }
-
-            return (
-              <div className="grid">
-                {extraNotes.map((item) => (
-                  <ContentCard
-                    key={item.id}
-                    id={item.id}
-                    title={item.unit_name}
-                    image={item.image_url}
-                    file={item.file_url}
-                    subject={item.subject}
-                    isAdmin={isAdmin}
-                    refresh={fetchData}
-                  />
-                ))}
-              </div>
-            );
-          })()}
-          <div
-            style={{
-              height: "3px",
-              background:
-                "linear-gradient(90deg, transparent, #6366f1, transparent)",
-              margin: "80px 0",
-            }}
-          />
-          <UnitFeedback unitId={id} isAdmin={isAdmin} />
-          <div
-            style={{
-              height: "3px",
-              background:
-                "linear-gradient(90deg, transparent, #6366f1, transparent)",
-              margin: "80px 0",
-            }}
-          />
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="glass"
-            style={{
-              padding: "60px",
-              marginTop: "120px",
-              textAlign: "center",
-              maxWidth: "900px",
-              marginInline: "auto",
-              border: "1px solid rgba(99,102,241,0.2)",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "32px",
-                marginBottom: "20px",
-                background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              🚀 More Powerful Features Coming Soon...
+            <h2 style={{ marginBottom: "30px" }}>
+              {activeCategory} – Subjects
             </h2>
 
-            <p
-              style={{
-                fontSize: "16px",
-                opacity: 0.8,
-                lineHeight: "1.8",
-                maxWidth: "700px",
-                margin: "auto",
-                marginBottom: "35px",
-              }}
-            >
-              We’re constantly improving the Student Tools experience to make
-              your academic journey smarter, faster, and more productive 📚✨ If
-              you have an idea that could make this platform even better — don’t
-              keep it to yourself! 💡 Drop your suggestion in the Contact
-              section and help us build the ultimate study companion together 🚀
-              <br />
-              <br />
-              What features should i add more??
-            </p>
+            <div className="grid">
+              {subjects.map((sub) => (
+                <div
+                  key={sub}
+                  className="glass"
+                  style={{
+                    padding: "30px",
+                    textAlign: "center",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setActiveSubject(sub)}
+                >
+                  <h3>{sub}</h3>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
-            <motion.button
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/contact-owner")}
+        {/* CONTENT LEVEL */}
+        {activeSubject && (
+          <>
+            <button
+              className="btn-primary"
+              style={{ marginBottom: "20px" }}
+              onClick={() => setActiveSubject(null)}
+            >
+              ← Back to Subjects
+            </button>
+
+            <h2 style={{ marginBottom: "20px" }}>{activeSubject}</h2>
+
+            {/* 🔍 SEARCH + FILTER BAR (ADD HERE) */}
+            <SearchFilterBar
+              search={search}
+              setSearch={setSearch}
+              categoryFilter={categoryFilter}
+              setCategoryFilter={setCategoryFilter}
+              sortOption={sortOption}
+              setSortOption={setSortOption}
+            />
+
+            {/* ADMIN CREATE UNIT */}
+            {isAdmin && (
+              <CreateUnit
+                semester={id}
+                subject={activeSubject}
+                category={activeCategory}
+                onSuccess={fetchData}
+              />
+            )}
+            {!isAdmin && (
+              <div
+                className="glass"
+                style={{ padding: "25px", textAlign: "center" }}
+              >
+                <p style={{ opacity: 0.7 }}>
+                  Only faculty and admins can post Notes and Assignments.
+                </p>
+              </div>
+            )}
+            <div style={{ textAlign: "center", marginBottom: "50px" }}>
+              <h2
+                style={{
+                  fontSize: "clamp(1.8rem,4vw,2.2rem)",
+                  fontWeight: "800",
+                  color: "var(--primary)",
+                  marginBottom: "10px",
+                }}
+              >
+                Browse Semester Notes
+              </h2>
+
+              <p
+                style={{
+                  opacity: "0.75",
+                  maxWidth: "650px",
+                  margin: "auto",
+                }}
+              >
+                Select a semester to explore organized subject notes, study
+                resources and academic materials.
+              </p>
+            </div>
+
+            {/* ================= TEACHER NOTES ================= */}
+
+            <h3 style={{ marginTop: "30px" }}>📘 Teacher Notes</h3>
+            <br />
+
+            {(() => {
+              const teacherNotes = materials
+                .filter((item) => item.semester === id)
+                .filter((item) => item.subject === activeSubject)
+                .filter((item) => item.category === activeCategory)
+                .filter((item) => item.note_type === "teacher")
+                .filter((item) =>
+                  item.unit_name.toLowerCase().includes(search.toLowerCase()),
+                );
+
+              if (teacherNotes.length === 0) {
+                return (
+                  <div
+                    className="glass"
+                    style={{
+                      padding: "60px",
+                      textAlign: "center",
+                      marginTop: "20px",
+                      border: "1px dashed rgba(99,102,241,0.3)",
+                    }}
+                  >
+                    <h3 style={{ color: "#6366f1", marginBottom: "10px" }}>
+                      📂 No Teacher Notes Available
+                    </h3>
+
+                    <p style={{ opacity: 0.8 }}>
+                      Teacher notes for this subject haven't been uploaded yet.
+                      Once they are available, they will appear here
+                      automatically.
+                    </p>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="grid">
+                  {teacherNotes.map((item) => (
+                    <ContentCard
+                      key={item.id}
+                      id={item.id}
+                      title={item.unit_name}
+                      image={item.image_url}
+                      file={item.file_url}
+                      subject={item.subject}
+                      isAdmin={isAdmin}
+                      refresh={fetchData}
+                    />
+                  ))}
+                </div>
+              );
+            })()}
+            <div
               style={{
-                padding: "14px 40px",
-                borderRadius: "30px",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "15px",
-                fontWeight: "600",
-                color: "white",
-                background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
-                boxShadow: "0 10px 25px rgba(99,102,241,0.3)",
+                height: "3px",
+                background:
+                  "linear-gradient(90deg, transparent, #6366f1, transparent)",
+                margin: "80px 0",
+              }}
+            />
+
+            {/* ================= EXTRA NOTES ================= */}
+
+            <h3 style={{ marginTop: "40px" }}>📗 Extra Notes</h3>
+            <br />
+
+            {(() => {
+              const extraNotes = materials
+                .filter((item) => item.semester === id)
+                .filter((item) => item.subject === activeSubject)
+                .filter((item) => item.category === activeCategory)
+                .filter((item) => item.note_type === "extra")
+                .filter((item) =>
+                  item.unit_name.toLowerCase().includes(search.toLowerCase()),
+                );
+
+              if (extraNotes.length === 0) {
+                return (
+                  <div
+                    className="glass"
+                    style={{
+                      padding: "60px",
+                      textAlign: "center",
+                      marginTop: "20px",
+                      border: "1px dashed rgba(99,102,241,0.3)",
+                    }}
+                  >
+                    <h3 style={{ color: "#6366f1", marginBottom: "10px" }}>
+                      📂 No Extra Notes Available
+                    </h3>
+
+                    <p style={{ opacity: 0.8 }}>
+                      Additional study materials haven't been uploaded yet.
+                      Please check back later for new resources.
+                    </p>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="grid">
+                  {extraNotes.map((item) => (
+                    <ContentCard
+                      key={item.id}
+                      id={item.id}
+                      title={item.unit_name}
+                      image={item.image_url}
+                      file={item.file_url}
+                      subject={item.subject}
+                      isAdmin={isAdmin}
+                      refresh={fetchData}
+                    />
+                  ))}
+                </div>
+              );
+            })()}
+
+            <div
+              style={{
+                height: "3px",
+                background:
+                  "linear-gradient(90deg, transparent, #6366f1, transparent)",
+                margin: "80px 0",
+              }}
+            />
+            <UnitFeedback unitId={id} isAdmin={isAdmin} />
+            <div
+              style={{
+                height: "3px",
+                background:
+                  "linear-gradient(90deg, transparent, #6366f1, transparent)",
+                margin: "80px 0",
+              }}
+            />
+            <div
+              style={{
+                padding: "40px",
+                borderRadius: "22px",
+                marginTop: "80px",
+                textAlign: "center",
               }}
             >
-              💬 Send Your Suggestion
-            </motion.button>
-          </motion.div>
-        </>
-      )}
-    </div>
+              <h2 style={{ fontWeight: "700", marginBottom: "15px" }}>
+                Why Semester Study Materials Are Important
+              </h2>
+
+              <p
+                style={{
+                  maxWidth: "760px",
+                  margin: "auto",
+                  opacity: "0.85",
+                  lineHeight: "1.7",
+                }}
+              >
+                Structured semester notes help students understand subjects more
+                clearly and prepare efficiently for exams. Organized study
+                materials allow engineering and diploma students to review
+                important concepts quickly, improve retention and build a strong
+                academic foundation.
+              </p>
+            </div>
+
+            <div 
+
+          
+              className="glass" style=
+              {{
+                padding: "60px",
+                marginTop: "120px",
+                textAlign: "center",
+                maxWidth: "900px",
+                marginInline: "auto",
+                border: "1px solid rgba(99,102,241,0.2)",
+              }}
+              >
+              <h2
+                style={{
+                  fontSize: "32px",
+                  marginBottom: "20px",
+                  background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
+                  WebkitBackgroundClip: "text",
+                  color: "transparent",
+                }}
+              >
+                🚀 More Powerful Features Coming Soon...
+              </h2>
+              <p
+                style={{
+                  fontSize: "16px",
+                  opacity: 0.8,
+                  lineHeight: "1.8",
+                  maxWidth: "700px",
+                  margin: "auto",
+                  marginBottom: "35px",
+                }}
+              >
+                We’re constantly improving the Student Tools experience to make
+                your academic journey smarter, faster, and more productive 📚✨
+                If you have an idea that could make this platform even better —
+                don’t keep it to yourself! 💡 Drop your suggestion in the
+                Contact section and help us build the ultimate study companion
+                together 🚀
+                <br />
+                <br />
+                What features should i add more??
+              </p>
+              <button
+          
+              
+                onClick={() => navigate("/contact-owner")}
+                style={{
+                  padding: "14px 40px",
+                  borderRadius: "30px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "15px",
+                  fontWeight: "600",
+                  color: "white",
+                  background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
+                  boxShadow: "0 10px 25px rgba(99,102,241,0.3)",
+                }}
+              >
+                💬 Send Your Suggestion
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
@@ -505,6 +644,8 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
         <img
           src={image}
           alt={title}
+
+          loading="lazy"
           style={{
             width: "100%",
             height: "100%",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+
 
 export default function GPACalculator() {
   const [subjects, setSubjects] = useState([
@@ -48,17 +48,16 @@ export default function GPACalculator() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
+    <div 
+
       className="glass"
       style={{
         padding: "40px",
         maxWidth: "700px",
         margin: "auto",
       }}
-    >
+      >
+    
       <h2 style={{ marginBottom: "30px", textAlign: "center" }}>
         GPA Calculator
       </h2>
@@ -135,9 +134,8 @@ export default function GPACalculator() {
       </div>
 
       {gpa && (
-        <motion.h3
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
+        <h3
+
           style={{
             marginTop: "30px",
             textAlign: "center",
@@ -146,8 +144,8 @@ export default function GPACalculator() {
           }}
         >
           Your GPA: {gpa}
-        </motion.h3>
+        </h3>
       )}
-    </motion.div>
+    </div>
   );
 }

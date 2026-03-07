@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+
 
 export default function SearchFilterBar({
   search,
@@ -10,9 +10,8 @@ export default function SearchFilterBar({
   setSortOption,
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+    <div className="fade-in"
+
       style={{
         display: "flex",
         flexWrap: "wrap",
@@ -20,7 +19,8 @@ export default function SearchFilterBar({
         marginBottom: "30px",
         alignItems: "center",
       }}
-    >
+      >
+    
       {/* Search */}
       <input
         type="text"
@@ -64,6 +64,6 @@ export default function SearchFilterBar({
         <option value="oldest">Oldest</option>
         <option value="downloads">Most Downloaded</option>
       </select>
-    </motion.div>
+    </div>
   );
 }
