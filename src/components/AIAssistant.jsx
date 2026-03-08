@@ -96,13 +96,20 @@ export default function AIAssistant() {
         }}
       />
 
-      <button
-        className="btn-primary"
-        onClick={generateContent}
-        disabled={loading}
-      >
-        {loading ? "Generating... pls wait only for max 15 seconds" : "Generate"}
-      </button>
+<button
+  className="btn-primary ai-btn"
+  onClick={generateContent}
+  disabled={loading}
+>
+  {loading ? (
+    <>
+      <span className="btn-loader"></span>
+      Generating... please wait
+    </>
+  ) : (
+    "Generate"
+  )}
+</button>
 
       {response && (
         <div className="fade-in"

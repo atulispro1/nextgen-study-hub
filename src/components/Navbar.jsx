@@ -141,6 +141,7 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="NextGen Study Hub Logo"
+            loading="lazy"
             style={{
               width: "110px",
               height: "90px",

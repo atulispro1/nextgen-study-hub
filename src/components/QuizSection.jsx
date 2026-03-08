@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 export default function QuizSection() {
   const subjects = [
     "🧪 Applied Chemistry",
@@ -88,16 +87,15 @@ export default function QuizSection() {
 
   return (
     <div style={{ marginTop: "120px", padding: "0 20px" }}>
-      <div className="fade-in"
-
+      <div
+        className="fade-in"
         style={{
           textAlign: "center",
           marginBottom: "70px",
           maxWidth: "700px",
           marginInline: "auto",
         }}
-        >
-      
+      >
         <h2
           style={{
             fontSize: "42px",
@@ -120,7 +118,7 @@ export default function QuizSection() {
       {/* QUIZ START */}
 
       {!quizStarted && !quizFinished && (
-        <div 
+        <div
           className="glass"
           style={{
             padding: "60px",
@@ -128,8 +126,7 @@ export default function QuizSection() {
             marginInline: "auto",
             textAlign: "center",
           }}
-          >
-        
+        >
           <h3 style={{ marginBottom: "30px" }}>Choose Subject & Difficulty</h3>
 
           <div
@@ -160,15 +157,19 @@ export default function QuizSection() {
           </div>
 
           <button
-  
-            className="btn-primary"
+            className="btn-primary ai-btn"
             style={{ marginTop: "40px", padding: "14px 40px" }}
             onClick={startQuiz}
             disabled={loadingQuiz}
           >
-            {loadingQuiz
-              ? "Generating... pls wait only for max 15 seconds"
-              : "Start Quiz"}
+            {loadingQuiz ? (
+              <>
+                <span className="btn-loader"></span>
+                Generating Quiz...
+              </>
+            ) : (
+              "Start Quiz"
+            )}
           </button>
         </div>
       )}
@@ -176,8 +177,7 @@ export default function QuizSection() {
       {/* QUIZ PLAY */}
 
       {quizStarted && !quizFinished && questions.length > 0 && (
-        <div 
-
+        <div
           className="glass"
           style={{
             padding: "60px",
@@ -185,8 +185,7 @@ export default function QuizSection() {
             marginInline: "auto",
             marginTop: "40px",
           }}
-          >
-        
+        >
           {/* QUESTION COUNTER */}
 
           <p style={{ opacity: 0.7, marginBottom: "10px" }}>
@@ -214,7 +213,6 @@ export default function QuizSection() {
               return (
                 <button
                   key={letter}
-        
                   onClick={() => handleAnswer(letter)}
                   style={{
                     padding: "15px",
