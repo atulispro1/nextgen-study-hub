@@ -38,6 +38,54 @@ export default function BlogLayout({
     )
     .slice(0, 3);
 
+  const seoPages = [
+    { slug: "dbms-notes", title: "DBMS Notes" },
+    { slug: "c-programming-notes", title: "C Programming Notes" },
+    { slug: "computer-network-notes", title: "Computer Network Notes" },
+    { slug: "operating-system-notes", title: "Operating System Notes" },
+    { slug: "data-structure-notes", title: "Data Structure Notes" },
+    { slug: "java-programming-notes", title: "Java Programming Notes" },
+    { slug: "python-programming-notes", title: "Python Programming Notes" },
+    { slug: "software-engineering-notes", title: "Software Engineering Notes" },
+    {
+      slug: "computer-organization-notes",
+      title: "Computer Organization Notes",
+    },
+    { slug: "oop-notes", title: "OOP Notes" },
+
+    { slug: "dbms-mcq", title: "DBMS MCQ Questions" },
+    { slug: "c-programming-mcq", title: "C Programming MCQ Questions" },
+    { slug: "data-structure-mcq", title: "Data Structure MCQ Questions" },
+    { slug: "java-mcq", title: "Java MCQ Questions" },
+    { slug: "computer-network-mcq", title: "Computer Network MCQ Questions" },
+    { slug: "operating-system-mcq", title: "Operating System MCQ Questions" },
+
+    { slug: "dbms-interview-questions", title: "DBMS Interview Questions" },
+    {
+      slug: "c-programming-interview-questions",
+      title: "C Programming Interview Questions",
+    },
+    { slug: "java-interview-questions", title: "Java Interview Questions" },
+    {
+      slug: "data-structure-interview-questions",
+      title: "Data Structure Interview Questions",
+    },
+
+    { slug: "learn-c-programming", title: "Learn C Programming" },
+    { slug: "learn-java-programming", title: "Learn Java Programming" },
+    { slug: "learn-python-programming", title: "Learn Python Programming" },
+
+    { slug: "diploma-computer-science-guide", title: "Diploma CS Study Guide" },
+    {
+      slug: "how-to-study-engineering-effectively",
+      title: "Engineering Study Guide",
+    },
+    {
+      slug: "engineering-exam-preparation-guide",
+      title: "Engineering Exam Preparation Guide",
+    },
+  ];
+
   return (
     <>
       <Helmet>
@@ -53,6 +101,7 @@ export default function BlogLayout({
           href={`https://www.atulsharmas.in/blog/${slug}`}
         />
 
+        {/* BlogPosting Schema */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -75,6 +124,160 @@ export default function BlogLayout({
               "@type": "WebPage",
               "@id": `https://www.atulsharmas.in/blog/${slug}`,
             },
+          })}
+        </script>
+
+        {/* Breadcrumb Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://atulsharmas.in",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Blog",
+                item: "https://atulsharmas.in/blog",
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: title,
+                item: `https://www.atulsharmas.in/blog/${slug}`,
+              },
+            ],
+          })}
+        </script>
+
+        {/* FAQ Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "How can I score 8+ CGPA in diploma engineering?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Students can score above 8 CGPA by studying consistently, focusing on core subjects, solving previous year question papers, revising weekly and improving answer presentation in exams.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "How many hours should a student study daily?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Most students can achieve strong academic results by studying 2 to 4 focused hours daily using techniques like active recall, spaced repetition and structured revision.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "What are the best study techniques for engineering students?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Effective study techniques include active recall, solving previous year papers, making short revision notes, using diagrams for theory subjects and practicing numerical problems regularly.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "How can students prepare for semester exams quickly?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Students can prepare for semester exams by prioritizing high weightage topics, solving previous year question papers, revising formulas and focusing on important concepts instead of memorizing everything.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "What are the best programming languages for beginners?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Popular beginner programming languages include C, C++, Python and JavaScript. These languages help students understand programming logic and build strong coding fundamentals.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "How can diploma students get internships?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Diploma students can get internships by building small projects, learning programming skills, improving communication skills, creating a strong resume and applying on platforms like LinkedIn and job portals.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "What are the best productivity techniques for students?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Students can improve productivity by using the Pomodoro technique, creating a daily study schedule, avoiding distractions, tracking progress and taking short breaks during study sessions.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "How can students avoid procrastination while studying?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Students can avoid procrastination by setting small study goals, removing distractions, studying in short focused sessions and creating a consistent study routine.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "What are the best career options after diploma in computer science?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "After diploma in computer science students can pursue careers in software development, web development, data analysis, IT support, cybersecurity or continue higher studies like BTech or BCA.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "How can students improve their programming skills?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Students can improve programming skills by practicing coding daily, solving problems on coding platforms, building projects and learning data structures and algorithms.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "What are the best websites for coding practice?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Popular coding practice platforms include LeetCode, HackerRank, CodeChef, GeeksforGeeks and CodeStudio. These platforms help students improve problem solving skills.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "How can students improve focus while studying?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Students can improve focus by studying in a quiet environment, using the Pomodoro technique, keeping their phone away and studying in short concentrated sessions.",
+                },
+              },
+
+              {
+                "@type": "Question",
+                name: "What is the best study routine for students?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "A balanced study routine includes daily revision, solving practice questions, learning new topics and maintaining consistent study hours every day.",
+                },
+              },
+            ],
           })}
         </script>
       </Helmet>
@@ -176,6 +379,62 @@ export default function BlogLayout({
             margin: "100px 0",
           }}
         />
+
+        <section style={{ marginTop: "100px" }}>
+          <div style={{ textAlign: "center", marginBottom: "50px" }}>
+            <h2
+              style={{
+                fontSize: "clamp(2rem,4vw,2.5rem)",
+                fontWeight: "800",
+                color: "var(--primary)",
+                marginBottom: "15px",
+              }}
+            >
+              Engineering Notes, MCQ Questions & Programming Study Resources
+            </h2>
+
+            <p
+              style={{
+                maxWidth: "780px",
+                margin: "auto",
+                lineHeight: "1.8",
+                opacity: "0.85",
+                fontSize: "16px",
+              }}
+            >
+              Explore a comprehensive collection of diploma and engineering
+              study materials including programming notes, computer science
+              subjects, MCQ practice questions, interview preparation guides and
+              beginner programming tutorials. These resources are designed to
+              help students understand concepts faster and prepare effectively
+              for semester exams and technical interviews.
+            </p>
+          </div>
+          <div className="grid">
+            {seoPages.map((page, index) => (
+              <div
+                key={index}
+                className="glass"
+                style={{ padding: "25px", textAlign: "center" }}
+              >
+                <h3 style={{ marginBottom: "10px" }}>{page.title}</h3>
+
+                <p style={{ opacity: 0.7 }}>
+                  Explore complete study materials, guides and resources related
+                  to {page.title}.
+                </p>
+
+                <button
+                  className="btn-primary"
+                  style={{ marginTop: "15px" }}
+                  onClick={() => navigate(`/${page.slug}`)}
+                >
+                  Explore →
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
         <div className="glass" style={{ padding: "25px", marginTop: "40px" }}>
           <h3>Explore More Study Resources</h3>
           <p>

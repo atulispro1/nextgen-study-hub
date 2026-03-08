@@ -2,26 +2,173 @@ import { useParams } from "react-router-dom";
 import SEO from "../components/SEO";
 
 const notesData = {
+
+  /* ================= NOTES PAGES ================= */
+
   "dbms-notes": {
-    title: "DBMS Notes PDF – Database Management System Study Material",
+    title: "DBMS Notes for Engineering & Diploma Students",
     description:
-      "Download DBMS notes PDF for diploma and engineering students. Learn database concepts, SQL, normalization, transactions and exam preparation topics.",
+      "Complete DBMS notes covering database concepts, normalization, keys, SQL queries and transaction management for engineering and diploma students.",
   },
+
   "c-programming-notes": {
-    title: "C Programming Notes PDF – Complete Guide for Students",
+    title: "C Programming Notes for Beginners",
     description:
-      "C programming notes for beginners and engineering students covering syntax, loops, functions, pointers and exam preparation topics.",
+      "Learn C programming with structured notes covering variables, loops, functions, pointers, arrays and important exam concepts.",
   },
+
   "computer-network-notes": {
-    title: "Computer Network Notes PDF – Networking Study Material",
+    title: "Computer Network Notes for Engineering Students",
     description:
-      "Computer network notes covering OSI model, TCP/IP, protocols, routing and networking fundamentals for diploma and engineering students.",
+      "Computer network notes covering OSI model, TCP/IP, network protocols, routing, switching and important exam topics.",
   },
+
   "operating-system-notes": {
-    title: "Operating System Notes PDF – OS Concepts and Study Material",
+    title: "Operating System Notes for Diploma & Engineering",
     description:
-      "Operating system notes covering process management, memory management, scheduling and file systems for engineering students.",
+      "Operating system notes covering process management, memory management, scheduling algorithms, file systems and OS concepts.",
   },
+
+  "data-structure-notes": {
+    title: "Data Structure Notes for Engineering Students",
+    description:
+      "Complete data structure notes covering arrays, linked lists, stacks, queues, trees, graphs and algorithms for students.",
+  },
+
+  "java-programming-notes": {
+    title: "Java Programming Notes for Beginners",
+    description:
+      "Java programming notes covering OOP concepts, classes, inheritance, polymorphism, interfaces and exception handling.",
+  },
+
+  "python-programming-notes": {
+    title: "Python Programming Notes for Beginners",
+    description:
+      "Learn Python programming with notes covering syntax, loops, functions, OOP concepts, data structures and beginner projects.",
+  },
+
+  "software-engineering-notes": {
+    title: "Software Engineering Notes for Computer Science Students",
+    description:
+      "Software engineering notes covering SDLC models, agile methodology, requirement analysis, software design and testing.",
+  },
+
+  "computer-organization-notes": {
+    title: "Computer Organization Notes for Engineering Students",
+    description:
+      "Computer organization notes covering CPU architecture, memory hierarchy, instruction cycles and computer system fundamentals.",
+  },
+
+  "oop-notes": {
+    title: "Object Oriented Programming Notes",
+    description:
+      "Object oriented programming notes explaining classes, objects, inheritance, polymorphism, encapsulation and abstraction.",
+  },
+
+  /* ================= MCQ PAGES ================= */
+
+  "dbms-mcq": {
+    title: "DBMS MCQ Questions with Answers",
+    description:
+      "Practice DBMS MCQ questions with answers covering database design, normalization, SQL queries and transaction management.",
+  },
+
+  "c-programming-mcq": {
+    title: "C Programming MCQ Questions with Answers",
+    description:
+      "C programming MCQ questions for students preparing for exams and interviews including pointers, arrays and functions.",
+  },
+
+  "data-structure-mcq": {
+    title: "Data Structure MCQ Questions for Practice",
+    description:
+      "Data structure MCQ questions covering stacks, queues, trees, graphs, searching and sorting algorithms.",
+  },
+
+  "java-mcq": {
+    title: "Java Programming MCQ Questions",
+    description:
+      "Java programming MCQ questions covering OOP concepts, inheritance, polymorphism, exception handling and collections.",
+  },
+
+  "computer-network-mcq": {
+    title: "Computer Network MCQ Questions",
+    description:
+      "Computer network MCQ questions covering OSI model, TCP/IP protocols, routing and networking fundamentals.",
+  },
+
+  "operating-system-mcq": {
+    title: "Operating System MCQ Questions",
+    description:
+      "Operating system MCQ questions covering process scheduling, memory management, deadlocks and file systems.",
+  },
+
+  /* ================= INTERVIEW PAGES ================= */
+
+  "dbms-interview-questions": {
+    title: "DBMS Interview Questions for Freshers",
+    description:
+      "Top DBMS interview questions and answers covering database concepts, SQL queries and normalization.",
+  },
+
+  "c-programming-interview-questions": {
+    title: "C Programming Interview Questions",
+    description:
+      "Important C programming interview questions covering pointers, memory allocation, arrays and functions.",
+  },
+
+  "java-interview-questions": {
+    title: "Java Interview Questions for Beginners",
+    description:
+      "Top Java interview questions covering OOP concepts, multithreading, collections and exception handling.",
+  },
+
+  "data-structure-interview-questions": {
+    title: "Data Structure Interview Questions",
+    description:
+      "Most asked data structure interview questions covering trees, graphs, stacks, queues and algorithms.",
+  },
+
+  /* ================= PROGRAMMING GUIDES ================= */
+
+  "learn-c-programming": {
+    title: "Learn C Programming Step by Step",
+    description:
+      "Beginner friendly guide to learn C programming including syntax, loops, arrays, pointers and practical examples.",
+  },
+
+  "learn-java-programming": {
+    title: "Learn Java Programming for Beginners",
+    description:
+      "Step by step Java programming tutorial covering classes, objects, inheritance and real programming examples.",
+  },
+
+  "learn-python-programming": {
+    title: "Learn Python Programming for Beginners",
+    description:
+      "Complete Python programming guide covering variables, loops, functions, libraries and beginner projects.",
+  },
+
+  /* ================= STUDENT GUIDES ================= */
+
+  "diploma-computer-science-guide": {
+    title: "Diploma Computer Science Study Guide",
+    description:
+      "Complete study guide for diploma computer science students including notes, programming resources and exam preparation strategies.",
+  },
+
+  "how-to-study-engineering-effectively": {
+    title: "How to Study Engineering Subjects Effectively",
+    description:
+      "Best study techniques for engineering students including revision strategies, time management and exam preparation.",
+  },
+
+  "engineering-exam-preparation-guide": {
+    title: "Engineering Exam Preparation Guide",
+    description:
+      "Smart strategies for preparing engineering exams including study plans, revision methods and productivity tips.",
+  },
+
 };
 
 export default function NotesSEO() {

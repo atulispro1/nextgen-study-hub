@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 export default function SEO({
   title = "NextGen Study Hub – Diploma Notes, Study Materials, Student Tools & Career Resources",
   description = "NextGen Study Hub provides diploma engineering notes, semester study materials, exam preparation guides, internships, career advice and student productivity tools like CGPA calculator and study timer.",
-  keywords = "diploma engineering notes, engineering notes pdf, dbms notes pdf, c programming notes pdf, computer network notes pdf, operating system notes pdf, engineering study materials, diploma computer science notes, polytechnic notes, diploma engineering syllabus, engineering exam preparation, cgpa to percentage calculator, gpa calculator online, percentage calculator online, study timer online, pomodoro study timer, study tips for students, exam preparation tips, government exams after 12th, SSC exam preparation, railway exam preparation, banking exam preparation, career options after diploma, internships for students, programming interview questions, software engineering notes, data structure notes pdf, programming basics notes, engineering study material free download",
+  keywords = "diploma engineering notes, engineering notes pdf, dbms notes pdf, c programming notes pdf, computer network notes pdf, operating system notes pdf, engineering study materials, diploma computer science notes, polytechnic notes, diploma engineering syllabus, engineering exam preparation, cgpa to percentage calculator, gpa calculator online, percentage calculator online, study timer online, pomodoro study timer, study tips for students, exam preparation tips, government exams after 12th, SSC exam preparation, railway exam preparation, banking exam preparation, career options after diploma, internships for students, programming interview questions, software engineering notes, data structure notes pdf",
   image = "https://www.atulsharmas.in/preview.png",
   url = "https://www.atulsharmas.in",
   type = "website",
@@ -14,18 +14,25 @@ export default function SEO({
       {/* Basic SEO */}
 
       <title>{title}</title>
-
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <meta name="author" content="Atul Sharma" />
 
       {/* Robots */}
 
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content="index, follow, max-image-preview:large" />
 
       {/* Canonical */}
 
       <link rel="canonical" href={url} />
+
+      {/* Language */}
+
+      <html lang="en" />
+
+      {/* Theme Color */}
+
+      <meta name="theme-color" content="#4f46e5" />
 
       {/* Open Graph (Facebook / LinkedIn) */}
 
@@ -34,6 +41,7 @@ export default function SEO({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={image} />
+      <meta property="og:site_name" content="NextGen Study Hub" />
 
       {/* Twitter SEO */}
 
@@ -42,7 +50,7 @@ export default function SEO({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
 
-      {/* Schema.org Structured Data */}
+      {/* Website Schema */}
 
       <script type="application/ld+json">
         {JSON.stringify({
@@ -50,16 +58,44 @@ export default function SEO({
           "@type": "WebSite",
           name: "NextGen Study Hub",
           url: "https://www.atulsharmas.in",
-          description:
-            "NextGen Study Hub provides diploma engineering notes, study materials, career resources, exam preparation guides and productivity tools for students.",
+          description: description,
           author: {
             "@type": "Person",
             name: "Atul Sharma",
           },
-          publisher: {
-            "@type": "Organization",
-            name: "NextGen Study Hub",
+        })}
+      </script>
+
+      {/* Organization Schema */}
+
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "NextGen Study Hub",
+          url: "https://www.atulsharmas.in",
+          logo: "https://www.atulsharmas.in/favicon.png",
+          founder: {
+            "@type": "Person",
+            name: "Atul Sharma",
           },
+        })}
+      </script>
+
+      {/* Breadcrumb Schema */}
+
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.atulsharmas.in",
+            }
+          ],
         })}
       </script>
 

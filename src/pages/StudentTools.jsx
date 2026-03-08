@@ -32,12 +32,60 @@ export default function StudentTools() {
     },
   ];
 
+  const seoPages = [
+    { slug: "dbms-notes", title: "DBMS Notes" },
+    { slug: "c-programming-notes", title: "C Programming Notes" },
+    { slug: "computer-network-notes", title: "Computer Network Notes" },
+    { slug: "operating-system-notes", title: "Operating System Notes" },
+    { slug: "data-structure-notes", title: "Data Structure Notes" },
+    { slug: "java-programming-notes", title: "Java Programming Notes" },
+    { slug: "python-programming-notes", title: "Python Programming Notes" },
+    { slug: "software-engineering-notes", title: "Software Engineering Notes" },
+    {
+      slug: "computer-organization-notes",
+      title: "Computer Organization Notes",
+    },
+    { slug: "oop-notes", title: "OOP Notes" },
+
+    { slug: "dbms-mcq", title: "DBMS MCQ Questions" },
+    { slug: "c-programming-mcq", title: "C Programming MCQ Questions" },
+    { slug: "data-structure-mcq", title: "Data Structure MCQ Questions" },
+    { slug: "java-mcq", title: "Java MCQ Questions" },
+    { slug: "computer-network-mcq", title: "Computer Network MCQ Questions" },
+    { slug: "operating-system-mcq", title: "Operating System MCQ Questions" },
+
+    { slug: "dbms-interview-questions", title: "DBMS Interview Questions" },
+    {
+      slug: "c-programming-interview-questions",
+      title: "C Programming Interview Questions",
+    },
+    { slug: "java-interview-questions", title: "Java Interview Questions" },
+    {
+      slug: "data-structure-interview-questions",
+      title: "Data Structure Interview Questions",
+    },
+
+    { slug: "learn-c-programming", title: "Learn C Programming" },
+    { slug: "learn-java-programming", title: "Learn Java Programming" },
+    { slug: "learn-python-programming", title: "Learn Python Programming" },
+
+    { slug: "diploma-computer-science-guide", title: "Diploma CS Study Guide" },
+    {
+      slug: "how-to-study-engineering-effectively",
+      title: "Engineering Study Guide",
+    },
+    {
+      slug: "engineering-exam-preparation-guide",
+      title: "Engineering Exam Preparation Guide",
+    },
+  ];
+
   return (
     <>
-    <SEO
-title="Student Productivity Tools – CGPA Calculator, Study Timer & Academic Tools"
-url="https://www.atulsharmas.in/student-tools"
-/>
+      <SEO
+        title="Student Productivity Tools – CGPA Calculator, Study Timer & Academic Tools"
+        url="https://www.atulsharmas.in/student-tools"
+      />
       <Helmet>
         <title>
           Student Tools – GPA Calculator, AI Study Assistant & Productivity
@@ -219,9 +267,61 @@ student education tools
             margin: "80px 0",
           }}
         />
-        <div 
+        <div style={{ textAlign: "center", marginBottom: "50px" }}>
+          <h2
+            style={{
+              fontSize: "clamp(2rem,4vw,2.5rem)",
+              fontWeight: "800",
+              color: "var(--primary)",
+              marginBottom: "15px",
+            }}
+          >
+            Engineering Notes, MCQ Questions & Programming Study Resources
+          </h2>
 
-       
+          <p
+            style={{
+              maxWidth: "780px",
+              margin: "auto",
+              lineHeight: "1.8",
+              opacity: "0.85",
+              fontSize: "16px",
+            }}
+          >
+            Explore a comprehensive collection of diploma and engineering study
+            materials including programming notes, computer science subjects,
+            MCQ practice questions, interview preparation guides and beginner
+            programming tutorials. These resources are designed to help students
+            understand concepts faster and prepare effectively for semester
+            exams and technical interviews.
+          </p>
+        </div>
+
+        <div className="grid">
+          {seoPages.map((page, index) => (
+            <div
+              key={index}
+              className="glass"
+              style={{ padding: "25px", textAlign: "center" }}
+            >
+              <h3 style={{ marginBottom: "10px" }}>{page.title}</h3>
+
+              <p style={{ opacity: 0.7 }}>
+                Explore complete study materials, guides and resources related
+                to {page.title}.
+              </p>
+
+              <button
+                className="btn-primary"
+                style={{ marginTop: "15px" }}
+                onClick={() => navigate(`/${page.slug}`)}
+              >
+                Explore →
+              </button>
+            </div>
+          ))}
+        </div>
+        <div
           className="glass"
           style={{
             padding: "60px",
@@ -231,8 +331,7 @@ student education tools
             marginInline: "auto",
             border: "1px solid rgba(99,102,241,0.2)",
           }}
-          >
-        
+        >
           <h2
             style={{
               fontSize: "32px",
@@ -266,8 +365,6 @@ student education tools
           </p>
 
           <button
-    
-          
             onClick={() => navigate("/contact-owner")}
             style={{
               padding: "14px 40px",
