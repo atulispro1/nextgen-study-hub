@@ -4,75 +4,248 @@
 <!-- Homepage -->
 
 <url>
-  <loc>https://atulsharmas.in/</loc>
-  <lastmod>2026-03-08</lastmod>
-  <priority>1.00</priority>
+<loc>https://atulsharmas.in/</loc>
+<priority>1.00</priority>
 </url>
 
 <!-- Core Pages -->
 
 <url>
-  <loc>https://atulsharmas.in/about</loc>
-  <priority>0.80</priority>
+<loc>https://atulsharmas.in/about</loc>
 </url>
 
 <url>
-  <loc>https://atulsharmas.in/contact-owner</loc>
-  <priority>0.80</priority>
+<loc>https://atulsharmas.in/contact-owner</loc>
 </url>
 
 <url>
-  <loc>https://atulsharmas.in/privacy-policy</loc>
-  <priority>0.60</priority>
+<loc>https://atulsharmas.in/privacy-policy</loc>
 </url>
 
 <url>
-  <loc>https://atulsharmas.in/terms</loc>
-  <priority>0.60</priority>
+<loc>https://atulsharmas.in/terms</loc>
 </url>
 
-<!-- Main Content -->
+<!-- Main Sections -->
 
 <url>
-  <loc>https://atulsharmas.in/blog</loc>
-  <priority>0.90</priority>
-</url>
-
-<url>
-  <loc>https://atulsharmas.in/student-tools</loc>
-  <priority>0.90</priority>
+<loc>https://atulsharmas.in/blog</loc>
 </url>
 
 <url>
-  <loc>https://atulsharmas.in/notes-library</loc>
-  <priority>0.90</priority>
+<loc>https://atulsharmas.in/student-tools</loc>
 </url>
 
 <url>
-  <loc>https://atulsharmas.in/jobs</loc>
-  <priority>0.90</priority>
+<loc>https://atulsharmas.in/notes-library</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/jobs</loc>
 </url>
 
 <!-- SEO Notes Pages -->
 
 <url>
-  <loc>https://atulsharmas.in/dbms-notes</loc>
-  <priority>0.80</priority>
+<loc>https://atulsharmas.in/dbms-notes</loc>
 </url>
 
 <url>
-  <loc>https://atulsharmas.in/c-programming-notes</loc>
-  <priority>0.80</priority>
+<loc>https://atulsharmas.in/c-programming-notes</loc>
 </url>
 
 <url>
-  <loc>https://atulsharmas.in/computer-network-notes</loc>
-  <priority>0.80</priority>
+<loc>https://atulsharmas.in/computer-network-notes</loc>
 </url>
 
 <url>
-  <loc>https://atulsharmas.in/operating-system-notes</loc>
-  <priority>0.80</priority>
+<loc>https://atulsharmas.in/operating-system-notes</loc>
+</url>
+
+<!-- Blog Articles -->
+
+<url>
+<loc>https://atulsharmas.in/blog/score-8-cgpa-diploma</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/prepare-semester-7-days</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/best-programming-language-beginners</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/how-to-crack-ssc-cgl</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/how-to-crack-railway-exam</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/upsc-beginners-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/banking-exam-preparation</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/data-structure-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/html-css-javascript-difference</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/resume-for-diploma-students</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/internship-second-year</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/study-time-management</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/avoid-procrastination</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/pass-backlog-subject</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/government-jobs-after-diploma</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/gk-preparation-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/communication-skills-engineers</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/viva-preparation-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/project-ideas-diploma</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/learn-cpp-fast</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/digital-marketing-career-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/prepare-state-psc</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/government-vs-private-job</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/coding-practice-platforms</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/ssc-chsl-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/railway-ntpc-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/self-study-strategy</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/exam-stress-management</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/interview-questions-freshers</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/how-to-build-linkedin</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/applied-chemistry-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/engineering-maths-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/operating-system-basics</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/dbms-beginners-guide</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/government-job-salary-list</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/best-books-ssc-preparation</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/coding-roadmap-2026</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/improve-english-speaking</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/top-career-options-after-diploma</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/blog/daily-study-routine</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/semester/1</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/semester/2</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/semester/3</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/semester/4</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/semester/5</loc>
+</url>
+
+<url>
+<loc>https://atulsharmas.in/semester/6</loc>
 </url>
 
 </urlset>
