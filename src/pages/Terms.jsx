@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 export default function Terms() {
   return (
     <>
-    <SEO
-title="Terms and Conditions – NextGen Study Hub"
-url="https://www.atulsharmas.in/terms"
-/>
+      <SEO
+        title="Terms and Conditions – NextGen Study Hub"
+        url="https://www.atulsharmas.in/terms"
+      />
       <Helmet>
         <title>
           Terms and Conditions – Website Usage Terms | NextGen Study Hub
@@ -48,6 +48,8 @@ terms of service nextgen study hub
         <link rel="canonical" href="https://www.atulsharmas.in/terms" />
       </Helmet>
 
+      {/* HEADER */}
+
       <section
         style={{
           padding: "clamp(40px,6vw,80px)",
@@ -78,98 +80,160 @@ terms of service nextgen study hub
             lineHeight: "1.8",
           }}
         >
-          These terms and conditions explain the rules and guidelines for using
-          NextGen Study Hub and accessing the platform’s study materials, tools
-          and resources.
+          These Terms and Conditions describe the rules and guidelines for using
+          NextGen Study Hub and accessing its learning resources, study
+          materials, and academic tools.
         </p>
       </section>
 
-      <section className="section">
-        <div 
+      {/* TERMS CONTENT */}
 
+      <section className="section">
+        <div
           className="glass"
           style={{
             maxWidth: "900px",
             margin: "auto",
             padding: "50px",
           }}
-          >
-        
-          <h1
+        >
+          <h2
             style={{
-              marginBottom: "30px",
+              marginBottom: "25px",
               background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
               WebkitBackgroundClip: "text",
               color: "transparent",
             }}
           >
-            Terms & Conditions
-          </h1>
+            Terms & Conditions for NextGen Study Hub
+          </h2>
 
           <p style={{ marginBottom: "20px", opacity: 0.85 }}>
-            These Terms and Conditions outline the basic rules for using NextGen
-            Study Hub. By accessing or using this website, you agree to follow
-            these terms. If you do not agree with any part of these terms, you
-            may choose not to use the platform.
+            Effective Date: {new Date().toLocaleDateString()}
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>Use of Content</h3>
-          <p style={{ opacity: 0.85 }}>
-            The study materials, notes, assignments, quizzes, and tools provided
-            on this website are intended for educational and reference purposes.
-            Students are welcome to use the content to support their learning,
-            but it should not be redistributed or republished without
-            permission.
+          <p style={{ marginBottom: "20px", opacity: 0.85, lineHeight: "1.8" }}>
+            By accessing or using NextGen Study Hub, you agree to follow the
+            terms outlined on this page. These terms are designed to maintain a
+            safe, respectful, and useful learning environment for all users who
+            access the platform.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>User Responsibility</h3>
-          <p style={{ opacity: 0.85 }}>
-            Users are expected to use the platform responsibly. Any misuse of
-            the platform, including uploading harmful content, attempting to
-            disrupt services, or violating applicable laws, may result in
-            restricted access to the website.
+          {/* ACCEPTABLE USE */}
+
+          <h3 style={{ marginTop: "30px" }}>Acceptable Use</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            Visitors are expected to use this website responsibly and only for
+            lawful purposes. Users should not attempt to misuse the platform,
+            disrupt services, upload harmful content, or attempt unauthorized
+            access to any part of the website or its systems.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>Platform Availability</h3>
-          <p style={{ opacity: 0.85 }}>
-            While we try to keep the platform accessible and updated, NextGen
-            Study Hub may occasionally undergo updates, maintenance, or changes.
-            Some features may be modified or improved over time to provide a
-            better learning experience.
+          {/* CONTENT USAGE */}
+
+          <h3 style={{ marginTop: "30px" }}>Use of Educational Content</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            All study materials, notes, tools, blog articles, and learning
+            resources provided on this website are intended strictly for
+            educational and reference purposes. Students may use the material to
+            support their studies, but copying, redistributing, or republishing
+            the content without permission is not allowed.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>External Resources</h3>
-          <p style={{ opacity: 0.85 }}>
-            This website may include links to external educational resources or
-            third-party platforms. We do not control those websites and cannot
-            guarantee their content or privacy practices.
+          {/* INTELLECTUAL PROPERTY */}
+
+          <h3 style={{ marginTop: "30px" }}>Intellectual Property</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            All content available on NextGen Study Hub, including text,
+            graphics, layout, and tools, is the intellectual property of the
+            website unless otherwise stated. Unauthorized reproduction or
+            commercial use of any material may violate copyright laws.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>Disclaimer</h3>
-          <p style={{ opacity: 0.85 }}>
-            The information and materials available on this website are provided
-            in good faith for learning purposes. However, NextGen Study Hub does
-            not guarantee absolute accuracy or completeness of all materials,
-            and the website is provided on an “as is” basis.
+          {/* ACCURACY OF INFORMATION */}
+
+          <h3 style={{ marginTop: "30px" }}>Accuracy of Information</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            While efforts are made to ensure the accuracy of the information
+            presented on the platform, the website does not guarantee that all
+            content is completely error-free or up to date. Educational
+            materials should be used as a reference alongside official course
+            materials and textbooks.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>Updates to These Terms</h3>
-          <p style={{ opacity: 0.85 }}>
-            These Terms and Conditions may be updated occasionally as the
-            platform evolves. Any updates will be reflected on this page.
+          {/* THIRD PARTY LINKS */}
+
+          <h3 style={{ marginTop: "30px" }}>External Links</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            The website may occasionally include links to external educational
+            resources or third-party websites. These links are provided for
+            convenience and informational purposes. NextGen Study Hub does not
+            control or take responsibility for the content, policies, or
+            practices of external websites.
           </p>
 
-          {/* CONTACT BUTTON */}
+          {/* ADS AND SERVICES */}
+
+          <h3 style={{ marginTop: "30px" }}>
+            Advertising and Third-Party Services
+          </h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            In the future, this website may display advertisements or integrate
+            services provided by third-party platforms such as Google AdSense or
+            analytics tools. These services may use cookies or tracking
+            technologies to improve user experience and deliver relevant
+            advertisements.
+          </p>
+
+          {/* LIMITATION OF LIABILITY */}
+
+          <h3 style={{ marginTop: "30px" }}>Limitation of Liability</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            NextGen Study Hub provides educational content in good faith to help
+            students learn and prepare for exams. However, the website cannot be
+            held responsible for any decisions, outcomes, or results that may
+            occur from using the information available on the platform.
+          </p>
+
+          {/* PLATFORM CHANGES */}
+
+          <h3 style={{ marginTop: "30px" }}>
+            Platform Updates and Availability
+          </h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            The platform may occasionally undergo updates, improvements, or
+            maintenance. Features, content, or sections of the website may be
+            modified, added, or removed to improve the learning experience.
+          </p>
+
+          {/* POLICY CHANGES */}
+
+          <h3 style={{ marginTop: "30px" }}>Changes to These Terms</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            These Terms and Conditions may be updated periodically as the
+            platform evolves. Any modifications will be posted on this page so
+            users can review the most current version.
+          </p>
+
+          {/* CONTACT */}
 
           <div style={{ marginTop: "40px", textAlign: "center" }}>
-            <Link to="/contact">
+            <Link to="/contact-owner">
               <button
                 className="btn-primary"
                 style={{
                   padding: "12px 28px",
                   borderRadius: "10px",
                   fontWeight: "600",
-                  cursor: "pointer",
                 }}
               >
                 Contact Us
@@ -177,7 +241,6 @@ terms of service nextgen study hub
             </Link>
           </div>
         </div>
-        
       </section>
     </>
   );

@@ -62,6 +62,10 @@ import NotesLibrary from "./components/NotesLibrary";
 import NotFound from "./pages/NotFound";
 import Jobs from "./pages/Jobs";
 import NotesSEO from "./pages/NotesSEO";
+import CoursesAfter12th from "./pages/CoursesAfter12th";
+import CoursesAfter12thScience from "./pages/CoursesAfter12thScience";
+import CoursesAfter12thCommerce from "./pages/CoursesAfter12thCommerce";
+import CoursesAfter12thArts from "./pages/CoursesAfter12thArts";
 
 /* ================================================= */
 
@@ -103,6 +107,10 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/:slug" element={<NotesSEO />} />
+        <Route path="/courses-after-12th" element={<CoursesAfter12th />} />
+        <Route path="/courses-after-12th-science" element={<CoursesAfter12thScience />} />
+<Route path="/courses-after-12th-commerce" element={<CoursesAfter12thCommerce />} />
+<Route path="/courses-after-12th-arts" element={<CoursesAfter12thArts />} />
 
       </Routes>
 

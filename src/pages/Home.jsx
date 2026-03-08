@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
@@ -216,6 +215,119 @@ education platform for engineering students
       <Suspense fallback={<div>Loading...</div>}>
         <SemesterSection />
       </Suspense>
+      <div style={dividerStyle} />
+      <div
+      
+        style={{
+          marginTop: "60px",
+        }}
+      >
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "40px",
+          }}
+        >
+          <h2
+            style={{
+              fontWeight: "800",
+              color: "var(--primary)",
+              marginBottom: "10px",
+            }}
+          >
+            Explore Courses by Stream
+          </h2>
+
+          <p
+            style={{
+              maxWidth: "720px",
+              margin: "auto",
+              opacity: "0.85",
+            }}
+          >
+            Different streams offer different career opportunities. Explore the
+            best courses available for Science, Commerce and Arts students after
+            completing 12th.
+          </p>
+        </div>
+
+        <div className="grid">
+          {/* SCIENCE */}
+
+          <div
+            className="glass"
+            style={{
+              padding: "30px",
+              textAlign: "center",
+            }}
+          >
+            <h3 style={{ marginBottom: "10px" }}>Courses After 12th Science</h3>
+
+            <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+              Explore engineering, medical, IT and technology courses for
+              science students including B.Tech, MBBS, BCA and data science
+              programs.
+            </p>
+
+            <button
+              className="btn-primary"
+              onClick={() => navigate("/courses-after-12th-science")}
+            >
+              Explore Science Courses →
+            </button>
+          </div>
+
+          {/* COMMERCE */}
+
+          <div
+            className="glass"
+            style={{
+              padding: "30px",
+              textAlign: "center",
+            }}
+          >
+            <h3 style={{ marginBottom: "10px" }}>
+              Courses After 12th Commerce
+            </h3>
+
+            <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+              Discover business, finance and accounting career options including
+              BCom, BBA, CA, CS and management related programs.
+            </p>
+
+            <button
+              className="btn-primary"
+              onClick={() => navigate("/courses-after-12th-commerce")}
+            >
+              Explore Commerce Courses →
+            </button>
+          </div>
+
+          {/* ARTS */}
+
+          <div
+            className="glass"
+            style={{
+              padding: "30px",
+              textAlign: "center",
+            }}
+          >
+            <h3 style={{ marginBottom: "10px" }}>Courses After 12th Arts</h3>
+
+            <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+              Explore creative and analytical career paths including journalism,
+              psychology, law, design and humanities programs.
+            </p>
+
+            <button
+              className="btn-primary"
+              onClick={() => navigate("/courses-after-12th-arts")}
+            >
+              Explore Arts Courses →
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div style={dividerStyle} />
       <section

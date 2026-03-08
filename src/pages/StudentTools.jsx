@@ -267,6 +267,40 @@ student education tools
             margin: "80px 0",
           }}
         />
+        <div
+  className="glass"
+  style={{
+    marginTop: "70px",
+    padding: "45px",
+    borderRadius: "22px",
+    textAlign: "center",
+  }}
+>
+  <h2 style={{ fontWeight: "800", color: "var(--primary)", marginBottom: "15px" }}>
+    Looking for Engineering Study Notes?
+  </h2>
+
+  <p
+    style={{
+      maxWidth: "720px",
+      margin: "auto",
+      opacity: "0.85",
+      lineHeight: "1.8",
+      marginBottom: "25px",
+    }}
+  >
+    Access organized diploma and computer science study materials including
+    DBMS notes, Data Structure notes, Operating System notes, Computer Network
+    notes and programming tutorials designed for engineering students.
+  </p>
+
+  <button
+    className="btn-primary"
+    onClick={() => navigate("/notes-library")}
+  >
+    Explore Study Materials →
+  </button>
+</div>
         <div style={{ textAlign: "center", marginBottom: "50px" }}>
           <h2
             style={{

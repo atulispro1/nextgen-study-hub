@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 export default function PrivacyPolicy() {
   return (
     <>
-    <SEO
-title="Privacy Policy – NextGen Study Hub"
-url="https://www.atulsharmas.in/privacy-policy"
-/>
+      <SEO
+        title="Privacy Policy – NextGen Study Hub"
+        url="https://www.atulsharmas.in/privacy-policy"
+      />
       <Helmet>
         <title>
           Privacy Policy – Data Protection & User Privacy | NextGen Study Hub
@@ -51,6 +51,8 @@ website legal privacy terms
         />
       </Helmet>
 
+      {/* HEADER */}
+
       <section
         style={{
           padding: "clamp(40px,6vw,80px)",
@@ -81,105 +83,172 @@ website legal privacy terms
             lineHeight: "1.8",
           }}
         >
-          This privacy policy explains how NextGen Study Hub collects, uses and
-          protects user information when accessing the platform, tools and
-          learning resources.
+          This Privacy Policy explains how information may be collected, used
+          and protected when visitors access NextGen Study Hub and its learning
+          resources.
         </p>
       </section>
-      
+
+      {/* POLICY CONTENT */}
 
       <section className="section">
-        <div 
-
+        <div
           className="glass"
           style={{
             maxWidth: "900px",
             margin: "auto",
             padding: "50px",
           }}
-          >
-        
-          <h1
+        >
+          <h2
             style={{
-              marginBottom: "30px",
+              marginBottom: "25px",
               background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
               WebkitBackgroundClip: "text",
               color: "transparent",
             }}
           >
-            Privacy Policy
-          </h1>
+            Privacy Policy for NextGen Study Hub
+          </h2>
 
           <p style={{ marginBottom: "20px", opacity: 0.85 }}>
             Effective Date: {new Date().toLocaleDateString()}
           </p>
 
-          <p style={{ marginBottom: "20px", opacity: 0.85 }}>
-            At NextGen Study Hub, we value the privacy of our visitors. This
-            Privacy Policy document explains what information may be collected
-            when you use the website and how that information is used. The goal
-            is to keep the platform simple, transparent, and respectful of user
-            privacy.
+          <p style={{ marginBottom: "20px", opacity: 0.85, lineHeight: "1.8" }}>
+            At NextGen Study Hub, protecting visitor privacy is important. This
+            Privacy Policy describes what types of information may be collected
+            when users interact with the website and how that information may be
+            used to improve the experience. The goal of this platform is to
+            provide educational resources while maintaining transparency and
+            respect for user privacy.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>Information We May Collect</h3>
-          <p style={{ opacity: 0.85 }}>
-            While using this website, certain basic information may be collected
-            to help the platform function properly. This may include information
-            such as an email address (for login or authentication), basic usage
-            activity within study tools, and interactions with features like
-            quizzes or academic utilities.
+          {/* INFORMATION COLLECTION */}
+
+          <h3 style={{ marginTop: "30px" }}>Information We May Collect</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            When visitors use this website, certain non-personal information may
+            be collected automatically. This may include browser type, device
+            information, pages visited, and time spent on the website. This data
+            is collected to understand how the platform is being used and to
+            improve the overall learning experience.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>How This Information Is Used</h3>
-          <p style={{ opacity: 0.85 }}>
-            The information collected is used only for improving the platform
-            and providing its features. This includes maintaining account
-            access, improving study tools, ensuring security, and understanding
-            how users interact with the platform so the experience can be
-            improved over time.
+          <p style={{ opacity: 0.85, lineHeight: "1.8", marginTop: "10px" }}>
+            If users interact with features such as tools, quizzes, or login
+            systems, limited information like email address or account data may
+            be stored securely for authentication and functionality purposes.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>
-            Cookies and Third-Party Services
-          </h3>
-          <p style={{ opacity: 0.85 }}>
-            Like many websites, NextGen Study Hub may use cookies to improve
-            user experience and analyze general site activity. In the future,
-            the site may also display advertisements through services such as
-            Google AdSense. Third-party vendors, including Google, may use
-            cookies to show ads based on a user's visit to this and other
-            websites.
+          {/* HOW INFORMATION IS USED */}
+
+          <h3 style={{ marginTop: "30px" }}>How Information Is Used</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            Information collected through the platform is used to maintain and
+            improve the website. This may include improving content, enhancing
+            tools, analyzing visitor behavior and ensuring the security of the
+            platform.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>Data Security</h3>
-          <p style={{ opacity: 0.85 }}>
-            The platform uses secure third-party services, such as Supabase, to
-            manage authentication and data storage. Reasonable measures are
-            taken to protect user information and keep the platform secure.
+          <p style={{ opacity: 0.85, lineHeight: "1.8", marginTop: "10px" }}>
+            Data is never sold or shared with third parties for unrelated
+            purposes. Any information collected is used only to support the
+            operation and improvement of the website.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>External Links</h3>
-          <p style={{ opacity: 0.85 }}>
-            This website may occasionally contain links to external websites,
-            learning resources, or tools. Please note that we do not have
-            control over the privacy practices of those external sites.
+          {/* COOKIES */}
+
+          <h3 style={{ marginTop: "30px" }}>Cookies</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            Like many websites, NextGen Study Hub may use cookies to store basic
+            visitor preferences and to optimize the user experience. Cookies
+            help the website understand how visitors interact with different
+            sections so the platform can be improved over time.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>User Consent</h3>
-          <p style={{ opacity: 0.85 }}>
-            By using this website, you agree to this Privacy Policy and the way
-            information may be used as described above.
+          {/* GOOGLE ANALYTICS */}
+
+          <h3 style={{ marginTop: "30px" }}>Google Analytics</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            This website may use Google Analytics to understand how visitors use
+            the site. Google Analytics collects anonymous information such as
+            page visits, device type and general usage patterns. This data helps
+            improve content quality and overall user experience.
           </p>
 
-          <h3 style={{ marginTop: "25px" }}>Updates to This Policy</h3>
-          <p style={{ opacity: 0.85 }}>
-            This Privacy Policy may be updated occasionally to reflect platform
-            improvements or policy changes. Any updates will be posted on this
-            page.
+          {/* GOOGLE ADSENSE */}
+
+          <h3 style={{ marginTop: "30px" }}>Google AdSense and Advertising</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            In the future, this website may display advertisements through
+            Google AdSense or other advertising networks. Google may use cookies
+            or web beacons to display ads based on user visits to this and other
+            websites. Users may choose to disable cookies through their browser
+            settings if they prefer not to receive personalized advertisements.
           </p>
 
-          {/* CONTACT BUTTON */}
+          {/* DATA SECURITY */}
+
+          <h3 style={{ marginTop: "30px" }}>Data Security</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            Reasonable security measures are used to protect user information.
+            Secure third-party services such as Supabase may be used to manage
+            authentication and database systems to ensure that stored data is
+            handled responsibly.
+          </p>
+
+          {/* EXTERNAL LINKS */}
+
+          <h3 style={{ marginTop: "30px" }}>External Links</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            NextGen Study Hub may contain links to external educational
+            resources or third-party websites. Please note that we do not
+            control the privacy policies of external websites. Users are
+            encouraged to review the privacy policies of those websites
+            separately.
+          </p>
+
+          {/* CHILDREN INFORMATION */}
+
+          <h3 style={{ marginTop: "30px" }}>Children's Information</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            Protecting children's privacy online is important. This website does
+            not knowingly collect personal information from children under the
+            age of 13. If a parent or guardian believes that a child has
+            provided personal information through the platform, they may contact
+            us to have that information removed.
+          </p>
+
+          {/* USER CONSENT */}
+
+          <h3 style={{ marginTop: "30px" }}>User Consent</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            By using this website, visitors consent to this Privacy Policy and
+            the way information may be collected and used as described above.
+          </p>
+
+          {/* POLICY UPDATES */}
+
+          <h3 style={{ marginTop: "30px" }}>Policy Updates</h3>
+
+          <p style={{ opacity: 0.85, lineHeight: "1.8" }}>
+            This Privacy Policy may be updated occasionally to reflect changes
+            in the website or legal requirements. Any updates will be published
+            on this page so visitors can stay informed about how information is
+            handled.
+          </p>
+
+          {/* CONTACT */}
 
           <div style={{ marginTop: "40px", textAlign: "center" }}>
             <Link to="/contact-owner">
@@ -189,7 +258,6 @@ website legal privacy terms
                   padding: "12px 28px",
                   borderRadius: "10px",
                   fontWeight: "600",
-                  cursor: "pointer",
                 }}
               >
                 Contact Us

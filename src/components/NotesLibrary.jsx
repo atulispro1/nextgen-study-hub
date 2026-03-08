@@ -586,6 +586,47 @@ semester wise subject notes
             textAlign: "center",
           }}
         >
+          <div
+            className="glass"
+            style={{
+              marginTop: "70px",
+              padding: "45px",
+              borderRadius: "22px",
+              textAlign: "center",
+            }}
+          >
+            <h2
+              style={{
+                fontWeight: "800",
+                color: "var(--primary)",
+                marginBottom: "15px",
+              }}
+            >
+              Free Student Productivity Tools
+            </h2>
+
+            <p
+              style={{
+                maxWidth: "720px",
+                margin: "auto",
+                opacity: "0.85",
+                lineHeight: "1.8",
+                marginBottom: "25px",
+              }}
+            >
+              Use helpful academic tools like CGPA calculators, percentage
+              converters, GPA calculators and Pomodoro study timers designed to
+              help students study smarter and manage their academic performance
+              efficiently.
+            </p>
+
+            <button
+              className="btn-primary"
+              onClick={() => navigate("/student-tools")}
+            >
+              Explore Student Tools →
+            </button>
+          </div>
           <section style={{ marginTop: "100px" }}>
             <div style={{ textAlign: "center", marginBottom: "50px" }}>
               <h2

@@ -299,6 +299,294 @@ education learning resources
             margin: "100px 0",
           }}
         />
+
+        <div
+  style={{
+    marginTop: "60px",
+  }}
+>
+
+  <div
+    style={{
+      textAlign: "center",
+      marginBottom: "40px",
+    }}
+  >
+    <h2
+      style={{
+        fontWeight: "800",
+        color: "var(--primary)",
+        marginBottom: "10px",
+      }}
+    >
+      Explore Courses by Stream
+    </h2>
+
+    <p
+      style={{
+        maxWidth: "720px",
+        margin: "auto",
+        opacity: "0.85",
+      }}
+    >
+      Different streams offer different career opportunities. Explore the
+      best courses available for Science, Commerce and Arts students after
+      completing 12th.
+    </p>
+  </div>
+
+  <div className="grid">
+
+    {/* SCIENCE */}
+
+    <div
+      className="glass"
+      style={{
+        padding: "30px",
+        textAlign: "center",
+      }}
+    >
+      <h3 style={{ marginBottom: "10px" }}>
+        Courses After 12th Science
+      </h3>
+
+      <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+        Explore engineering, medical, IT and technology courses for science
+        students including B.Tech, MBBS, BCA and data science programs.
+      </p>
+
+      <button
+        className="btn-primary"
+        onClick={() => navigate("/courses-after-12th-science")}
+      >
+        Explore Science Courses →
+      </button>
+    </div>
+
+
+    {/* COMMERCE */}
+
+    <div
+      className="glass"
+      style={{
+        padding: "30px",
+        textAlign: "center",
+      }}
+    >
+      <h3 style={{ marginBottom: "10px" }}>
+        Courses After 12th Commerce
+      </h3>
+
+      <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+        Discover business, finance and accounting career options including
+        BCom, BBA, CA, CS and management related programs.
+      </p>
+
+      <button
+        className="btn-primary"
+        onClick={() => navigate("/courses-after-12th-commerce")}
+      >
+        Explore Commerce Courses →
+      </button>
+    </div>
+
+
+    {/* ARTS */}
+
+    <div
+      className="glass"
+      style={{
+        padding: "30px",
+        textAlign: "center",
+      }}
+    >
+      <h3 style={{ marginBottom: "10px" }}>
+        Courses After 12th Arts
+      </h3>
+
+      <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+        Explore creative and analytical career paths including journalism,
+        psychology, law, design and humanities programs.
+      </p>
+
+      <button
+        className="btn-primary"
+        onClick={() => navigate("/courses-after-12th-arts")}
+      >
+        Explore Arts Courses →
+      </button>
+    </div>
+
+  </div>
+
+</div>
+        <div
+          className="glass"
+          style={{
+            marginTop: "80px",
+            padding: "45px",
+            borderRadius: "22px",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontWeight: "800",
+              marginBottom: "15px",
+              color: "var(--primary)",
+            }}
+          >
+            Confused About Career Options After 12th?
+          </h2>
+
+          <p
+            style={{
+              maxWidth: "720px",
+              margin: "auto",
+              opacity: "0.85",
+              lineHeight: "1.8",
+              marginBottom: "25px",
+            }}
+          >
+            Discover the best courses after 12th for Science, Commerce and Arts
+            students. Explore high salary career options, professional courses,
+            diploma programs and degree courses that can help you build a
+            successful career.
+          </p>
+
+          <button
+            className="btn-primary"
+            style={{
+              padding: "14px 30px",
+              borderRadius: "10px",
+              fontWeight: "600",
+              cursor: "pointer",
+            }}
+            onClick={() => navigate("/courses-after-12th")}
+          >
+            Explore Courses After 12th →
+          </button>
+        </div>
+        <div
+          className="glass"
+          style={{
+            marginTop: "70px",
+            padding: "45px",
+            borderRadius: "22px",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontWeight: "800",
+              color: "var(--primary)",
+              marginBottom: "15px",
+            }}
+          >
+            Looking for Engineering Study Notes?
+          </h2>
+
+          <p
+            style={{
+              maxWidth: "720px",
+              margin: "auto",
+              opacity: "0.85",
+              lineHeight: "1.8",
+              marginBottom: "25px",
+            }}
+          >
+            Access organized diploma and computer science study materials
+            including DBMS notes, Data Structure notes, Operating System notes,
+            Computer Network notes and programming tutorials designed for
+            engineering students.
+          </p>
+
+          <button
+            className="btn-primary"
+            onClick={() => navigate("/notes-library")}
+          >
+            Explore Study Materials →
+          </button>
+        </div>
+        <div
+          className="glass"
+          style={{
+            marginTop: "70px",
+            padding: "45px",
+            borderRadius: "22px",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontWeight: "800",
+              color: "var(--primary)",
+              marginBottom: "15px",
+            }}
+          >
+            Free Student Productivity Tools
+          </h2>
+
+          <p
+            style={{
+              maxWidth: "720px",
+              margin: "auto",
+              opacity: "0.85",
+              lineHeight: "1.8",
+              marginBottom: "25px",
+            }}
+          >
+            Use helpful academic tools like CGPA calculators, percentage
+            converters, GPA calculators and Pomodoro study timers designed to
+            help students study smarter and manage their academic performance
+            efficiently.
+          </p>
+
+          <button
+            className="btn-primary"
+            onClick={() => navigate("/student-tools")}
+          >
+            Explore Student Tools →
+          </button>
+        </div>
+        <div
+          className="glass"
+          style={{
+            marginTop: "70px",
+            padding: "45px",
+            borderRadius: "22px",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontWeight: "800",
+              color: "var(--primary)",
+              marginBottom: "15px",
+            }}
+          >
+            Preparing for Government Exams?
+          </h2>
+
+          <p
+            style={{
+              maxWidth: "720px",
+              margin: "auto",
+              opacity: "0.85",
+              lineHeight: "1.8",
+              marginBottom: "25px",
+            }}
+          >
+            Explore guides and preparation strategies for SSC, Railway, Banking
+            and other government exams. Learn effective study methods, exam
+            preparation strategies and career paths for government jobs in
+            India.
+          </p>
+
+          <button className="btn-primary" onClick={() => navigate("/blog")}>
+            Explore Exam Preparation Guides →
+          </button>
+        </div>
         <div
           style={{
             padding: "40px",
