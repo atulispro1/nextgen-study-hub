@@ -61,6 +61,7 @@ import DailyStudyRoutine from "./pages/blog/DailyStudyRoutine";
 import NotesLibrary from "./components/NotesLibrary";
 import NotFound from "./pages/NotFound";
 import Jobs from "./pages/Jobs";
+import NotesSEO from "./pages/NotesSEO";
 
 /* ================================================= */
 
@@ -101,6 +102,7 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/:slug" element={<NotesSEO />} />
 
       </Routes>
 

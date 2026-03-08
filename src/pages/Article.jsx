@@ -1,3 +1,4 @@
+import SEO from "../components/SEO";
 import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -46,6 +47,12 @@ export default function Article() {
 
   return (
     <>
+      <SEO
+        title={article.title}
+        description={article.description}
+        url={`https://www.atulsharmas.in/blog/${slug}`}
+        type="article"
+      />
       <Helmet>
         <title>
           Study Tips, Learning Guides & Student Productivity Articles | NextGen
@@ -88,7 +95,10 @@ student academic guide
 "
         />
 
-        <link rel="canonical" href="https://www.atulsharmas.in/article" />
+        <link
+          rel="canonical"
+          href={`https://www.atulsharmas.in/blog/${slug}`}
+        />
       </Helmet>
 
       <div className="section">

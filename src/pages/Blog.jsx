@@ -1,3 +1,4 @@
+import SEO from "../components/SEO";
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 
@@ -42,6 +43,10 @@ export default function Blog() {
 
   return (
     <>
+      <SEO
+        title="Student Blog – Study Tips, Exam Preparation & Learning Guides"
+        url="https://www.atulsharmas.in/blog"
+      />
       <Helmet>
         <title>
           Student Blog – Study Tips, Exam Preparation & Learning Guides |
@@ -195,18 +200,17 @@ education learning resources
         {/* BLOG GRID */}
         <div className="grid">
           {currentBlogs.map((blog) => (
-            <div 
+            <div
               key={blog.id}
               className="glass blog-card"
               style={{
                 overflow: "hidden",
                 cursor: "pointer",
               }}
-              >
-            
+            >
               <img
                 src={blog.image}
-                alt={blog.title}
+                alt={`${blog.title} study guide`}
                 loading="lazy"
                 style={{
                   width: "100%",
@@ -326,7 +330,7 @@ education learning resources
         </div>
 
         {/* BLOG FOOTER SECTION */}
-        <div 
+        <div
           className="glass"
           style={{
             maxWidth: "800px",
@@ -336,8 +340,7 @@ education learning resources
             borderRadius: "16px",
             transition: "transform 0.3s ease",
           }}
-          >
-        
+        >
           {/* TITLE */}
 
           <h2

@@ -1,3 +1,4 @@
+import SEO from "../components/SEO";
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import JobCard from "../components/JobCard";
@@ -133,6 +134,10 @@ export default function Jobs() {
 
   return (
     <>
+    <SEO
+title="Internships & Jobs for Diploma and Engineering Students"
+url="https://www.atulsharmas.in/jobs"
+/>
       <Helmet>
         <title>
           About NextGen Study Hub – Diploma Notes, Student Tools & Learning

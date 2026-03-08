@@ -129,16 +129,35 @@ export default function Navbar() {
         }}
       >
         {/* LOGO */}
-        <h2
+        <div
           onClick={() => navigate("/")}
           style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
             cursor: "pointer",
-            color: "var(--primary)",
-            fontWeight: "700",
           }}
         >
-          NextGen Study Hub
-        </h2>
+          <img
+            src="/logo.png"
+            alt="NextGen Study Hub Logo"
+            style={{
+              width: "110px",
+              height: "90px",
+              borderRadius: "8px"
+            }}
+          />
+
+          <span
+            style={{
+              color: "var(--primary)",
+              fontWeight: "700",
+              fontSize: "18px",
+            }}
+          >
+            NextGen Study Hub
+          </span>
+        </div>
 
         {/* DESKTOP NAV */}
 
@@ -146,6 +165,9 @@ export default function Navbar() {
           className="desktop-nav"
           style={{ display: "flex", gap: "20px", alignItems: "center" }}
         >
+          <span style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+            Home
+          </span>
           <div style={{ position: "relative" }}>
             <span
               style={{ cursor: "pointer" }}
@@ -741,6 +763,37 @@ export default function Navbar() {
           ) : null}
 
           {/* NAVIGATION LINKS */}
+
+          <div
+            style={{
+              paddingTop: "10px",
+              borderTop:
+                theme === "dark"
+                  ? "1px solid rgba(255,255,255,0.08)"
+                  : "1px solid rgba(0,0,0,0.08)",
+            }}
+          >
+            <strong>🏠 Home</strong>
+
+            <div
+              style={{
+                marginTop: "10px",
+                paddingLeft: "12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <span
+                onClick={() => {
+                  navigate("/");
+                  setMobileOpen(false);
+                }}
+              >
+                Go to Homepage
+              </span>
+            </div>
+          </div>
 
           {/* JOBS */}
           <div

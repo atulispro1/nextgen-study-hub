@@ -1,10 +1,14 @@
 import { Helmet } from "react-helmet-async";
-
+import SEO from "../components/SEO";
 import { Link } from "react-router-dom";
 
 export default function About() {
   return (
     <>
+    <SEO
+title="About NextGen Study Hub – Student Learning Platform"
+url="https://www.atulsharmas.in/about"
+/>
       <Helmet>
         <title>
           About NextGen Study Hub – Diploma Notes, Student Tools & Learning

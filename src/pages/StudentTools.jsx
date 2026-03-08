@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-
+import SEO from "../components/SEO";
 import { Calculator, Briefcase, Bell, FileText } from "lucide-react";
 import GPACalculator from "../components/GPACalculator";
 import AIAssistant from "../components/AIAssistant";
@@ -34,6 +34,10 @@ export default function StudentTools() {
 
   return (
     <>
+    <SEO
+title="Student Productivity Tools – CGPA Calculator, Study Timer & Academic Tools"
+url="https://www.atulsharmas.in/student-tools"
+/>
       <Helmet>
         <title>
           Student Tools – GPA Calculator, AI Study Assistant & Productivity

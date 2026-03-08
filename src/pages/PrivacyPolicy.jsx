@@ -1,10 +1,14 @@
 import { Helmet } from "react-helmet-async";
-
+import SEO from "../components/SEO";
 import { Link } from "react-router-dom";
 
 export default function PrivacyPolicy() {
   return (
     <>
+    <SEO
+title="Privacy Policy – NextGen Study Hub"
+url="https://www.atulsharmas.in/privacy-policy"
+/>
       <Helmet>
         <title>
           Privacy Policy – Data Protection & User Privacy | NextGen Study Hub

@@ -1,3 +1,4 @@
+
 import { lazy, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +23,9 @@ export default function Home() {
     paddingTop: "120px",
     paddingBottom: "120px",
   };
-  
+
   return (
     <>
-    
       <Helmet>
         <title>
           NextGen Study Hub – Study Tips, Diploma Notes, Study Materials,
@@ -36,7 +36,6 @@ export default function Home() {
           name="description"
           content="NextGen Study Hub helps students succeed with study tips, motivation strategies, diploma engineering notes, learning resources, internships and productivity tools designed for academic success."
         />
-        
 
         <meta
           name="keywords"
@@ -146,8 +145,8 @@ education platform for engineering students
             WebkitTextFillColor: "transparent",
           }}
         >
-          NextGen Study Hub – Study Materials, Student Tools & Internship
-          Opportunities
+          NextGen Study Hub – Diploma Engineering Notes, Study Materials,
+          Student Tools & Internships
         </h1>
 
         {/* SEO Description */}
@@ -738,6 +737,47 @@ education platform for engineering students
       <Suspense fallback={<div>Loading...</div>}>
         <Testimonials />
       </Suspense>
+      <section
+        style={{
+          maxWidth: "900px",
+          margin: "120px auto",
+          opacity: "0.9",
+          lineHeight: "1.8",
+        }}
+      >
+        <h2>Student Learning Resources and Study Materials</h2>
+
+        <p>
+          NextGen Study Hub provides a wide range of academic resources
+          including diploma engineering notes, programming notes, computer
+          science study materials, exam preparation guides and productivity
+          tools for students.
+        </p>
+
+        <p>
+          Students can explore DBMS notes, C programming notes, operating system
+          notes, data structure notes, computer network notes and other
+          engineering study materials designed for diploma and engineering
+          students.
+        </p>
+
+        <p>
+          The platform also offers useful tools such as a CGPA to percentage
+          calculator, GPA calculator, study timer, Pomodoro study timer and
+          other academic utilities that help students manage their study
+          schedule effectively.
+        </p>
+
+        <p>
+          Students preparing for competitive exams can also access guides for
+          SSC exams, banking exams, railway exams, government jobs after diploma
+          and career guidance resources.
+        </p>
+        <a href="/blog">study tips for students</a>
+        <a href="/student-tools">CGPA calculator</a>
+        <a href="/notes-library">engineering notes pdf</a>
+        <a href="/jobs">internships for students</a>
+      </section>
     </>
   );
 }

@@ -1,10 +1,14 @@
 import { Helmet } from "react-helmet-async";
-
+import SEO from "../components/SEO";
 import { Link } from "react-router-dom";
 
 export default function Terms() {
   return (
     <>
+    <SEO
+title="Terms and Conditions – NextGen Study Hub"
+url="https://www.atulsharmas.in/terms"
+/>
       <Helmet>
         <title>
           Terms and Conditions – Website Usage Terms | NextGen Study Hub

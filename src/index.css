@@ -471,3 +471,23 @@ body.dark blockquote {
     transform: translateY(0);
   }
 }
+
+/* ================= BLOG ARTICLE SECTIONS ================= */
+
+.blog-section {
+  margin-top: 50px;
+}
+
+.blog-section p {
+  margin-top: 12px;
+  opacity: 0.9;
+}
+
+.blog-section ul {
+  margin-top: 15px;
+  padding-left: 20px;
+}
+
+.blog-section li {
+  margin-bottom: 6px;
+}
