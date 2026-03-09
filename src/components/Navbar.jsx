@@ -293,9 +293,9 @@ export default function Navbar() {
             <span
               style={{ cursor: "pointer" }}
               onClick={() => {
-                const wasOpen = contentOpen;
+                const wasOpen = legalOpen;
                 closeAllDropdowns();
-                setContentOpen(!wasOpen);
+                setLegalOpen(!wasOpen);
               }}
             >
               Legal ▾
@@ -356,9 +356,9 @@ export default function Navbar() {
             <span
               style={{ cursor: "pointer" }}
               onClick={() => {
-                const wasOpen = toolsOpen;
+                const wasOpen = contentOpen;
                 closeAllDropdowns();
-                setToolsOpen(!wasOpen);
+                setContentOpen(!wasOpen);
               }}
             >
               Content ▾
@@ -390,7 +390,7 @@ export default function Navbar() {
                   style={dropdownItemStyle}
                   onClick={() => {
                     navigate("/blog");
-                    setContentOpen(false);
+                    closeAllDropdowns();
                   }}
                 >
                   📝 Blogs
