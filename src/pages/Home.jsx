@@ -217,7 +217,6 @@ education platform for engineering students
       </Suspense>
       <div style={dividerStyle} />
       <div
-      
         style={{
           marginTop: "60px",
         }}
@@ -885,10 +884,30 @@ education platform for engineering students
           SSC exams, banking exams, railway exams, government jobs after diploma
           and career guidance resources.
         </p>
-        <a href="/blog">study tips for students</a>
-        <a href="/student-tools">CGPA calculator</a>
-        <a href="/notes-library">engineering notes pdf</a>
-        <a href="/jobs">internships for students</a>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "12px",
+            marginTop: "25px",
+          }}
+        >
+          <a className="resource-link" href="/blog">
+            Study Tips for Students
+          </a>
+
+          <a className="resource-link" href="/student-tools">
+            CGPA Calculator for diploma students
+          </a>
+
+          <a className="resource-link" href="/notes-library">
+            Engineering Notes PDF download
+          </a>
+
+          <a className="resource-link" href="/jobs">
+            Internships for Students students
+          </a>
+        </div>
       </section>
     </>
   );

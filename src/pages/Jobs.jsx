@@ -285,15 +285,7 @@ academic productivity tools platform
             <select
               value={jobType}
               onChange={(e) => setJobType(e.target.value)}
-              style={{
-                padding: "14px",
-                borderRadius: "14px",
-                border: "1px solid rgba(0,0,0,0.08)",
-                fontSize: "14px",
-                cursor: "pointer",
-                background: "white",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-              }}
+              className="job-filter"
             >
               <option value="all">All Jobs</option>
               <option value="internship">Internship</option>
@@ -307,15 +299,7 @@ academic productivity tools platform
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              style={{
-                padding: "14px",
-                borderRadius: "14px",
-                border: "1px solid rgba(0,0,0,0.08)",
-                fontSize: "14px",
-                cursor: "pointer",
-                background: "white",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-              }}
+              className="job-filter"
             >
               <option value="latest">Sort: Latest</option>
               <option value="deadline">Sort: Deadline</option>
