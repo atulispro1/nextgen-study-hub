@@ -145,7 +145,7 @@ export default function Navbar() {
             style={{
               width: "110px",
               height: "90px",
-              borderRadius: "8px"
+              borderRadius: "8px",
             }}
           />
 
@@ -172,7 +172,11 @@ export default function Navbar() {
           <div style={{ position: "relative" }}>
             <span
               style={{ cursor: "pointer" }}
-              onClick={() => setJobsOpen((prev) => !prev)}
+              onClick={() => {
+                const wasOpen = jobsOpen;
+                closeAllDropdowns();
+                setJobsOpen(!wasOpen);
+              }}
             >
               Jobs ▾
             </span>
@@ -240,7 +244,11 @@ export default function Navbar() {
           <div ref={notesRef} style={{ position: "relative" }}>
             <span
               style={{ cursor: "pointer" }}
-              onClick={() => setNotesOpen((prev) => !prev)}
+              onClick={() => {
+                const wasOpen = notesOpen;
+                closeAllDropdowns();
+                setNotesOpen(!wasOpen);
+              }}
             >
               Notes ▾
             </span>
@@ -285,7 +293,9 @@ export default function Navbar() {
             <span
               style={{ cursor: "pointer" }}
               onClick={() => {
-                setLegalOpen((prev) => !prev);
+                const wasOpen = contentOpen;
+                closeAllDropdowns();
+                setContentOpen(!wasOpen);
               }}
             >
               Legal ▾
@@ -345,7 +355,11 @@ export default function Navbar() {
           <div ref={contentRef} style={{ position: "relative" }}>
             <span
               style={{ cursor: "pointer" }}
-              onClick={() => setContentOpen((prev) => !prev)}
+              onClick={() => {
+                const wasOpen = toolsOpen;
+                closeAllDropdowns();
+                setToolsOpen(!wasOpen);
+              }}
             >
               Content ▾
             </span>
@@ -390,8 +404,9 @@ export default function Navbar() {
             <span
               style={{ cursor: "pointer" }}
               onClick={() => {
-                navigate("/student-tools");
-                setToolsOpen(!toolsOpen);
+                const wasOpen = toolsOpen;
+                closeAllDropdowns();
+                setToolsOpen(!wasOpen);
               }}
             >
               Student Tools ▾
@@ -463,7 +478,11 @@ export default function Navbar() {
           <div ref={progressRef} style={{ position: "relative" }}>
             <span
               style={{ cursor: "pointer" }}
-              onClick={() => setProgressDropdown((prev) => !prev)}
+              onClick={() => {
+                const wasOpen = progressDropdown;
+                closeAllDropdowns();
+                setProgressDropdown(!wasOpen);
+              }}
             >
               See Progress (Semester) ▾
             </span>
@@ -514,7 +533,11 @@ export default function Navbar() {
           <div style={{ position: "relative" }}>
             <span
               style={{ cursor: "pointer" }}
-              onClick={() => setContactsOpen((prev) => !prev)}
+              onClick={() => {
+                const wasOpen = contactsOpen;
+                closeAllDropdowns();
+                setContactsOpen(!wasOpen);
+              }}
             >
               Contacts ▾
             </span>
@@ -654,28 +677,26 @@ export default function Navbar() {
             </div>
           )}
 
-<div className="theme-toggle">
-  <input
-    type="checkbox"
-    id="themeSwitch"
-    checked={theme === "dark"}
-    onChange={toggleTheme}
-  />
+          <div className="theme-toggle">
+            <input
+              type="checkbox"
+              id="themeSwitch"
+              checked={theme === "dark"}
+              onChange={toggleTheme}
+            />
 
-  <label htmlFor="themeSwitch">
-    <div className="toggle-circle">
+            <label htmlFor="themeSwitch">
+              <div className="toggle-circle">
+                <svg className="sun" viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="5" />
+                </svg>
 
-      <svg className="sun" viewBox="0 0 24 24" fill="currentColor">
-        <circle cx="12" cy="12" r="5"/>
-      </svg>
-
-      <svg className="moon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2a9 9 0 100 18 7 7 0 110-14z"/>
-      </svg>
-
-    </div>
-  </label>
-</div>
+                <svg className="moon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2a9 9 0 100 18 7 7 0 110-14z" />
+                </svg>
+              </div>
+            </label>
+          </div>
         </div>
 
         {/* HAMBURGER (OUTSIDE desktop-nav) */}
@@ -688,7 +709,8 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* MOBILE PANEL */}
+      {/* mobile view */}
+
       {mobileOpen && (
         <div
           className="fade-in"
@@ -696,138 +718,114 @@ export default function Navbar() {
             position: "fixed",
             top: 0,
             right: 0,
-            width: "85%",
+            width: "88%",
             height: "100vh",
-            background: theme === "dark" ? "#12121a" : "#ffffff",
-            padding: "25px",
+            background: theme === "dark" ? "#0f172a" : "#ffffff",
+            padding: "22px",
             zIndex: 2000,
             display: "flex",
             flexDirection: "column",
-            gap: "18px",
-            boxShadow: "-5px 0 30px rgba(0,0,0,0.4)",
+            gap: "22px",
+            boxShadow: "-10px 0 40px rgba(0,0,0,0.4)",
             overflowY: "auto",
           }}
         >
           {/* HEADER */}
+
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              paddingBottom: "10px",
               borderBottom:
                 theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.1)"
-                  : "1px solid rgba(0,0,0,0.1)",
+                  ? "1px solid rgba(255,255,255,0.08)"
+                  : "1px solid rgba(0,0,0,0.08)",
+              paddingBottom: "10px",
             }}
           >
             <div>
-              <div style={{ fontSize: "18px", fontWeight: "700" }}>
-                Explore Menu
-              </div>
+              <div style={{ fontWeight: "700", fontSize: "18px" }}>Menu</div>
               <div style={{ fontSize: "12px", opacity: 0.7 }}>
-                Navigate your dashboard
+                Navigate platform
               </div>
             </div>
 
             <X
               size={28}
-              style={{ cursor: "pointer" }}
               onClick={() => setMobileOpen(false)}
+              style={{ cursor: "pointer" }}
             />
           </div>
 
-          {/* USER INFO SECTION */}
-          {isLoggedIn ? (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                padding: "12px",
-                borderRadius: "10px",
-                background:
-                  theme === "dark"
-                    ? "rgba(255,255,255,0.05)"
-                    : "rgba(0,0,0,0.04)",
-              }}
-            >
-              <div
-                style={{
-                  width: "45px",
-                  height: "45px",
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "white",
-                  fontWeight: "600",
-                }}
-              >
-                {user?.email?.charAt(0)?.toUpperCase()}
-              </div>
-
-              <div>
-                <div style={{ fontSize: "14px", fontWeight: "600" }}>
-                  {user?.email}
-                </div>
-                <div style={{ fontSize: "12px", opacity: 0.7 }}>
-                  Role: {role}
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          {/* NAVIGATION LINKS */}
+          {/* QUICK NAVIGATION */}
 
           <div
             style={{
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "10px",
             }}
           >
-            <strong>🏠 Home</strong>
-
-            <div
-              style={{
-                marginTop: "10px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
+            <button
+              className="btn-primary btn-small"
+              onClick={() => {
+                navigate("/");
+                setMobileOpen(false);
               }}
             >
-              <span
-                onClick={() => {
-                  navigate("/");
-                  setMobileOpen(false);
-                }}
-              >
-                Go to Homepage
-              </span>
-            </div>
+              🏠 Home
+            </button>
+
+            <button
+              className="btn-primary btn-small"
+              onClick={() => {
+                navigate("/notes-library");
+                setMobileOpen(false);
+              }}
+            >
+              📚 Notes
+            </button>
+
+            <button
+              className="btn-primary btn-small"
+              onClick={() => {
+                navigate("/jobs");
+                setMobileOpen(false);
+              }}
+            >
+              💼 Jobs
+            </button>
+
+            <button
+              className="btn-primary btn-small"
+              onClick={() => {
+                navigate("/blog");
+                setMobileOpen(false);
+              }}
+            >
+              📝 Blog
+            </button>
+
+            <button
+              className="btn-primary btn-small"
+              onClick={() => {
+                navigate("/student-tools");
+                setMobileOpen(false);
+              }}
+            >
+              🛠 Tools
+            </button>
           </div>
 
-          {/* JOBS */}
-          <div
-            style={{
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
+          {/* JOB SECTION */}
+
+          <div className="glass" style={{ padding: "16px" }}>
             <strong>💼 Jobs</strong>
 
             <div
               style={{
-                marginTop: "10px",
-                paddingLeft: "12px",
+                marginTop: "12px",
                 display: "flex",
                 flexDirection: "column",
                 gap: "10px",
@@ -839,7 +837,7 @@ export default function Navbar() {
                   setMobileOpen(false);
                 }}
               >
-                💼 Explore Jobs
+                Explore Jobs
               </span>
 
               <span
@@ -848,7 +846,7 @@ export default function Navbar() {
                   setMobileOpen(false);
                 }}
               >
-                🎓 Interships
+                Internships
               </span>
 
               <span
@@ -857,7 +855,7 @@ export default function Navbar() {
                   setMobileOpen(false);
                 }}
               >
-                👔 Fresher Jobs
+                Fresher Jobs
               </span>
 
               <span
@@ -866,91 +864,19 @@ export default function Navbar() {
                   setMobileOpen(false);
                 }}
               >
-                💻 Remote Jobs
-              </span>
-            </div>
-          </div>
-
-          {/* NOTES */}
-          <div
-            style={{
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
-            <strong>📚 Notes</strong>
-
-            <div
-              style={{
-                marginTop: "10px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <span
-                onClick={() => {
-                  navigate("/notes-library");
-                  setMobileOpen(false);
-                }}
-              >
-                📚 Notes Library
-              </span>
-            </div>
-          </div>
-
-          {/* CONTENT */}
-          <div
-            style={{
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
-            <strong>📂 Content</strong>
-
-            <div
-              style={{
-                marginTop: "10px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <span
-                onClick={() => {
-                  navigate("/blog");
-                  setMobileOpen(false);
-                }}
-              >
-                📝 Blogs
+                Remote Jobs
               </span>
             </div>
           </div>
 
           {/* STUDENT TOOLS */}
-          <div
-            style={{
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
+
+          <div className="glass" style={{ padding: "16px" }}>
             <strong>🛠 Student Tools</strong>
 
             <div
               style={{
-                marginTop: "10px",
-                paddingLeft: "12px",
+                marginTop: "12px",
                 display: "flex",
                 flexDirection: "column",
                 gap: "10px",
@@ -994,57 +920,48 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* PROGRESS */}
-          <div
-            style={{
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
-            <strong>📈 See Progress</strong>
+          {/* SEMESTERS */}
+
+          <div className="glass" style={{ padding: "16px" }}>
+            <strong>📈 Semester Progress</strong>
 
             <div
               style={{
-                marginTop: "10px",
-                paddingLeft: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
+                marginTop: "12px",
+                display: "grid",
+                gridTemplateColumns: "repeat(3,1fr)",
+                gap: "8px",
               }}
             >
               {[1, 2, 3, 4, 5, 6].map((sem) => (
-                <span
+                <button
                   key={sem}
+                  style={{
+                    padding: "8px",
+                    borderRadius: "8px",
+                    border: "none",
+                    cursor: "pointer",
+                    background: "rgba(99,102,241,0.15)",
+                  }}
                   onClick={() => {
                     navigate(`/semester/${sem}`);
                     setMobileOpen(false);
                   }}
                 >
-                  Semester {sem}
-                </span>
+                  Sem {sem}
+                </button>
               ))}
             </div>
           </div>
 
           {/* CONTACT */}
-          <div
-            style={{
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
-            <strong>📞 Contacts</strong>
+
+          <div className="glass" style={{ padding: "16px" }}>
+            <strong>📞 Contact</strong>
 
             <div
               style={{
-                marginTop: "10px",
-                paddingLeft: "12px",
+                marginTop: "12px",
                 display: "flex",
                 flexDirection: "column",
                 gap: "10px",
@@ -1056,7 +973,7 @@ export default function Navbar() {
                   setMobileOpen(false);
                 }}
               >
-                📬 Contact Owner
+                Contact Owner
               </span>
 
               <span
@@ -1065,27 +982,19 @@ export default function Navbar() {
                   setMobileOpen(false);
                 }}
               >
-                👨‍🏫 Contact Faculty
+                Contact Faculty
               </span>
             </div>
           </div>
 
           {/* LEGAL */}
-          <div
-            style={{
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
+
+          <div className="glass" style={{ padding: "16px" }}>
             <strong>📄 Legal</strong>
 
             <div
               style={{
-                marginTop: "10px",
-                paddingLeft: "12px",
+                marginTop: "12px",
                 display: "flex",
                 flexDirection: "column",
                 gap: "10px",
@@ -1121,84 +1030,35 @@ export default function Navbar() {
           </div>
 
           {/* ADMIN */}
+
           {!isLoggedIn && (
             <button
+              className="btn-primary"
               onClick={() => {
                 navigate("/admin");
                 setMobileOpen(false);
               }}
-              className="btn-primary"
             >
               Admin Login
             </button>
           )}
 
-          {isLoggedIn && (
-            <>
-              {isOwner && (
-                <button
-                  onClick={() => {
-                    navigate("/admin?mode=create");
-                    setMobileOpen(false);
-                  }}
-                  className="btn-primary"
-                >
-                  + Create Faculty
-                </button>
-              )}
+          {/* THEME TOGGLE */}
 
-              <button
-                onClick={() => {
-                  navigate("/admin");
-                  setMobileOpen(false);
-                }}
-                className="btn-primary"
-              >
-                Admin Panel
-              </button>
+          <div style={{ marginTop: "10px" }}>
+            <div className="theme-toggle">
+              <input
+                type="checkbox"
+                id="themeSwitch"
+                checked={theme === "dark"}
+                onChange={toggleTheme}
+              />
 
-              <button
-                onClick={() => {
-                  logout();
-                  setMobileOpen(false);
-                }}
-                style={{
-                  padding: "10px",
-                  borderRadius: "8px",
-                  border: "none",
-                  background: "crimson",
-                  color: "white",
-                  cursor: "pointer",
-                }}
-              >
-                Logout
-              </button>
-            </>
-          )}
-
-          {/* THEME SWITCH */}
-<div className="theme-toggle">
-  <input
-    type="checkbox"
-    id="themeSwitch"
-    checked={theme === "dark"}
-    onChange={toggleTheme}
-  />
-
-  <label htmlFor="themeSwitch">
-    <div className="toggle-circle">
-
-      <svg className="sun" viewBox="0 0 24 24" fill="currentColor">
-        <circle cx="12" cy="12" r="5"/>
-      </svg>
-
-      <svg className="moon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2a9 9 0 100 18 7 7 0 110-14z"/>
-      </svg>
-
-    </div>
-  </label>
-</div>
+              <label htmlFor="themeSwitch">
+                <div className="toggle-circle"></div>
+              </label>
+            </div>
+          </div>
         </div>
       )}
     </>
