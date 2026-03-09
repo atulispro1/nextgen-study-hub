@@ -24,6 +24,15 @@ export default function Jobs() {
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 6;
   const isAdmin = user && admins.includes(user.email);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchQuery(search);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
   /* FETCH JOBS FROM SUPABASE */
 
@@ -96,16 +105,33 @@ export default function Jobs() {
     getUser();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
   /* FILTER JOBS */
 
   let filteredJobs = jobs.filter((job) => {
+    const title = job.title ? job.title.toLowerCase() : "";
+    const company = job.company ? job.company.toLowerCase() : "";
+    const tags = Array.isArray(job.tags)
+      ? job.tags.join(" ").toLowerCase()
+      : "";
+
+    const searchValue = search.toLowerCase();
+
     const searchMatch =
-      job.title.toLowerCase().includes(search.toLowerCase()) ||
-      job.company.toLowerCase().includes(search.toLowerCase()) ||
-      job.tags.join(" ").toLowerCase().includes(search.toLowerCase());
+      title.includes(searchValue) ||
+      company.includes(searchValue) ||
+      tags.includes(searchValue);
 
     const typeMatch =
-      jobType === "all" || job.type.toLowerCase().replace("-", "") === jobType;
+      jobType === "all" ||
+      (job.type && job.type.toLowerCase().replace("-", "") === jobType);
+
     return searchMatch && typeMatch;
   });
 
@@ -113,12 +139,6 @@ export default function Jobs() {
 
   if (showBookmarks) {
     filteredJobs = filteredJobs.filter((job) => bookmarks.includes(job.id));
-  }
-
-  /* SORT */
-
-  if (sortBy === "latest") {
-    filteredJobs = [...filteredJobs].reverse();
   }
 
   /* PAGINATION */
@@ -461,125 +481,118 @@ academic productivity tools platform
         </div>
 
         <div
-  style={{
-    marginTop: "60px",
-  }}
->
+          style={{
+            marginTop: "60px",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: "40px",
+            }}
+          >
+            <h2
+              style={{
+                fontWeight: "800",
+                color: "var(--primary)",
+                marginBottom: "10px",
+              }}
+            >
+              Explore Courses by Stream
+            </h2>
 
-  <div
-    style={{
-      textAlign: "center",
-      marginBottom: "40px",
-    }}
-  >
-    <h2
-      style={{
-        fontWeight: "800",
-        color: "var(--primary)",
-        marginBottom: "10px",
-      }}
-    >
-      Explore Courses by Stream
-    </h2>
+            <p
+              style={{
+                maxWidth: "720px",
+                margin: "auto",
+                opacity: "0.85",
+              }}
+            >
+              Different streams offer different career opportunities. Explore
+              the best courses available for Science, Commerce and Arts students
+              after completing 12th.
+            </p>
+          </div>
 
-    <p
-      style={{
-        maxWidth: "720px",
-        margin: "auto",
-        opacity: "0.85",
-      }}
-    >
-      Different streams offer different career opportunities. Explore the
-      best courses available for Science, Commerce and Arts students after
-      completing 12th.
-    </p>
-  </div>
+          <div className="grid">
+            {/* SCIENCE */}
 
-  <div className="grid">
+            <div
+              className="glass"
+              style={{
+                padding: "30px",
+                textAlign: "center",
+              }}
+            >
+              <h3 style={{ marginBottom: "10px" }}>
+                Courses After 12th Science
+              </h3>
 
-    {/* SCIENCE */}
+              <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+                Explore engineering, medical, IT and technology courses for
+                science students including B.Tech, MBBS, BCA and data science
+                programs.
+              </p>
 
-    <div
-      className="glass"
-      style={{
-        padding: "30px",
-        textAlign: "center",
-      }}
-    >
-      <h3 style={{ marginBottom: "10px" }}>
-        Courses After 12th Science
-      </h3>
+              <button
+                className="btn-primary"
+                onClick={() => navigate("/courses-after-12th-science")}
+              >
+                Explore Science Courses →
+              </button>
+            </div>
 
-      <p style={{ opacity: "0.75", marginBottom: "20px" }}>
-        Explore engineering, medical, IT and technology courses for science
-        students including B.Tech, MBBS, BCA and data science programs.
-      </p>
+            {/* COMMERCE */}
 
-      <button
-        className="btn-primary"
-        onClick={() => navigate("/courses-after-12th-science")}
-      >
-        Explore Science Courses →
-      </button>
-    </div>
+            <div
+              className="glass"
+              style={{
+                padding: "30px",
+                textAlign: "center",
+              }}
+            >
+              <h3 style={{ marginBottom: "10px" }}>
+                Courses After 12th Commerce
+              </h3>
 
+              <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+                Discover business, finance and accounting career options
+                including BCom, BBA, CA, CS and management related programs.
+              </p>
 
-    {/* COMMERCE */}
+              <button
+                className="btn-primary"
+                onClick={() => navigate("/courses-after-12th-commerce")}
+              >
+                Explore Commerce Courses →
+              </button>
+            </div>
 
-    <div
-      className="glass"
-      style={{
-        padding: "30px",
-        textAlign: "center",
-      }}
-    >
-      <h3 style={{ marginBottom: "10px" }}>
-        Courses After 12th Commerce
-      </h3>
+            {/* ARTS */}
 
-      <p style={{ opacity: "0.75", marginBottom: "20px" }}>
-        Discover business, finance and accounting career options including
-        BCom, BBA, CA, CS and management related programs.
-      </p>
+            <div
+              className="glass"
+              style={{
+                padding: "30px",
+                textAlign: "center",
+              }}
+            >
+              <h3 style={{ marginBottom: "10px" }}>Courses After 12th Arts</h3>
 
-      <button
-        className="btn-primary"
-        onClick={() => navigate("/courses-after-12th-commerce")}
-      >
-        Explore Commerce Courses →
-      </button>
-    </div>
+              <p style={{ opacity: "0.75", marginBottom: "20px" }}>
+                Explore creative and analytical career paths including
+                journalism, psychology, law, design and humanities programs.
+              </p>
 
-
-    {/* ARTS */}
-
-    <div
-      className="glass"
-      style={{
-        padding: "30px",
-        textAlign: "center",
-      }}
-    >
-      <h3 style={{ marginBottom: "10px" }}>
-        Courses After 12th Arts
-      </h3>
-
-      <p style={{ opacity: "0.75", marginBottom: "20px" }}>
-        Explore creative and analytical career paths including journalism,
-        psychology, law, design and humanities programs.
-      </p>
-
-      <button
-        className="btn-primary"
-        onClick={() => navigate("/courses-after-12th-arts")}
-      >
-        Explore Arts Courses →
-      </button>
-    </div>
-
-  </div>
-
-</div>
+              <button
+                className="btn-primary"
+                onClick={() => navigate("/courses-after-12th-arts")}
+              >
+                Explore Arts Courses →
+              </button>
+            </div>
+          </div>
+        </div>
         <div
           className="glass"
           style={{
@@ -618,7 +631,6 @@ academic productivity tools platform
             Explore Exam Preparation Guides →
           </button>
         </div>
-
 
         <JobsSources />
 

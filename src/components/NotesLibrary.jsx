@@ -30,6 +30,13 @@ export default function NotesLibrary() {
     setCurrentPage(1);
   }, [search, semester, category, subject]);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
+
   const fetchNotes = async () => {
     const { data } = await supabase
       .from("materials")

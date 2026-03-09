@@ -315,6 +315,38 @@ semester wise subject notes
               sortOption={sortOption}
               setSortOption={setSortOption}
             />
+            <div
+              className="scroll-hint"
+              style={{
+                textAlign: "center",
+                marginTop: "12px",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "13px",
+                  opacity: "0.7",
+                  marginBottom: "6px",
+                }}
+              >
+                Scroll down to view all notes
+              </p>
+
+              <button
+                onClick={() =>
+                  window.scrollBy({ top: 400, behavior: "smooth" })
+                }
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "22px",
+                  color: "var(--primary)",
+                }}
+              >
+                ↓
+              </button>
+            </div>
 
             {/* ADMIN CREATE UNIT */}
             {isAdmin && (
@@ -335,29 +367,6 @@ semester wise subject notes
                 </p>
               </div>
             )}
-            <div style={{ textAlign: "center", marginBottom: "50px" }}>
-              <h2
-                style={{
-                  fontSize: "clamp(1.8rem,4vw,2.2rem)",
-                  fontWeight: "800",
-                  color: "var(--primary)",
-                  marginBottom: "10px",
-                }}
-              >
-                Browse Semester Notes
-              </h2>
-
-              <p
-                style={{
-                  opacity: "0.75",
-                  maxWidth: "650px",
-                  margin: "auto",
-                }}
-              >
-                Select a semester to explore organized subject notes, study
-                resources and academic materials.
-              </p>
-            </div>
 
             {/* ================= TEACHER NOTES ================= */}
 
@@ -479,6 +488,56 @@ semester wise subject notes
                 </div>
               );
             })()}
+            <div
+              className="glass"
+              style={{
+                marginTop: "50px",
+                padding: "35px",
+                borderRadius: "20px",
+                textAlign: "center",
+              }}
+            >
+              <h3
+                style={{
+                  fontWeight: "700",
+                  marginBottom: "12px",
+                  color: "var(--primary)",
+                }}
+              >
+                Explore More Study Notes
+              </h3>
+
+              <p
+                style={{
+                  maxWidth: "650px",
+                  margin: "auto",
+                  opacity: "0.85",
+                  lineHeight: "1.7",
+                  marginBottom: "22px",
+                  fontSize: "15px",
+                }}
+              >
+                Looking for notes from other subjects or semesters? Visit our
+                complete Notes Library where you can find organized study
+                materials, engineering notes, important topics, and resources
+                designed to help students prepare better for exams and
+                assignments.
+              </p>
+
+              <button
+                className="btn-primary"
+                style={{
+                  padding: "12px 26px",
+                  borderRadius: "40px",
+                  fontSize: "15px",
+                  fontWeight: "600",
+                  boxShadow: "0 8px 25px rgba(99,102,241,0.35)",
+                }}
+                onClick={() => navigate("/notes-library")}
+              >
+                📚 Explore All Notes
+              </button>
+            </div>
 
             <div
               style={{
@@ -497,6 +556,56 @@ semester wise subject notes
                 margin: "80px 0",
               }}
             />
+            <div
+              className="glass"
+              style={{
+                marginTop: "40px",
+                padding: "30px",
+                borderRadius: "18px",
+                textAlign: "center",
+              }}
+            >
+              <h3
+                style={{
+                  marginBottom: "10px",
+                  fontWeight: "700",
+                  color: "var(--primary)",
+                }}
+              >
+                Need a Clearer Explanation?
+              </h3>
+
+              <p
+                style={{
+                  maxWidth: "650px",
+                  margin: "auto",
+                  opacity: "0.85",
+                  lineHeight: "1.7",
+                  marginBottom: "20px",
+                  fontSize: "15px",
+                }}
+              >
+                Some engineering topics can be difficult to understand from
+                notes alone. If you need a simpler explanation, examples, or
+                step-by-step guidance, try our AI Study Assistant. It can help
+                explain concepts, solve doubts, and guide you through complex
+                topics in a more interactive way.
+              </p>
+
+              <button
+                className="btn-primary"
+                style={{
+                  padding: "12px 24px",
+                  borderRadius: "40px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  boxShadow: "0 8px 20px rgba(99,102,241,0.35)",
+                }}
+                onClick={() => navigate("/student-tools")}
+              >
+                🤖 Use AI Assistant
+              </button>
+            </div>
             <div
               style={{
                 padding: "40px",
@@ -525,11 +634,9 @@ semester wise subject notes
               </p>
             </div>
 
-            <div 
-
-          
-              className="glass" style=
-              {{
+            <div
+              className="glass"
+              style={{
                 padding: "60px",
                 marginTop: "120px",
                 textAlign: "center",
@@ -537,7 +644,7 @@ semester wise subject notes
                 marginInline: "auto",
                 border: "1px solid rgba(99,102,241,0.2)",
               }}
-              >
+            >
               <h2
                 style={{
                   fontSize: "32px",
@@ -570,8 +677,6 @@ semester wise subject notes
                 What features should i add more??
               </p>
               <button
-          
-              
                 onClick={() => navigate("/contact-owner")}
                 style={{
                   padding: "14px 40px",
@@ -644,7 +749,6 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
         <img
           src={image}
           alt={title}
-
           loading="lazy"
           style={{
             width: "100%",

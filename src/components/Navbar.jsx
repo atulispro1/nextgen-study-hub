@@ -654,12 +654,28 @@ export default function Navbar() {
             </div>
           )}
 
-          <button
-            onClick={toggleTheme}
-            style={{ background: "none", border: "none", cursor: "pointer" }}
-          >
-            {theme === "light" ? <Moon /> : <Sun />}
-          </button>
+<div className="theme-toggle">
+  <input
+    type="checkbox"
+    id="themeSwitch"
+    checked={theme === "dark"}
+    onChange={toggleTheme}
+  />
+
+  <label htmlFor="themeSwitch">
+    <div className="toggle-circle">
+
+      <svg className="sun" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="12" r="5"/>
+      </svg>
+
+      <svg className="moon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a9 9 0 100 18 7 7 0 110-14z"/>
+      </svg>
+
+    </div>
+  </label>
+</div>
         </div>
 
         {/* HAMBURGER (OUTSIDE desktop-nav) */}
@@ -1161,23 +1177,28 @@ export default function Navbar() {
           )}
 
           {/* THEME SWITCH */}
-          <button
-            onClick={() => toggleTheme()}
-            style={{
-              background: "none",
-              border: "none",
-              textAlign: "left",
-              fontWeight: "600",
-              marginTop: "10px",
-              paddingTop: "10px",
-              borderTop:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-            }}
-          >
-            {theme === "light" ? "🌙 Switch to Dark" : "☀ Switch to Light"}
-          </button>
+<div className="theme-toggle">
+  <input
+    type="checkbox"
+    id="themeSwitch"
+    checked={theme === "dark"}
+    onChange={toggleTheme}
+  />
+
+  <label htmlFor="themeSwitch">
+    <div className="toggle-circle">
+
+      <svg className="sun" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="12" r="5"/>
+      </svg>
+
+      <svg className="moon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a9 9 0 100 18 7 7 0 110-14z"/>
+      </svg>
+
+    </div>
+  </label>
+</div>
         </div>
       )}
     </>
