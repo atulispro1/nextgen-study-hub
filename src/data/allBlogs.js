@@ -256,7 +256,7 @@ export const allBlogs = [
     title: "How to Study Engineering Mathematics Easily",
     category: "Study Tips",
     description: "Understand maths without fear.",
-    image: "/crop13.webp",
+    image: "/crop11.webp",
   },
   {
     id: 33,
@@ -264,7 +264,7 @@ export const allBlogs = [
     title: "Operating System Basics Explained Simply",
     category: "Programming",
     description: "Concepts every CS student must know.",
-    image: "/crop14.webp",
+    image: "/crop9.webp",
   },
   {
     id: 34,
@@ -272,7 +272,7 @@ export const allBlogs = [
     title: "DBMS Explained for Beginners",
     category: "Programming",
     description: "Normalization, keys & queries simplified.",
-    image: "/crop15.webp",
+    image: "/crop20.webp",
   },
   {
     id: 35,

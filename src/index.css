@@ -283,9 +283,9 @@ body.dark .pagination-btn {
 /* ================= SIDEBAR ================= */
 
 .blog-sidebar {
-  position: sticky;
-  top: 120px;
-  height: fit-content;
+  position: relative;
+  height: auto;
+  margin-top: 30px;
 }
 
 /* ================= AUTHOR ================= */
@@ -698,4 +698,22 @@ body.dark .resource-link{
 body.dark .resource-link:hover{
   background:linear-gradient(135deg,#6366f1,#8b5cf6);
   color:white;
+}
+
+@media (max-width: 768px){
+
+  .blog-container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-content{
+    width: 100%;
+  }
+
+  .blog-sidebar{
+    width: 100%;
+    margin-top: 30px;
+  }
+
 }

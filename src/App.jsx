@@ -26,11 +26,11 @@ import Loader from "./components/Loader";
 /* ===== COURSE PAGES ===== */
 
 const CoursesAfter12th = lazy(() => import("./pages/CoursesAfter12th"));
-const CoursesAfter12thScience = lazy(() =>
-  import("./pages/CoursesAfter12thScience")
+const CoursesAfter12thScience = lazy(
+  () => import("./pages/CoursesAfter12thScience"),
 );
-const CoursesAfter12thCommerce = lazy(() =>
-  import("./pages/CoursesAfter12thCommerce")
+const CoursesAfter12thCommerce = lazy(
+  () => import("./pages/CoursesAfter12thCommerce"),
 );
 const CoursesAfter12thArts = lazy(() => import("./pages/CoursesAfter12thArts"));
 
@@ -48,14 +48,9 @@ function App() {
 
       {/* MAIN LANDMARK FOR ACCESSIBILITY */}
       <main>
-
         {/* SUSPENSE LOADER */}
-        <Suspense
-          fallback={<Loader />}
-        >
-
+        <Suspense fallback={<Loader />}>
           <Routes>
-
             {/* Home */}
             <Route path="/" element={<Home />} />
 
@@ -83,7 +78,6 @@ function App() {
 
             {/* Notes */}
             <Route path="/notes-library" element={<NotesLibrary />} />
-            <Route path="/:slug" element={<NotesSEO />} />
 
             {/* Jobs */}
             <Route path="/jobs" element={<Jobs />} />
@@ -103,13 +97,14 @@ function App() {
               element={<CoursesAfter12thArts />}
             />
 
+            {/* SEO pages */}
+            <Route path="/:slug" element={<NotesSEO />} />
+
             {/* 404 */}
+            <Route path="/404" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
-
           </Routes>
-
         </Suspense>
-
       </main>
 
       <Footer />

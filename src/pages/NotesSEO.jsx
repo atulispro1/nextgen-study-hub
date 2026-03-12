@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import SEO from "../components/SEO";
+import { Navigate } from "react-router-dom";
 
 const notesData = {
-
   /* ================= NOTES PAGES ================= */
 
   "dbms-notes": {
@@ -168,7 +168,6 @@ const notesData = {
     description:
       "Smart strategies for preparing engineering exams including study plans, revision methods and productivity tips.",
   },
-
 };
 
 export default function NotesSEO() {
@@ -176,7 +175,7 @@ export default function NotesSEO() {
   const page = notesData[slug];
 
   if (!page) {
-    return <h2 style={{ padding: "100px" }}>Notes not found</h2>;
+    return <Navigate to="/404" replace />;
   }
 
   return (
