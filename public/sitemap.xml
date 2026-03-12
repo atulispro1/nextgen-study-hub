@@ -2,32 +2,25 @@
 
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <sitemap>
-    <loc>https://atulsharmas.in/sitemap-pages.xml</loc>
-  </sitemap>
+    <sitemap>
+        <loc>https://atulsharmas.in/sitemap-pages.xml</loc>
+    </sitemap>
 
-  <sitemap>
-    <loc>https://atulsharmas.in/sitemap-blog.xml</loc>
-  </sitemap>
+    <sitemap>
+        <loc>https://atulsharmas.in/sitemap-blog.xml</loc>
+    </sitemap>
 
-  <sitemap>
-    <loc>https://atulsharmas.in/sitemap-notes.xml</loc>
-  </sitemap>
+    <sitemap>
+        <loc>https://atulsharmas.in/sitemap-notes.xml</loc>
+    </sitemap>
 
-  <sitemap>
-    <loc>https://atulsharmas.in/sitemap-mcq.xml</loc>
-  </sitemap>
+    <sitemap>
+        <loc>https://atulsharmas.in/sitemap-mcq.xml</loc>
+    </sitemap>
 
-  <sitemap>
-    <loc>https://atulsharmas.in/sitemap-interview.xml</loc>
-  </sitemap>
+    <sitemap>
+        <loc>https://atulsharmas.in/sitemap-interview.xml</loc>
+    </sitemap>
 
-  <sitemap>
-    <loc>https://atulsharmas.in/sitemap-semesters.xml</loc>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://atulsharmas.in/sitemap-guides.xml</loc>
-  </sitemap>
 
 </sitemapindex>
