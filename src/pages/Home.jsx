@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import SmartFooterSection from "../components/SmartFooterSection";
 const TextTicker = lazy(() => import("../components/TextTicker"));
 const StatsSection = lazy(() => import("../components/StatsSection"));
 const SemesterSection = lazy(() => import("../components/SemesterSection"));
@@ -214,6 +215,10 @@ education platform for engineering students
 
       <Suspense fallback={<div>Loading...</div>}>
         <SemesterSection />
+      </Suspense>
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <SmartFooterSection />
       </Suspense>
       <div style={dividerStyle} />
       <div

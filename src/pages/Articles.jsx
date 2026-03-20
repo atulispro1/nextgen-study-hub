@@ -1,104 +1,92 @@
-import SEO from "../components/SEO";
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { client } from "../lib/sanityClient";
+import { urlFor } from "../lib/sanityImage";
 import { useNavigate } from "react-router-dom";
-import { allBlogs } from "../data/allBlogs";
-import SmartFooterSection from "../components/SmartFooterSection";
 
-export default function Blog() {
+export default function Articles() {
+  const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+  const [visibleCount, setVisibleCount] = useState(6);
   const navigate = useNavigate();
 
-  const categories = [
-    "All",
-    "Study Tips",
-    "Programming",
-    "Career",
-    "Government Exams",
-    "Exam Preparation",
-    "Productivity",
-  ];
+  useEffect(() => {
+    const query = `*[_type == "post"] | order(publishedAt desc){
+      _id,
+      title,
+      slug,
+      mainImage,
+      publishedAt,
+      body,
+      category->{title}
+    }`;
 
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const blogsPerPage = 6;
+    client.fetch(query).then((data) => setPosts(data));
+  }, []);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategory, search]);
+  setVisibleCount(6);
+}, [search, category]);
 
-  const filteredBlogs = allBlogs
-    .filter((blog) =>
-      selectedCategory === "All" ? true : blog.category === selectedCategory,
-    )
-    .filter((blog) => blog.title.toLowerCase().includes(search.toLowerCase()));
 
-  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+  // 🎯 Unique categories
+  const categories = [
+    "All",
+    ...new Set(posts.map((p) => p.category?.title).filter(Boolean)),
+  ];
 
-  const startIndex = (currentPage - 1) * blogsPerPage;
-  const currentBlogs = filteredBlogs.slice(
-    startIndex,
-    startIndex + blogsPerPage,
-  );
+  // 🎯 Filter logic
+  const filteredPosts = posts.filter((post) => {
+    const matchesSearch =
+      post.title.toLowerCase().includes(search.toLowerCase()) ||
+      post.body?.[0]?.children?.[0]?.text
+        ?.toLowerCase()
+        .includes(search.toLowerCase());
+
+    const matchesCategory =
+      category === "All" || post.category?.title === category;
+
+    return matchesSearch && matchesCategory;
+  });
+
 
   return (
     <>
-      <SEO
-        title="Student Blog – Study Tips, Exam Preparation & Learning Guides"
-        url="https://www.atulsharmas.in/blog"
-      />
       <Helmet>
         <title>
-          Student Blog – Study Tips, Exam Preparation & Learning Guides |
+          Student Articles – Study Tips, Exam Preparation & Learning Guides |
           NextGen Study Hub
         </title>
 
         <meta
           name="description"
-          content="Explore expert study tips, exam preparation strategies, student productivity techniques and learning guides to help diploma and engineering students study smarter and succeed academically."
+          content="Explore the latest student articles including study tips, exam preparation strategies, productivity techniques and learning guides for diploma and engineering students."
         />
 
         <meta
           name="keywords"
           content="
 study tips for students,
-study tips blog,
 exam preparation tips,
-how to study effectively,
-how to study smarter,
-study techniques for students,
-learning strategies for students,
 student productivity tips,
-study motivation for students,
-how to focus while studying,
-exam study techniques,
-how toppers study,
-engineering student study tips,
-diploma student study tips,
-time management for students,
-pomodoro technique for studying,
-active recall study method,
-spaced repetition study method,
-how to remember what you study,
+how to study effectively,
+engineering study tips,
+diploma student guide,
+learning strategies for students,
 study routine for students,
-study hacks for exams,
-best study strategies,
-student learning blog,
+how toppers study,
+student blog articles,
 education tips for students,
-academic success tips,
-study improvement techniques,
 exam success strategies,
-study productivity blog,
-engineering student learning guides,
-education learning resources
+study hacks for exams,
+student learning resources
 "
         />
 
-        <link rel="canonical" href="https://www.atulsharmas.in/blog" />
+        <link rel="canonical" href="https://www.atulsharmas.in/articles" />
       </Helmet>
-
-      <div className="section">
+      <div style={{ padding: "60px 20px", maxWidth: "1200px", margin: "auto" }}>
         {/* HEADER */}
         <section
           style={{
@@ -118,7 +106,7 @@ education learning resources
               WebkitTextFillColor: "transparent",
             }}
           >
-            Student Blog – Study Tips, Exam Preparation & Learning Guides
+            Student Articles – Study Tips, Exam Preparation & Learning Guides
           </h1>
 
           <p
@@ -130,166 +118,62 @@ education learning resources
               lineHeight: "1.8",
             }}
           >
-            Explore expert study tips, exam preparation strategies, learning
-            techniques and productivity methods designed for diploma and
-            engineering students. Discover practical guides that help you study
-            smarter, stay organized and improve academic performance.
+            Explore expert-written student articles covering study techniques,
+            exam preparation strategies, productivity tips and learning guides
+            designed for diploma and engineering students to improve academic
+            performance.
           </p>
         </section>
 
-        {/* SEARCH + FILTER */}
+        {/* 🔍 SEARCH + FILTER */}
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
             gap: "15px",
-            marginBottom: "50px",
+            marginBottom: "40px",
+            flexWrap: "wrap",
             justifyContent: "center",
           }}
         >
+          {/* SEARCH */}
           <input
             type="text"
-            placeholder="Search blog..."
+            placeholder="Search articles..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
-              padding: "12px 18px",
+              padding: "12px 16px",
               borderRadius: "10px",
-              border: "1px solid rgba(0,0,0,0.1)",
-              minWidth: "250px",
+              border: "none",
+              outline: "none",
+              width: "260px",
+              background: "rgba(255,255,255,0.08)",
+              color: "white",
+              backdropFilter: "blur(10px)",
             }}
           />
 
+          {/* FILTER */}
           <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             style={{
-              padding: "12px 18px",
+              padding: "12px 16px",
               borderRadius: "10px",
+              border: "none",
+              outline: "none",
+              background: "rgba(255,255,255,0.08)",
+              color: "white",
+              backdropFilter: "blur(10px)",
+              cursor: "pointer",
             }}
           >
             {categories.map((cat, index) => (
-              <option key={index}>{cat}</option>
+              <option key={index} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
-        </div>
-
-        <div style={{ textAlign: "center", marginBottom: "50px" }}>
-          <h2
-            style={{
-              fontSize: "clamp(1.8rem,4vw,2.2rem)",
-              fontWeight: "800",
-              color: "var(--primary)",
-              marginBottom: "10px",
-            }}
-          >
-            Latest Study Articles & Learning Guides
-          </h2>
-
-          <p
-            style={{
-              opacity: "0.75",
-              maxWidth: "650px",
-              margin: "auto",
-            }}
-          >
-            Browse practical articles covering study techniques, student
-            productivity, exam strategies and academic success tips.
-          </p>
-        </div>
-
-        {/* BLOG GRID */}
-        <div className="grid">
-          {currentBlogs.map((blog) => (
-            <div
-              key={blog.id}
-              className="glass blog-card"
-              style={{
-                overflow: "hidden",
-                cursor: "pointer",
-              }}
-            >
-              <img
-                src={blog.image}
-                alt={`${blog.title} study guide`}
-                loading="lazy"
-                style={{
-                  width: "100%",
-                  height: "180px",
-                  objectFit: "cover",
-                }}
-              />
-
-              <div style={{ padding: "20px" }}>
-                <span
-                  style={{
-                    fontSize: "12px",
-                    padding: "5px 10px",
-                    borderRadius: "20px",
-                    background: "rgba(99,102,241,0.1)",
-                    color: "#6366f1",
-                  }}
-                >
-                  {blog.category}
-                </span>
-
-                <h3 style={{ marginTop: "15px" }}>{blog.title}</h3>
-
-                <p style={{ opacity: 0.7, marginTop: "10px" }}>
-                  {blog.description}
-                </p>
-
-                <button
-                  className="btn-primary"
-                  style={{ marginTop: "15px" }}
-                  onClick={() => navigate(`/blog/${blog.slug}`)}
-                >
-                  Read More →
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-        {/* PAGINATION */}
-        <div
-          style={{
-            marginTop: "60px",
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-            flexWrap: "wrap",
-          }}
-        >
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="pagination-btn"
-          >
-            Prev
-          </button>
-
-          {[...Array(totalPages)].map((_, index) => {
-            const pageNumber = index + 1;
-            return (
-              <button
-                key={index}
-                onClick={() => setCurrentPage(pageNumber)}
-                className={`pagination-btn ${
-                  currentPage === pageNumber ? "active-page" : ""
-                }`}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="pagination-btn"
-          >
-            Next
-          </button>
         </div>
 
         <div
@@ -301,8 +185,131 @@ education learning resources
           }}
         />
 
-      <SmartFooterSection />
+        {/* 🧠 GRID */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "30px",
+          }}
+        >
+          {filteredPosts.length === 0 && (
+            <p style={{ opacity: 0.6 }}>No articles found.</p>
+          )}
 
+          {filteredPosts.slice(0, visibleCount).map((post) => (
+            <div
+              key={post._id}
+              onClick={() => navigate(`/articles/${post.slug.current}`)}
+              style={{
+                cursor: "pointer",
+                borderRadius: "16px",
+                overflow: "hidden",
+                background: "rgba(255,255,255,0.05)",
+                backdropFilter: "blur(10px)",
+                transition: "0.3s",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-8px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              {/* IMAGE */}
+              {post.mainImage && (
+                <img
+                  src={urlFor(post.mainImage).width(600).height(350).url()}
+                  alt={post.title}
+                  style={{
+                    width: "100%",
+                    height: "200px",
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+
+              <div style={{ padding: "20px" }}>
+                {/* DATE */}
+                {post.publishedAt && (
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      opacity: 0.6,
+                    }}
+                  >
+                    {new Date(post.publishedAt).toLocaleDateString("en-IN")}
+                  </p>
+                )}
+
+                {/* TITLE */}
+                <h3
+                  style={{
+                    fontSize: "18px",
+                    margin: "10px 0",
+                  }}
+                >
+                  {post.title}
+                </h3>
+
+                {/* CATEGORY */}
+                {post.category?.title && (
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      background: "#4f46e5",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    {post.category.title}
+                  </span>
+                )}
+
+                {/* EXCERPT */}
+                <p
+                  style={{
+                    fontSize: "14px",
+                    opacity: 0.7,
+                    marginTop: "10px",
+                  }}
+                >
+                  {post.body?.[0]?.children?.[0]?.text?.slice(0, 80)}...
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* 🔢 PAGINATION */}
+        {visibleCount < filteredPosts.length && (
+  <div style={{
+    textAlign: "center",
+    marginTop: "40px"
+  }}>
+    <button
+      className="btn-primary"
+      onClick={() => setVisibleCount(prev => prev + 6)}
+      style={{
+        padding: "12px 30px",
+        borderRadius: "10px",
+        fontWeight: "600",
+        cursor: "pointer"
+      }}
+    >
+      Load More Articles →
+    </button>
+  </div>
+)}
+
+        <div
+          style={{
+            height: "3px",
+            background:
+              "linear-gradient(90deg, transparent, #6366f1, transparent)",
+            margin: "100px 0",
+          }}
+        />
         <div
           style={{
             marginTop: "60px",
@@ -712,38 +719,52 @@ education learning resources
           }}
         >
           <h2 style={{ marginBottom: "20px", textAlign: "center" }}>
-            Why Read Blogs on NextGen Study Hub?
+            Why Read Articles on NextGen Study Hub?
           </h2>
 
           <p style={{ opacity: 0.8, marginBottom: "20px" }}>
-            NextGen Study Hub is designed specifically for Diploma Computer
-            Science students and competitive exam aspirants who want practical,
-            structured, and easy-to-understand guidance. Our blog section covers
-            study strategies, semester preparation techniques, programming
-            fundamentals, career growth insights, and government exam
-            preparation plans.
+            NextGen Study Hub is a comprehensive learning platform designed for
+            students, learners, and aspirants who want high-quality educational
+            content, practical guidance, and real-world insights. Our articles
+            section covers a wide range of topics including study tips, exam
+            preparation strategies, career guidance, programming tutorials,
+            productivity techniques, and educational resources for diploma,
+            engineering, and competitive exam students.
           </p>
 
           <p style={{ opacity: 0.8, marginBottom: "20px" }}>
-            Whether you are preparing for SSC, Railway, Banking, State PSC
-            exams, or focusing on improving your CGPA in engineering subjects,
-            the articles published here are written to provide real value.
-            Instead of generic advice, we focus on actionable steps, clear
-            roadmaps, and student-friendly explanations.
+            Whether you are preparing for government exams like SSC, Railway,
+            Banking, or State PSC, improving your academic performance in
+            engineering subjects, or exploring new career opportunities, our
+            articles provide structured, easy-to-understand, and actionable
+            knowledge. We focus on delivering content that helps students learn
+            effectively, build strong concepts, and stay ahead in today’s
+            competitive academic environment.
           </p>
 
           <p style={{ opacity: 0.8, marginBottom: "20px" }}>
-            Our goal is to help students build strong academic foundations,
-            improve technical skills, and prepare confidently for both private
-            and government job opportunities. With regularly updated blogs on
-            programming, exam strategies, productivity, and career planning,
-            this platform acts as a complete academic growth resource.
+            In addition to academic content, NextGen Study Hub also features
+            articles on student productivity, time management, learning
+            strategies, skill development, and emerging technologies. From
+            programming and technical skills to career planning and personal
+            growth, our platform supports students in building a successful
+            future with the right knowledge and mindset.
+          </p>
+
+          <p style={{ opacity: 0.8, marginBottom: "20px" }}>
+            Our articles are written with a focus on clarity, relevance, and
+            real-world application. Instead of theoretical explanations, we
+            provide practical solutions, step-by-step guidance, and proven
+            techniques that students can directly apply in their studies and
+            career preparation.
           </p>
 
           <p style={{ opacity: 0.8 }}>
-            Explore detailed guides, structured preparation strategies, and
-            expert-written content to stay ahead in your academic and
-            professional journey.
+            Explore a wide collection of educational articles, study guides,
+            exam preparation tips, and career-focused content to enhance your
+            learning journey. Stay updated with the latest trends in education,
+            improve your academic performance, and move closer to your career
+            goals with NextGen Study Hub.
           </p>
         </div>
       </div>

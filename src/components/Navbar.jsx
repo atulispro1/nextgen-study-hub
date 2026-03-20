@@ -395,6 +395,15 @@ export default function Navbar() {
                 >
                   📝 Blogs
                 </div>
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => {
+                    navigate("/articles");
+                    closeAllDropdowns();
+                  }}
+                >
+                  📝 Articles
+                </div>
               </div>
             )}
           </div>

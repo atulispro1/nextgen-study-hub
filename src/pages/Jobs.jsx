@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase";
 import UploadJobCard from "../components/UploadJobCard";
 import Swal from "sweetalert2";
+import SmartFooterSection from "../components/SmartFooterSection";
 
 export default function Jobs() {
   const navigate = useNavigate();
@@ -422,6 +423,8 @@ academic productivity tools platform
             margin: "80px 0",
           }}
         />
+
+        <SmartFooterSection / >
         <div
           className="glass"
           style={{
