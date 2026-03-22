@@ -588,7 +588,7 @@ body.dark .theme-toggle label {
   transition: 0.3s;
 }
 
-.theme-toggle svg {
+vg {
   width: 14px;
   position: absolute;
 }
@@ -717,3 +717,154 @@ body.dark .resource-link:hover{
   }
 
 }
+
+/* ================= THEME BUTTON WITH TEXT ================= */
+
+.theme-btn {
+ position: relative;
+  width: 110px;
+  height: 45px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+/* Hover */
+.theme-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 18px rgba(99,102,241,0.5);
+}
+
+/* Click */
+.theme-btn:active {
+  transform: scale(0.95);
+}
+
+/* ICONS */
+.icon {
+  font-size: 18px;
+  transition: all 0.5s ease;
+}
+
+/* TEXT */
+.mode-text {
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.4s ease;
+}
+
+/* Default (Light Mode) */
+.light-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.dark-text {
+  position: absolute;
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+/* DARK MODE SWITCH */
+body.dark .light-text {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+body.dark .dark-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ICON ANIMATION */
+.sun {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.moon {
+  position: absolute;
+  opacity: 0;
+  transform: rotate(180deg);
+}
+
+body.dark .sun {
+  opacity: 0;
+  transform: rotate(-180deg);
+}
+
+body.dark .moon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+/* Background styling */
+body.light .theme-btn {
+  background: rgba(0,0,0,0.05);
+  color: #111;
+}
+
+body.dark .theme-btn {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+/* ================= MOBILE THEME BUTTON ================= */
+
+.mobile-theme-btn {
+  width: 100%;
+  height: 42px;
+  border-radius: 12px;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+/* Better spacing for mobile menu */
+.mobile-theme-btn .icon {
+  font-size: 16px;
+}
+
+.mobile-theme-btn .mode-text {
+  font-size: 13px;
+}
+
+/* ===== FORCE FIX FOR THEME BUTTON ===== */
+
+.theme-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* REMOVE ALL ABSOLUTE POSITIONING */
+.theme-btn .icon,
+.theme-btn .mode-text {
+  position: static !important;
+}
+
+/* SHOW ONLY ONE ICON + TEXT */
+.theme-btn .moon,
+.theme-btn .dark-text {
+  display: none;
+}
+
+body.dark .theme-btn .sun,
+body.dark .theme-btn .light-text {
+  display: none;
+}
+
+body.dark .theme-btn .moon,
+body.dark .theme-btn .dark-text {
+  display: inline;
+}
+

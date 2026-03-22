@@ -686,26 +686,13 @@ export default function Navbar() {
             </div>
           )}
 
-          <div className="theme-toggle">
-            <input
-              type="checkbox"
-              id="themeSwitch"
-              checked={theme === "dark"}
-              onChange={toggleTheme}
-            />
+          <button className="theme-btn" onClick={toggleTheme}>
+            <span className="icon sun">☀️</span>
+            <span className="icon moon">🌙</span>
 
-            <label htmlFor="themeSwitch">
-              <div className="toggle-circle">
-                <svg className="sun" viewBox="0 0 24 24" fill="currentColor">
-                  <circle cx="12" cy="12" r="5" />
-                </svg>
-
-                <svg className="moon" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2a9 9 0 100 18 7 7 0 110-14z" />
-                </svg>
-              </div>
-            </label>
-          </div>
+            <span className="mode-text light-text">Light</span>
+            <span className="mode-text dark-text">Dark</span>
+          </button>
         </div>
 
         {/* HAMBURGER (OUTSIDE desktop-nav) */}
@@ -1055,18 +1042,13 @@ export default function Navbar() {
           {/* THEME TOGGLE */}
 
           <div style={{ marginTop: "10px" }}>
-            <div className="theme-toggle">
-              <input
-                type="checkbox"
-                id="themeSwitch"
-                checked={theme === "dark"}
-                onChange={toggleTheme}
-              />
+            <button className="theme-btn mobile-theme-btn" onClick={toggleTheme}>
+              <span className="icon sun">☀️</span>
+              <span className="icon moon">🌙</span>
 
-              <label htmlFor="themeSwitch">
-                <div className="toggle-circle"></div>
-              </label>
-            </div>
+              <span className="mode-text light-text">Light</span>
+              <span className="mode-text dark-text">Dark</span>
+            </button>
           </div>
         </div>
       )}

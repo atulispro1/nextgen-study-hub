@@ -7,6 +7,17 @@ export default function AIAssistant() {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const subjects = [
+    "Applied Chemistry",
+    "Engineering Mechanics",
+    "Electrical Engineering",
+    "Mathematics",
+    "Physics",
+    "Computer Programming",
+    "Data Structures",
+    "Operating Systems"
+  ];
+
   const generateContent = async () => {
     if (!topic) return;
 
@@ -36,8 +47,8 @@ export default function AIAssistant() {
   };
 
   return (
-    
-    <div 
+
+    <div
 
       className="glass"
       style={{
@@ -45,7 +56,7 @@ export default function AIAssistant() {
         maxWidth: "900px",
         margin: "auto",
       }}
-      >
+    >
 
       <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
         NextGen AI Academic Assistant
@@ -65,10 +76,11 @@ export default function AIAssistant() {
           onChange={(e) => setSubject(e.target.value)}
           style={{ padding: "10px", borderRadius: "8px" }}
         >
-          <option>Applied Chemistry</option>
-          <option>Engineering Mechanics</option>
-          <option>Data Structures</option>
-          <option>Operating Systems</option>
+          {subjects.map((sub, index) => (
+            <option key={index} value={sub}>
+              {sub}
+            </option>
+          ))}
         </select>
 
         <select
@@ -96,20 +108,20 @@ export default function AIAssistant() {
         }}
       />
 
-<button
-  className="btn-primary ai-btn"
-  onClick={generateContent}
-  disabled={loading}
->
-  {loading ? (
-    <>
-      <span className="btn-loader"></span>
-      Generating... please wait
-    </>
-  ) : (
-    "Generate"
-  )}
-</button>
+      <button
+        className="btn-primary ai-btn"
+        onClick={generateContent}
+        disabled={loading}
+      >
+        {loading ? (
+          <>
+            <span className="btn-loader"></span>
+            Generating... please wait
+          </>
+        ) : (
+          "Generate"
+        )}
+      </button>
 
       {response && (
         <div className="fade-in"
@@ -121,8 +133,8 @@ export default function AIAssistant() {
             borderRadius: "10px",
             whiteSpace: "pre-wrap",
           }}
-          >
-        
+        >
+
           {response}
         </div>
       )}

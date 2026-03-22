@@ -223,7 +223,7 @@ student education tools
         </div>
 
         {/* GPA CALCULATOR SECTION */}
-        <div id="gpa">
+        <div id="ai">
           <AIAssistant />
         </div>
         <div
@@ -234,7 +234,7 @@ student education tools
             margin: "80px 0",
           }}
         />
-        <div id="ai">
+        <div id="quiz">
           <QuizSection />
         </div>
         <div
@@ -257,7 +257,7 @@ student education tools
           }}
         />
 
-        <div id="quiz">
+        <div id="gpa">
           <GPACalculator />
         </div>
         <div
