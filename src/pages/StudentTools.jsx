@@ -7,6 +7,9 @@ import AdvancedTodo from "../components/AdvancedTodo";
 import QuizSection from "../components/QuizSection";
 import { useNavigate } from "react-router-dom";
 import SmartFooterSection from "../components/SmartFooterSection";
+import StudyTimetableGenerator from "../components/StudyTimetableGenerator";
+import PomodoroTimer from "../components/PomodoroTimer";
+import AIQuestionSolver from "../components/AIQuestionSolver";
 
 export default function StudentTools() {
   const navigate = useNavigate();
@@ -223,6 +226,25 @@ student education tools
         </div>
 
         {/* GPA CALCULATOR SECTION */}
+        <div
+          style={{
+            height: "3px",
+            background: "linear-gradient(90deg, transparent, #6366f1, transparent)",
+            margin: "80px 0",
+          }}
+        />
+
+        <div id="ai-question">
+          <AIQuestionSolver />
+        </div>
+        <div
+          style={{
+            height: "3px",
+            background:
+              "linear-gradient(90deg, transparent, #6366f1, transparent)",
+            margin: "80px 0",
+          }}
+        />
         <div id="ai">
           <AIAssistant />
         </div>
@@ -236,6 +258,28 @@ student education tools
         />
         <div id="quiz">
           <QuizSection />
+        </div>
+        <div
+          style={{
+            height: "3px",
+            background:
+              "linear-gradient(90deg, transparent, #6366f1, transparent)",
+            margin: "80px 0",
+          }}
+        />
+        <div id="timetable">
+          <StudyTimetableGenerator />
+        </div>
+        <div
+          style={{
+            height: "3px",
+            background:
+              "linear-gradient(90deg, transparent, #6366f1, transparent)",
+            margin: "80px 0",
+          }}
+        />
+        <div id="pomodoro">
+          <PomodoroTimer />
         </div>
         <div
           style={{

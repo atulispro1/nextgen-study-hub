@@ -28,7 +28,14 @@ export default function SemesterPage() {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [sortOption, setSortOption] = useState("newest");
 
-  const categories = ["Notes", "Assignments", "Practicals", "Syllabus"];
+  const categories = [
+  "Notes",
+  "Assignments",
+  "Practicals",
+  "Syllabus",
+  "Minor Exam Papers",
+  "Major Exam Papers",
+];
 
   const subjects = [
     "Applied Chemistry (DCH-101)",
@@ -242,20 +249,119 @@ semester wise subject notes
         {/* CATEGORY LEVEL */}
         {!activeCategory && (
           <div className="grid">
-            {categories.map((cat) => (
-              <div
-                key={cat}
-                className="glass"
-                style={{
-                  padding: "30px",
-                  textAlign: "center",
-                  cursor: "pointer",
-                }}
-                onClick={() => setActiveCategory(cat)}
-              >
-                <h3>{cat}</h3>
-              </div>
-            ))}
+            {categories.map((cat) => {
+  const isImportant =
+    cat === "Minor Exam Papers" || cat === "Major Exam Papers";
+
+  // 🎨 COLOR THEMES FOR NORMAL SECTIONS
+  const getStyle = () => {
+    if (cat === "Notes")
+      return {
+        border: "2px solid #3b82f6",
+        background: "linear-gradient(135deg, rgba(59,130,246,0.15), transparent)",
+        boxShadow: "0 8px 25px rgba(59,130,246,0.25)",
+        color: "#3b82f6",
+      };
+
+    if (cat === "Assignments")
+      return {
+        border: "2px solid #8b5cf6",
+        background: "linear-gradient(135deg, rgba(139,92,246,0.15), transparent)",
+        boxShadow: "0 8px 25px rgba(139,92,246,0.25)",
+        color: "#8b5cf6",
+      };
+
+    if (cat === "Practicals")
+      return {
+        border: "2px solid #22c55e",
+        background: "linear-gradient(135deg, rgba(34,197,94,0.15), transparent)",
+        boxShadow: "0 8px 25px rgba(34,197,94,0.25)",
+        color: "#22c55e",
+      };
+
+    if (cat === "Syllabus")
+      return {
+        border: "2px solid #9ca3af",
+        background: "linear-gradient(135deg, rgba(156,163,175,0.15), transparent)",
+        boxShadow: "0 8px 25px rgba(156,163,175,0.25)",
+        color: "#9ca3af",
+      };
+
+    return {};
+  };
+
+  const normalStyle = getStyle();
+
+  return (
+    <div
+      key={cat}
+      className="glass"
+      style={{
+        padding: "30px",
+        textAlign: "center",
+        cursor: "pointer",
+        position: "relative",
+
+        // ⭐ EXAM STYLE (already important)
+        ...(isImportant && {
+          border: "2px solid #facc15",
+          background:
+            "linear-gradient(135deg, rgba(250,204,21,0.15), rgba(251,191,36,0.1))",
+          transform: "scale(1.05)",
+          boxShadow: "0 10px 30px rgba(250,204,21,0.3)",
+        }),
+
+        // 🎨 NORMAL SECTION STYLING
+        ...(!isImportant && normalStyle),
+
+        transition: "all 0.3s ease",
+      }}
+      onClick={() => setActiveCategory(cat)}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "scale(1.05)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = isImportant ? "scale(1.05)" : "scale(1)";
+      }}
+    >
+      {/* 🔥 IMPORTANT TAG ONLY FOR EXAMS */}
+      {isImportant && (
+        <span
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            background: "#facc15",
+            color: "black",
+            padding: "4px 10px",
+            fontSize: "11px",
+            fontWeight: "700",
+            borderRadius: "20px",
+          }}
+        >
+          IMPORTANT
+        </span>
+      )}
+
+      <h3
+        style={{
+          fontWeight: "700",
+          color: isImportant ? "#facc15" : normalStyle.color || "white",
+        }}
+      >
+        {/* ICONS */}
+        {cat === "Notes" && "📘 "}
+        {cat === "Assignments" && "📄 "}
+        {cat === "Practicals" && "🧪 "}
+        {cat === "Syllabus" && "📚 "}
+        {cat === "Minor Exam Papers" && "📝 "}
+        {cat === "Major Exam Papers" && "🔥 "}
+
+        {cat}
+      </h3>
+    </div>
+  );
+})}
           </div>
         )}
 
@@ -275,20 +381,100 @@ semester wise subject notes
             </h2>
 
             <div className="grid">
-              {subjects.map((sub) => (
-                <div
-                  key={sub}
-                  className="glass"
-                  style={{
-                    padding: "30px",
-                    textAlign: "center",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setActiveSubject(sub)}
-                >
-                  <h3>{sub}</h3>
-                </div>
-              ))}
+              <div className="grid">
+  {subjects.map((sub) => {
+    // 🎨 CATEGORY BASED STYLING
+    const getSubjectStyle = () => {
+      if (activeCategory === "Notes")
+        return {
+          border: "2px solid #3b82f6",
+          background:
+            "linear-gradient(135deg, rgba(59,130,246,0.15), transparent)",
+          boxShadow: "0 8px 25px rgba(59,130,246,0.25)",
+          color: "#3b82f6",
+        };
+
+      if (activeCategory === "Assignments")
+        return {
+          border: "2px solid #8b5cf6",
+          background:
+            "linear-gradient(135deg, rgba(139,92,246,0.15), transparent)",
+          boxShadow: "0 8px 25px rgba(139,92,246,0.25)",
+          color: "#8b5cf6",
+        };
+
+      if (activeCategory === "Practicals")
+        return {
+          border: "2px solid #22c55e",
+          background:
+            "linear-gradient(135deg, rgba(34,197,94,0.15), transparent)",
+          boxShadow: "0 8px 25px rgba(34,197,94,0.25)",
+          color: "#22c55e",
+        };
+
+      if (activeCategory === "Syllabus")
+        return {
+          border: "2px solid #9ca3af",
+          background:
+            "linear-gradient(135deg, rgba(156,163,175,0.15), transparent)",
+          boxShadow: "0 8px 25px rgba(156,163,175,0.25)",
+          color: "#9ca3af",
+        };
+
+      if (
+        activeCategory === "Minor Exam Papers" ||
+        activeCategory === "Major Exam Papers"
+      )
+        return {
+          border: "2px solid #facc15",
+          background:
+            "linear-gradient(135deg, rgba(250,204,21,0.2), transparent)",
+          boxShadow: "0 10px 30px rgba(250,204,21,0.35)",
+          color: "#facc15",
+          transform: "scale(1.03)",
+        };
+
+      return {};
+    };
+
+    const style = getSubjectStyle();
+
+    return (
+      <div
+        key={sub}
+        className="glass"
+        style={{
+          padding: "30px",
+          textAlign: "center",
+          cursor: "pointer",
+          transition: "all 0.3s ease",
+
+          ...style,
+        }}
+        onClick={() => setActiveSubject(sub)}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform =
+            activeCategory === "Minor Exam Papers" ||
+            activeCategory === "Major Exam Papers"
+              ? "scale(1.03)"
+              : "scale(1)";
+        }}
+      >
+        <h3
+          style={{
+            fontWeight: "700",
+            color: style.color || "white",
+          }}
+        >
+          {sub}
+        </h3>
+      </div>
+    );
+  })}
+</div>
             </div>
           </>
         )}

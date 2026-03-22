@@ -4,6 +4,7 @@ import { Suspense, lazy } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import { PomodoroProvider } from "./context/PomodoroContext";
 
 /* ===== LAZY LOAD PAGES ===== */
 
@@ -44,75 +45,77 @@ const ArticlePost = lazy(() => import("./pages/ArticlePost"));
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <Navbar />
+    <PomodoroProvider>
+      <Router>
+        <ScrollToTop />
+        <Navbar />
 
-      {/* MAIN LANDMARK FOR ACCESSIBILITY */}
-      <main>
-        {/* SUSPENSE LOADER */}
-        <Suspense fallback={<Loader />}>
-          <Routes>
-            {/* Home */}
-            <Route path="/" element={<Home />} />
+        {/* MAIN LANDMARK FOR ACCESSIBILITY */}
+        <main>
+          {/* SUSPENSE LOADER */}
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              {/* Home */}
+              <Route path="/" element={<Home />} />
 
-            {/* Semester */}
-            <Route path="/semester/:id" element={<SemesterPage />} />
+              {/* Semester */}
+              <Route path="/semester/:id" element={<SemesterPage />} />
 
-            {/* Contact */}
-            <Route path="/contact-faculty" element={<ContactFaculty />} />
-            <Route path="/contact-owner" element={<ContactOwner />} />
+              {/* Contact */}
+              <Route path="/contact-faculty" element={<ContactFaculty />} />
+              <Route path="/contact-owner" element={<ContactOwner />} />
 
-            {/* Admin */}
-            <Route path="/admin" element={<AdminAuth />} />
+              {/* Admin */}
+              <Route path="/admin" element={<AdminAuth />} />
 
-            {/* Tools */}
-            <Route path="/student-tools" element={<StudentTools />} />
+              {/* Tools */}
+              <Route path="/student-tools" element={<StudentTools />} />
 
-            {/* Info Pages */}
-            <Route path="/about" element={<About />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<Terms />} />
+              {/* Info Pages */}
+              <Route path="/about" element={<About />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<Terms />} />
 
-            {/* Blog */}
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<ScoreCGPA />} />
-            <Route path="/articles" element={<Articles />} />
-            <Route path="/articles/:slug" element={<ArticlePost />} />
+              {/* Blog */}
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<ScoreCGPA />} />
+              <Route path="/articles" element={<Articles />} />
+              <Route path="/articles/:slug" element={<ArticlePost />} />
 
-            {/* Notes */}
-            <Route path="/notes-library" element={<NotesLibrary />} />
+              {/* Notes */}
+              <Route path="/notes-library" element={<NotesLibrary />} />
 
-            {/* Jobs */}
-            <Route path="/jobs" element={<Jobs />} />
+              {/* Jobs */}
+              <Route path="/jobs" element={<Jobs />} />
 
-            {/* Courses */}
-            <Route path="/courses-after-12th" element={<CoursesAfter12th />} />
-            <Route
-              path="/courses-after-12th-science"
-              element={<CoursesAfter12thScience />}
-            />
-            <Route
-              path="/courses-after-12th-commerce"
-              element={<CoursesAfter12thCommerce />}
-            />
-            <Route
-              path="/courses-after-12th-arts"
-              element={<CoursesAfter12thArts />}
-            />
+              {/* Courses */}
+              <Route path="/courses-after-12th" element={<CoursesAfter12th />} />
+              <Route
+                path="/courses-after-12th-science"
+                element={<CoursesAfter12thScience />}
+              />
+              <Route
+                path="/courses-after-12th-commerce"
+                element={<CoursesAfter12thCommerce />}
+              />
+              <Route
+                path="/courses-after-12th-arts"
+                element={<CoursesAfter12thArts />}
+              />
 
-            {/* SEO pages */}
-            <Route path="/:slug" element={<NotesSEO />} />
+              {/* SEO pages */}
+              <Route path="/:slug" element={<NotesSEO />} />
 
-            {/* 404 */}
-            <Route path="/404" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </main>
+              {/* 404 */}
+              <Route path="/404" element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </main>
 
-      <Footer />
-    </Router>
+        <Footer />
+      </Router>
+    </PomodoroProvider>
   );
 }
 

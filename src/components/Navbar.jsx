@@ -446,6 +446,15 @@ export default function Navbar() {
                 <div
                   style={dropdownItemStyle}
                   onClick={() => {
+                    goToSection("ai-question");
+                    closeAllDropdowns();
+                  }}
+                >
+                  🤖 AI Question Solver
+                </div>
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => {
                     goToSection("gpa");
                     closeAllDropdowns();
                   }}
@@ -478,6 +487,24 @@ export default function Navbar() {
                   }}
                 >
                   🤖 AI Assistant
+                </div>
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => {
+                    goToSection("timetable");
+                    closeAllDropdowns();
+                  }}
+                >
+                  🧠 Time Table Generator
+                </div>
+                <div
+                  style={dropdownItemStyle}
+                  onClick={() => {
+                    goToSection("pomodoro");
+                    closeAllDropdowns();
+                  }}
+                >
+                  ⏱️ Pomodoro Timer
                 </div>
               </div>
             )}
