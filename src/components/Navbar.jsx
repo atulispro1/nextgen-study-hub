@@ -907,6 +907,14 @@ export default function Navbar() {
             >
               <span
                 onClick={() => {
+                  goToSection("ai-question");
+                  setMobileOpen(false);
+                }}
+              >
+                🤖 AI Question Solver
+              </span>
+              <span
+                onClick={() => {
                   goToSection("gpa");
                   setMobileOpen(false);
                 }}
@@ -922,6 +930,14 @@ export default function Navbar() {
               >
                 ✅ Todo List
               </span>
+              <span
+                onClick={() => {
+                  goToSection("ai");
+                  setMobileOpen(false);
+                }}
+              >
+                🤖 AI Assistant
+              </span>
 
               <span
                 onClick={() => {
@@ -931,15 +947,23 @@ export default function Navbar() {
               >
                 🎯 AI Quiz Arena
               </span>
-
               <span
                 onClick={() => {
-                  goToSection("ai");
+                  goToSection("timetable");
                   setMobileOpen(false);
                 }}
               >
-                🤖 AI Assistant
+                🧠 Time Table Generator
               </span>
+              <span
+                onClick={() => {
+                  goToSection("pomodoro");
+                  setMobileOpen(false);
+                }}
+              >
+                ⏱️ Pomodoro Timer
+              </span>
+
             </div>
           </div>
 
