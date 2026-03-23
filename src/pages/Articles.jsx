@@ -26,8 +26,8 @@ export default function Articles() {
   }, []);
 
   useEffect(() => {
-  setVisibleCount(6);
-}, [search, category]);
+    setVisibleCount(6);
+  }, [search, category]);
 
 
   // 🎯 Unique categories
@@ -62,26 +62,6 @@ export default function Articles() {
         <meta
           name="description"
           content="Explore the latest student articles including study tips, exam preparation strategies, productivity techniques and learning guides for diploma and engineering students."
-        />
-
-        <meta
-          name="keywords"
-          content="
-study tips for students,
-exam preparation tips,
-student productivity tips,
-how to study effectively,
-engineering study tips,
-diploma student guide,
-learning strategies for students,
-study routine for students,
-how toppers study,
-student blog articles,
-education tips for students,
-exam success strategies,
-study hacks for exams,
-student learning resources
-"
         />
 
         <link rel="canonical" href="https://www.atulsharmas.in/articles" />
@@ -123,6 +103,54 @@ student learning resources
             designed for diploma and engineering students to improve academic
             performance.
           </p>
+
+          {/* 🔥 STATIC SEO CONTENT (FOR GOOGLE INDEXING) */}
+          <div style={{
+            marginTop: "20px",
+            fontSize: "14px",
+            opacity: "0.7"
+          }}>
+            <p>
+              Find helpful articles on study techniques, exam strategies,
+              productivity tips, and learning methods to improve your academic performance.
+            </p>
+
+            {/* 🔗 INTERNAL LINKS (STYLED) */}
+            <div style={{ marginTop: "10px" }}>
+              <a
+                href="/articles/how-to-use-ai-to-study-faster-2026"
+                style={{
+                  color: "#6366f1",
+                  textDecoration: "none",
+                  fontWeight: "500"
+                }}
+              >
+                AI Study Guide
+              </a>{" "}
+              |{" "}
+              <a
+                href="/articles/last-7-days-study-plan-exams-2026"
+                style={{
+                  color: "#6366f1",
+                  textDecoration: "none",
+                  fontWeight: "500"
+                }}
+              >
+                7 Day Study Plan
+              </a>{" "}
+              |{" "}
+              <a
+                href="/articles/how-to-stay-focused-while-studying-2026"
+                style={{
+                  color: "#6366f1",
+                  textDecoration: "none",
+                  fontWeight: "500"
+                }}
+              >
+                Focus Guide
+              </a>
+            </div>
+          </div>
         </section>
 
         {/* 🔍 SEARCH + FILTER */}
@@ -194,7 +222,15 @@ student learning resources
           }}
         >
           {filteredPosts.length === 0 && (
-            <p style={{ opacity: 0.6 }}>No articles found.</p>
+            <div>
+              <p style={{ opacity: 0.6 }}>Loading articles...</p>
+
+              {/* 🔥 STATIC FALLBACK CONTENT FOR GOOGLE */}
+              <div style={{ marginTop: "20px", fontSize: "14px", opacity: "0.7" }}>
+                Explore student articles on study tips, exam preparation,
+                productivity, and learning strategies designed for better performance.
+              </div>
+            </div>
           )}
 
           {filteredPosts.slice(0, visibleCount).map((post) => (
@@ -283,24 +319,24 @@ student learning resources
         </div>
         {/* 🔢 PAGINATION */}
         {visibleCount < filteredPosts.length && (
-  <div style={{
-    textAlign: "center",
-    marginTop: "40px"
-  }}>
-    <button
-      className="btn-primary"
-      onClick={() => setVisibleCount(prev => prev + 6)}
-      style={{
-        padding: "12px 30px",
-        borderRadius: "10px",
-        fontWeight: "600",
-        cursor: "pointer"
-      }}
-    >
-      Load More Articles →
-    </button>
-  </div>
-)}
+          <div style={{
+            textAlign: "center",
+            marginTop: "40px"
+          }}>
+            <button
+              className="btn-primary"
+              onClick={() => setVisibleCount(prev => prev + 6)}
+              style={{
+                padding: "12px 30px",
+                borderRadius: "10px",
+                fontWeight: "600",
+                cursor: "pointer"
+              }}
+            >
+              Load More Articles →
+            </button>
+          </div>
+        )}
 
         <div
           style={{
