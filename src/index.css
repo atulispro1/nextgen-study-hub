@@ -883,3 +883,26 @@ body.dark .theme-btn .dark-text {
   }
 }
 
+/* ===== SUBJECT INPUT FIX ===== */
+
+.subject-row input {
+  flex: 2;
+  min-width: 0;
+}
+
+.subject-row select {
+  flex: 1;
+}
+
+/* MOBILE FIX 🔥 */
+@media (max-width: 600px) {
+  .subject-row {
+    flex-direction: column;
+  }
+
+  .subject-row input,
+  .subject-row select {
+    width: 100%;
+  }
+}
+

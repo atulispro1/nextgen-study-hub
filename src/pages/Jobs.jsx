@@ -21,9 +21,7 @@ export default function Jobs() {
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [user, setUser] = useState(null);
   const admins = ["atul.sharmas2806@gmail.com"];
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 6;
+  const [visibleJobs, setVisibleJobs] = useState(6);
   const isAdmin = user && admins.includes(user.email);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -94,9 +92,7 @@ export default function Jobs() {
 
   /* RESET PAGE WHEN SEARCH OR FILTER CHANGES */
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [search, jobType, sortBy, showBookmarks]);
+
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
@@ -107,11 +103,10 @@ export default function Jobs() {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [currentPage]);
+    setVisibleJobs(6);
+  }, [search, jobType, sortBy, showBookmarks]);
+
+
 
   /* FILTER JOBS */
 
@@ -144,14 +139,7 @@ export default function Jobs() {
 
   /* PAGINATION */
 
-  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
-  const startIndex = (currentPage - 1) * jobsPerPage;
-
-  const paginatedJobs = filteredJobs.slice(
-    startIndex,
-    startIndex + jobsPerPage,
-  );
 
   return (
     <>
@@ -336,7 +324,7 @@ academic productivity tools platform
           Latest Job & Internship Opportunities
         </h2>
 
-        {paginatedJobs.length === 0 ? (
+        {filteredJobs.length === 0 ? (
           <div
             className="glass"
             style={{
@@ -363,7 +351,7 @@ academic productivity tools platform
           </div>
         ) : (
           <JobCard
-            jobs={paginatedJobs}
+            jobs={filteredJobs.slice(0, visibleJobs)}
             bookmarks={bookmarks}
             toggleBookmark={toggleBookmark}
             isAdmin={isAdmin}
@@ -373,47 +361,16 @@ academic productivity tools platform
 
         {/* PAGINATION */}
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "50px",
-            gap: "10px",
-            flexWrap: "wrap",
-          }}
-        >
-          <button
-            className="pagination-btn"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(currentPage - 1)}
-          >
-            Prev
-          </button>
-
-          {[...Array(totalPages)].map((_, index) => {
-            const page = index + 1;
-
-            return (
-              <button
-                key={page}
-                className={`pagination-btn ${
-                  currentPage === page ? "active-page" : ""
-                }`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            );
-          })}
-
-          <button
-            className="pagination-btn"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(currentPage + 1)}
-          >
-            Next
-          </button>
-        </div>
+        {visibleJobs < filteredJobs.length && (
+          <div style={{ textAlign: "center", marginTop: "40px" }}>
+            <button
+              className="btn-primary"
+              onClick={() => setVisibleJobs((prev) => prev + 6)}
+            >
+              Load More Jobs ⬇️
+            </button>
+          </div>
+        )}
 
         <div
           style={{
@@ -424,7 +381,7 @@ academic productivity tools platform
           }}
         />
 
-        <SmartFooterSection / >
+        <SmartFooterSection />
         <div
           className="glass"
           style={{

@@ -354,6 +354,8 @@ student education tools
           </button>
         </div>
         <SmartFooterSection />
+        <br />
+        <br />
         <div style={{ textAlign: "center", marginBottom: "50px" }}>
           <h2
             style={{

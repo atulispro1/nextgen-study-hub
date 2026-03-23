@@ -189,11 +189,11 @@ export default function PomodoroTimer() {
                     justifyContent: "center",
                     background: `conic-gradient(
       ${mode === "focus" ? "#6366f1" : "#22c55e"} ${progress}%,
-      rgba(255,255,255,0.08) ${progress}%
+      rgba(0,0,0,0.1) ${progress}%
     )`,
                     boxShadow: isRunning
                         ? "0 0 40px rgba(99,102,241,0.6)"
-                        : "0 0 20px rgba(255,255,255,0.1)",
+                        : "0 0 20px rgba(0,0,0,0.1)",
                     transition: "all 0.4s ease",
                     position: "relative",
                 }}
@@ -204,7 +204,8 @@ export default function PomodoroTimer() {
                         width: "150px",
                         height: "150px",
                         borderRadius: "50%",
-                        background: "#0f172a",
+                        background: "var(--card)",
+                        color: "var(--text)",
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
@@ -212,6 +213,8 @@ export default function PomodoroTimer() {
                         fontSize: "28px",
                         fontWeight: "700",
                         letterSpacing: "1px",
+                        border: "1px solid var(--border)",
+                        boxShadow: "inset 0 0 20px rgba(0,0,0,0.1)",
                     }}
                 >
                     {formatTime(time)}

@@ -839,6 +839,28 @@ export default function Navbar() {
             >
               🛠 Tools
             </button>
+
+            <button
+              className="btn-primary btn-small"
+              onClick={() => {
+                navigate("/articles");
+                setMobileOpen(false);
+              }}
+            >
+              📝 Articles
+            </button>
+          </div>
+
+          {/* THEME TOGGLE */}
+
+          <div style={{ marginTop: "10px" }}>
+            <button className="theme-btn mobile-theme-btn" onClick={toggleTheme}>
+              <span className="icon sun">☀️</span>
+              <span className="icon moon">🌙</span>
+
+              <span className="mode-text light-text">Light</span>
+              <span className="mode-text dark-text">Dark</span>
+            </button>
           </div>
 
           {/* JOB SECTION */}
@@ -1090,17 +1112,7 @@ export default function Navbar() {
             </button>
           )}
 
-          {/* THEME TOGGLE */}
 
-          <div style={{ marginTop: "10px" }}>
-            <button className="theme-btn mobile-theme-btn" onClick={toggleTheme}>
-              <span className="icon sun">☀️</span>
-              <span className="icon moon">🌙</span>
-
-              <span className="mode-text light-text">Light</span>
-              <span className="mode-text dark-text">Dark</span>
-            </button>
-          </div>
         </div>
       )}
     </>

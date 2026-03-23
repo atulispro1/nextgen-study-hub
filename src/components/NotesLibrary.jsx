@@ -14,9 +14,9 @@ export default function NotesLibrary() {
 
   const [notes, setNotes] = useState([]);
   const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
 
-  const notesPerPage = 9;
+  const [visibleNotes, setVisibleNotes] = useState(9);
+
 
   const [semester, setSemester] = useState("All");
   const [category, setCategory] = useState("All");
@@ -27,15 +27,10 @@ export default function NotesLibrary() {
   }, []);
 
   useEffect(() => {
-    setCurrentPage(1);
+    setVisibleNotes(9);
   }, [search, semester, category, subject]);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [currentPage]);
+
 
   const fetchNotes = async () => {
     const { data } = await supabase
@@ -62,7 +57,10 @@ export default function NotesLibrary() {
 
     const semMatch = semester === "All" || note.semester === semester;
 
-    const catMatch = category === "All" || note.category === category;
+    const catMatch =
+      category === "All" ||
+      note.category?.toLowerCase().includes(category.toLowerCase()) ||
+      note.note_type?.toLowerCase().includes(category.toLowerCase());
 
     const subMatch =
       subject === "All" ||
@@ -71,12 +69,8 @@ export default function NotesLibrary() {
     return searchMatch && semMatch && catMatch && subMatch;
   });
 
-  const totalPages = Math.ceil(filtered.length / notesPerPage);
 
-  const startIndex = (currentPage - 1) * notesPerPage;
-  const endIndex = startIndex + notesPerPage;
 
-  const paginatedNotes = filtered.slice(startIndex, endIndex);
   const subjects = ["All", ...new Set(notes.map((n) => n.subject))];
   <select value={subject} onChange={(e) => setSubject(e.target.value)}>
     {subjects.map((sub, index) => (
@@ -328,7 +322,7 @@ semester wise subject notes
               cursor: "pointer",
             }}
           >
-            <option>All</option>
+            <option>All Semestor</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -347,11 +341,15 @@ semester wise subject notes
               cursor: "pointer",
             }}
           >
-            <option>All</option>
-            <option>Syllabus</option>
-            <option>Notes</option>
-            <option>Practice</option>
-            <option>Assignment</option>
+            <option value="All">All Categories</option>
+            <option value="Syllabus">Syllabus</option>
+            <option value="Notes">Notes</option>
+            <option value="Practicals">Practical</option>
+            <option value="Assignment">Assignment</option>
+
+            {/* NEW OPTIONS 🔥 */}
+            <option value="Minor Exam Papers">Minor Exam</option>
+            <option value="Major Exam Papers">Major Exam</option>
           </select>
 
           <select
@@ -423,7 +421,7 @@ semester wise subject notes
             marginTop: "20px",
           }}
         >
-          {paginatedNotes.map((note) => (
+          {filtered.slice(0, visibleNotes).map((note) => (
             <div
               key={note.id}
               className="glass"
@@ -519,46 +517,17 @@ semester wise subject notes
 
         {/* PAGINATION ADDED HERE */}
 
-        <div
-          style={{
-            marginTop: "60px",
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-            flexWrap: "wrap",
-          }}
-        >
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="pagination-btn"
-          >
-            Prev
-          </button>
+        {visibleNotes < filtered.length && (
+          <div style={{ textAlign: "center", marginTop: "40px" }}>
+            <button
+              className="btn-primary"
+              onClick={() => setVisibleNotes((prev) => prev + 9)}
+            >
+              Load More ⬇️
+            </button>
+          </div>
+        )}
 
-          {[...Array(totalPages)].map((_, index) => {
-            const pageNumber = index + 1;
-            return (
-              <button
-                key={index}
-                onClick={() => setCurrentPage(pageNumber)}
-                className={`pagination-btn ${
-                  currentPage === pageNumber ? "active-page" : ""
-                }`}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="pagination-btn"
-          >
-            Next
-          </button>
-        </div>
 
         {/* DIVIDER */}
 
