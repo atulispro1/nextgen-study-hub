@@ -98,7 +98,7 @@ export default function BlogLayout({
 
         <link
           rel="canonical"
-          href={`https://atulsharmas.in/blog/${slug}`}
+          href={`https://www.atulsharmas.in/blog/${slug}`}
         />
 
         {/* BlogPosting Schema */}
@@ -107,7 +107,7 @@ export default function BlogLayout({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             headline: title,
-            image: image || "https://atulsharmas.in/preview.png",
+            image: image || "https://www.atulsharmas.in/preview.png",
             author: {
               "@type": "Person",
               name: "Atul Sharma",
@@ -117,12 +117,12 @@ export default function BlogLayout({
               name: "NextGen Study Hub",
               logo: {
                 "@type": "ImageObject",
-                url: "https://atulsharmas.in/favicon.png",
+                url: "https://www.atulsharmas.in/favicon.png",
               },
             },
             mainEntityOfPage: {
               "@type": "WebPage",
-              "@id": `https://atulsharmas.in/blog/${slug}`,
+              "@id": `https://www.atulsharmas.in/blog/${slug}`,
             },
           })}
         </script>
@@ -137,19 +137,19 @@ export default function BlogLayout({
                 "@type": "ListItem",
                 position: 1,
                 name: "Home",
-                item: "https://atulsharmas.in",
+                item: "https://www.atulsharmas.in",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Blog",
-                item: "https://atulsharmas.in/blog",
+                item: "https://www.atulsharmas.in/blog",
               },
               {
                 "@type": "ListItem",
                 position: 3,
                 name: title,
-                item: `https://atulsharmas.in/blog/${slug}`,
+                item: `https://www.atulsharmas.in/blog/${slug}`,
               },
             ],
           })}

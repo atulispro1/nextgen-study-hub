@@ -9,7 +9,7 @@ export default function CoursesAfter12thCommerce() {
       <SEO
         title="Best Courses After 12th Commerce – Career Options & High Salary Courses"
         description="Explore the best courses after 12th commerce including BCom, BBA, CA, CS, finance and management programs. Discover high salary career options for commerce students."
-        url="https://atulsharmas.in/courses-after-12th-commerce"
+        url="https://www.atulsharmas.in/courses-after-12th-commerce"
       />
 
       <section className="section">

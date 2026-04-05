@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://atulsharmas.in/sitemap.xml
+Sitemap: https://www.atulsharmas.in/sitemap.xml

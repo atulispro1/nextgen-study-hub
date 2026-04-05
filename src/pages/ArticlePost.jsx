@@ -166,7 +166,7 @@ diploma study tips
 
         <link
           rel="canonical"
-          href={`https://atulsharmas.in/articles/${post.slug.current}`}
+          href={`https://www.atulsharmas.in/articles/${post.slug.current}`}
         />
       </Helmet>
       <div

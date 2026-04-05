@@ -162,7 +162,7 @@ semester wise subject notes
 "
         />
 
-        <link rel="canonical" href={`https://atulsharmas.in/semester/${id}`} />
+        <link rel="canonical" href={`https://www.atulsharmas.in/semester/${id}`} />
       </Helmet>
 
       <section

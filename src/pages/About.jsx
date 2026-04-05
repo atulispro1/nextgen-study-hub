@@ -7,7 +7,7 @@ export default function About() {
     <>
       <SEO
         title="About NextGen Study Hub – Student Learning Platform"
-        url="https://atulsharmas.in/about"
+        url="https://www.atulsharmas.in/about"
       />
       <Helmet>
         <title>
@@ -46,7 +46,7 @@ academic productivity tools platform
 "
         />
 
-        <link rel="canonical" href="https://atulsharmas.in/about" />
+        <link rel="canonical" href="https://www.atulsharmas.in/about" />
       </Helmet>
 
       {/* INTRO SECTION */}

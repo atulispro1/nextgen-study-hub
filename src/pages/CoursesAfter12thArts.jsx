@@ -9,7 +9,7 @@ export default function CoursesAfter12thArts() {
       <SEO
         title="Best Courses After 12th Arts – Career Options & High Salary Careers"
         description="Discover the best courses after 12th arts including BA, journalism, law, psychology, design and media careers. Explore high salary career options for arts students."
-        url="https://atulsharmas.in/courses-after-12th-arts"
+        url="https://www.atulsharmas.in/courses-after-12th-arts"
       />
 
       <section className="section">

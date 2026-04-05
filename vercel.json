@@ -3,9 +3,9 @@
     {
       "source": "/:path*",
       "has": [
-        { "type": "host", "value": "www.atulsharmas.in" }
+        { "type": "host", "value": "atulsharmas.in" }
       ],
-      "destination": "https://atulsharmas.in/:path*",
+      "destination": "https://www.atulsharmas.in/:path*",
       "permanent": true
     }
   ],

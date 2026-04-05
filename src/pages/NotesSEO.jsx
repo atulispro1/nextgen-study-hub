@@ -183,7 +183,7 @@ export default function NotesSEO() {
       <SEO
         title={page.title}
         description={page.description}
-        url={`https://atulsharmas.in/${slug}`}
+        url={`https://www.atulsharmas.in/${slug}`}
       />
 
       <div className="section" style={{ maxWidth: "900px", margin: "auto" }}>

@@ -40,7 +40,7 @@ export default function Blog() {
     <>
       <SEO
         title="Student Blog – Study Tips, Exam Preparation & Learning Guides"
-        url="https://atulsharmas.in/blog"
+        url="https://www.atulsharmas.in/blog"
       />
       <Helmet>
         <title>
@@ -89,7 +89,7 @@ education learning resources
 "
         />
 
-        <link rel="canonical" href="https://atulsharmas.in/blog" />
+        <link rel="canonical" href="https://www.atulsharmas.in/blog" />
       </Helmet>
 
       <div className="section">

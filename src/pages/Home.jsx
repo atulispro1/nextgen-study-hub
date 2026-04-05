@@ -99,7 +99,7 @@ education platform for engineering students
 "
         />
 
-        <link rel="canonical" href="https://atulsharmas.in/" />
+        <link rel="canonical" href="https://www.atulsharmas.in/" />
       </Helmet>
 
       <section className="section" style={heroSectionStyle}>

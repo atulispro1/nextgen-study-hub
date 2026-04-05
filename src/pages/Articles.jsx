@@ -64,7 +64,7 @@ export default function Articles() {
           content="Explore the latest student articles including study tips, exam preparation strategies, productivity techniques and learning guides for diploma and engineering students."
         />
 
-        <link rel="canonical" href="https://atulsharmas.in/articles" />
+        <link rel="canonical" href="https://www.atulsharmas.in/articles" />
       </Helmet>
       <div style={{ padding: "60px 20px", maxWidth: "1200px", margin: "auto" }}>
         {/* HEADER */}

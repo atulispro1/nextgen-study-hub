@@ -80,7 +80,7 @@ admin authentication system
 "
         />
 
-        <link rel="canonical" href="https://atulsharmas.in/admin" />
+        <link rel="canonical" href="https://www.atulsharmas.in/admin" />
       </Helmet>
 
       <div

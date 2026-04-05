@@ -7,7 +7,7 @@ export default function Terms() {
     <>
       <SEO
         title="Terms and Conditions – NextGen Study Hub"
-        url="https://atulsharmas.in/terms"
+        url="https://www.atulsharmas.in/terms"
       />
       <Helmet>
         <title>
@@ -45,7 +45,7 @@ terms of service nextgen study hub
 "
         />
 
-        <link rel="canonical" href="https://atulsharmas.in/terms" />
+        <link rel="canonical" href="https://www.atulsharmas.in/terms" />
       </Helmet>
 
       {/* HEADER */}
