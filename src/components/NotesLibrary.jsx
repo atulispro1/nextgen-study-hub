@@ -144,7 +144,7 @@ export default function NotesLibrary() {
     <>
       <SEO
         title="Engineering Notes Library – Diploma Study Materials & Semester Notes"
-        url="https://www.atulsharmas.in/notes-library"
+        url="https://atulsharmas.in/notes-library"
       />
       <Helmet>
         <title>
@@ -191,7 +191,7 @@ semester wise subject notes
 "
         />
 
-        <link rel="canonical" href="https://www.atulsharmas.in/semester" />
+        <link rel="canonical" href="https://atulsharmas.in/notes-library" />
       </Helmet>
 
       <section className="section">

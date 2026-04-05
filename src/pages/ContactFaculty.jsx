@@ -104,7 +104,7 @@ student academic mentoring
 
         <link
           rel="canonical"
-          href="https://www.atulsharmas.in/contact-faculty"
+          href="https://atulsharmas.in/contact-faculty"
         />
       </Helmet>
 

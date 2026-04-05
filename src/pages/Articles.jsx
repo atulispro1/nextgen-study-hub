@@ -64,7 +64,7 @@ export default function Articles() {
           content="Explore the latest student articles including study tips, exam preparation strategies, productivity techniques and learning guides for diploma and engineering students."
         />
 
-        <link rel="canonical" href="https://www.atulsharmas.in/articles" />
+        <link rel="canonical" href="https://atulsharmas.in/articles" />
       </Helmet>
       <div style={{ padding: "60px 20px", maxWidth: "1200px", margin: "auto" }}>
         {/* HEADER */}
@@ -118,7 +118,7 @@ export default function Articles() {
             {/* 🔗 INTERNAL LINKS (STYLED) */}
             <div style={{ marginTop: "10px" }}>
               <a
-                href="/articles/how-to-use-ai-to-study-faster-2026"
+                href="/articles/best-ai-tools-for-students-2026-study-smarter"
                 style={{
                   color: "#6366f1",
                   textDecoration: "none",
@@ -129,7 +129,7 @@ export default function Articles() {
               </a>{" "}
               |{" "}
               <a
-                href="/articles/last-7-days-study-plan-exams-2026"
+                href="/articles/how-to-prepare-for-exams-in-7-days-last-minute-plan"
                 style={{
                   color: "#6366f1",
                   textDecoration: "none",
@@ -140,7 +140,7 @@ export default function Articles() {
               </a>{" "}
               |{" "}
               <a
-                href="/articles/how-to-stay-focused-while-studying-2026"
+                href="/articles/how-to-study-effectively-2026-best-study-techniques"
                 style={{
                   color: "#6366f1",
                   textDecoration: "none",

@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { client } from "../lib/sanityClient";
 import { urlFor } from "../lib/sanityImage";
@@ -13,6 +13,7 @@ export default function ArticlePost() {
   const [post, setPost] = useState(null);
   const [related, setRelated] = useState([]);
   const [visibleCount, setVisibleCount] = useState(4);
+  const [loading, setLoading] = useState(true);
 
   const cardStyle = {
     display: "block",
@@ -45,8 +46,10 @@ export default function ArticlePost() {
       publishedAt
     }`;
 
+    setLoading(true);
+
     client.fetch(query).then((data) => {
-      const current = data.find((p) => p.slug?.current === slug);
+      const current = data.find((p) => p.slug?.current === slug) || null;
 
       setPost(current);
 
@@ -54,10 +57,11 @@ export default function ArticlePost() {
       const others = data.filter((p) => p.slug?.current !== slug).slice(0, 4);
 
       setRelated(others);
+      setLoading(false);
     });
   }, [slug]);
 
-  if (!post) {
+  if (loading) {
     return (
       <div
         style={{
@@ -70,6 +74,10 @@ export default function ArticlePost() {
         <Loader />
       </div>
     );
+  }
+
+  if (!post) {
+    return <Navigate to="/404" replace />;
   }
 
   // 📖 Reading time (simple)
@@ -158,7 +166,7 @@ diploma study tips
 
         <link
           rel="canonical"
-          href={`https://www.atulsharmas.in/articles/${post.slug.current}`}
+          href={`https://atulsharmas.in/articles/${post.slug.current}`}
         />
       </Helmet>
       <div

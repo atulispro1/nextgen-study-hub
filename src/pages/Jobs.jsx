@@ -137,7 +137,7 @@ export default function Jobs() {
     <>
       <SEO
         title="Internships & Jobs for Diploma and Engineering Students"
-        url="https://www.atulsharmas.in/jobs"
+        url="https://atulsharmas.in/jobs"
       />
       <Helmet>
         <title>
@@ -176,7 +176,7 @@ academic productivity tools platform
 "
         />
 
-        <link rel="canonical" href="https://www.atulsharmas.in/about" />
+        <link rel="canonical" href="https://atulsharmas.in/jobs" />
       </Helmet>
 
       <section className="section">

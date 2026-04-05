@@ -89,7 +89,7 @@ student platform help center
 "
         />
 
-        <link rel="canonical" href="https://www.atulsharmas.in/contact-owner" />
+        <link rel="canonical" href="https://atulsharmas.in/contact-owner" />
       </Helmet>
 
       <div className="section">

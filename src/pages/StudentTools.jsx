@@ -88,7 +88,7 @@ export default function StudentTools() {
     <>
       <SEO
         title="Student Productivity Tools – CGPA Calculator, Study Timer & Academic Tools"
-        url="https://www.atulsharmas.in/student-tools"
+        url="https://atulsharmas.in/student-tools"
       />
       <Helmet>
         <title>
@@ -149,7 +149,7 @@ student education tools
 "
         />
 
-        <link rel="canonical" href="https://www.atulsharmas.in/student-tools" />
+        <link rel="canonical" href="https://atulsharmas.in/student-tools" />
       </Helmet>
 
       <div className="section">

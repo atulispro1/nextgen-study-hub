@@ -9,7 +9,7 @@ export default function CoursesAfter12th() {
       <SEO
         title="Best Courses After 12th – Science, Commerce & Arts Career Options"
         description="Explore the best courses after 12th for science, commerce and arts students. Discover high salary courses, professional degrees, diploma programs and career opportunities."
-        url="https://www.atulsharmas.in/courses-after-12th"
+        url="https://atulsharmas.in/courses-after-12th"
       />
 
       <section className="section">

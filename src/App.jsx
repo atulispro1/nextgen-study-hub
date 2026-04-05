@@ -37,7 +37,7 @@ const CoursesAfter12thArts = lazy(() => import("./pages/CoursesAfter12thArts"));
 
 /* ===== BLOG PAGES (LAZY) ===== */
 
-const ScoreCGPA = lazy(() => import("./pages/blog/ScoreCGPA"));
+const BlogPostRouter = lazy(() => import("./pages/BlogPostRouter"));
 const Articles = lazy(() => import("./pages/Articles"));
 const ArticlePost = lazy(() => import("./pages/ArticlePost"));
 
@@ -78,7 +78,7 @@ function App() {
 
               {/* Blog */}
               <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<ScoreCGPA />} />
+              <Route path="/blog/:slug" element={<BlogPostRouter />} />
               <Route path="/articles" element={<Articles />} />
               <Route path="/articles/:slug" element={<ArticlePost />} />
 

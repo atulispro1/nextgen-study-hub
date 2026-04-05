@@ -9,7 +9,7 @@ export default function CoursesAfter12thScience() {
       <SEO
         title="Best Courses After 12th Science – Career Options & High Salary Courses"
         description="Discover the best courses after 12th science including engineering, medical, IT, research and data science fields. Explore high salary career options for science students."
-        url="https://www.atulsharmas.in/courses-after-12th-science"
+        url="https://atulsharmas.in/courses-after-12th-science"
       />
 
       <section className="section">

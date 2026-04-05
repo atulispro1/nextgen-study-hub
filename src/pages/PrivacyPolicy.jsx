@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
     <>
       <SEO
         title="Privacy Policy – NextGen Study Hub"
-        url="https://www.atulsharmas.in/privacy-policy"
+        url="https://atulsharmas.in/privacy-policy"
       />
       <Helmet>
         <title>
@@ -47,7 +47,7 @@ website legal privacy terms
 
         <link
           rel="canonical"
-          href="https://www.atulsharmas.in/privacy-policy"
+          href="https://atulsharmas.in/privacy-policy"
         />
       </Helmet>
 

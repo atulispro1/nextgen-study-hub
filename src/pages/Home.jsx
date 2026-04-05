@@ -99,7 +99,7 @@ education platform for engineering students
 "
         />
 
-        <link rel="canonical" href="https://www.atulsharmas.in/" />
+        <link rel="canonical" href="https://atulsharmas.in/" />
       </Helmet>
 
       <section className="section" style={heroSectionStyle}>
@@ -506,7 +506,7 @@ education platform for engineering students
             fontWeight: "600",
             boxShadow: "0 8px 25px rgba(99,102,241,0.35)",
           }}
-          onClick={() => navigate("/notes")}
+            onClick={() => navigate("/notes-library")}
         >
           📚 Explore Notes Library{" "}
         </button>
