@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { supabase } from "../supabase";
+import {
+  isSafeExternalUrl,
+  normalizeTextInput,
+  sanitizeFileName,
+} from "../utils/security";
 
 export default function UploadJobCard({ refreshJobs }) {
   const [form, setForm] = useState({
@@ -24,9 +29,20 @@ export default function UploadJobCard({ refreshJobs }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+    if (!isSafeExternalUrl(form.apply_link)) {
+      alert("Please enter a valid application link.");
+      return;
+    }
 
-    const { error } = await supabase.from("jobs").insert([form]);
+    const sanitizedForm = {
+      ...form,
+      title: normalizeTextInput(form.title, 120),
+      company: normalizeTextInput(form.company, 120),
+      location: normalizeTextInput(form.location, 120),
+      apply_link: form.apply_link.trim(),
+    };
+
+    const { error } = await supabase.from("jobs").insert([sanitizedForm]);
 
     if (!error) {
       alert("Job uploaded successfully");
@@ -47,6 +63,11 @@ export default function UploadJobCard({ refreshJobs }) {
         tag6: "",
       });
     } else {
+      if (error.message?.toLowerCase().includes("row-level security")) {
+        alert(
+          "Job upload is blocked by Supabase permissions. Your profiles role or RLS policy still needs setup.",
+        );
+      }
       console.log(error);
     }
   };
@@ -54,14 +75,23 @@ export default function UploadJobCard({ refreshJobs }) {
   const handleLogoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      console.log("Invalid image type");
+      return;
+    }
 
-    const fileName = `${Date.now()}-${file.name}`;
+    const fileName = `${Date.now()}-${sanitizeFileName(file.name)}`;
 
     const { error } = await supabase.storage
       .from("company-logos")
       .upload(fileName, file);
 
     if (error) {
+      if (error.message?.toLowerCase().includes("row-level security")) {
+        alert(
+          "Logo upload is blocked by Supabase permissions. Your profiles role or storage policy still needs setup.",
+        );
+      }
       console.log("Upload error:", error);
       return;
     }

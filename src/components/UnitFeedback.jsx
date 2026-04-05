@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 import { Heart, ThumbsUp, ThumbsDown, Star } from "lucide-react";
+import { canSubmitWithCooldown, normalizeTextInput } from "../utils/security";
 
 
 export default function UnitFeedback({ unitId, isAdmin }) {
@@ -54,16 +55,23 @@ export default function UnitFeedback({ unitId, isAdmin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !comment) {
+    const safeName = normalizeTextInput(name, 60);
+    const safeComment = normalizeTextInput(comment, 500);
+
+    if (!safeName || !safeComment) {
       alert("Please fill all fields");
+      return;
+    }
+    if (!canSubmitWithCooldown(`unit_feedback_${unitId}`, 15000)) {
+      alert("Please wait a few seconds before posting again.");
       return;
     }
 
     await supabase.from("unit_feedback").insert([
       {
         subject_id: unitId,
-        name,
-        comment,
+        name: safeName,
+        comment: safeComment,
         rating_type: ratingType,
         star_rating: starRating,
       },

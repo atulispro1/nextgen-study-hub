@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { canSubmitWithCooldown, normalizeTextInput } from "../utils/security";
 
 export default function AIQuestionSolver() {
   const [subject, setSubject] = useState("Mathematics");
@@ -19,7 +20,12 @@ export default function AIQuestionSolver() {
   ];
 
   const generateAnswer = async () => {
-    if (!question) return;
+    const safeQuestion = normalizeTextInput(question, 500);
+    if (!safeQuestion) return;
+    if (!canSubmitWithCooldown("ai_question_cooldown", 8000)) {
+      setAnswer("Please wait a few seconds before asking another question.");
+      return;
+    }
 
     setLoading(true);
     setAnswer("");
@@ -35,7 +41,7 @@ export default function AIQuestionSolver() {
           body: JSON.stringify({
             subject,
             type: "question-answer",
-            topic: `${mode}: ${question}`,
+            topic: `${mode}: ${safeQuestion}`,
           }),
         }
       );
@@ -51,7 +57,11 @@ export default function AIQuestionSolver() {
   };
 
   const simplifyAnswer = async () => {
-    if (!answer) return;
+    const safeAnswer = normalizeTextInput(answer, 1200);
+    if (!safeAnswer) return;
+    if (!canSubmitWithCooldown("ai_simplify_cooldown", 8000)) {
+      return;
+    }
 
     setLoading(true);
 
@@ -66,7 +76,7 @@ export default function AIQuestionSolver() {
           body: JSON.stringify({
             subject,
             type: "simplify",
-            topic: answer,
+            topic: safeAnswer,
           }),
         }
       );

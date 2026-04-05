@@ -1,20 +1,32 @@
 import { Helmet } from "react-helmet-async";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminAuth() {
-  const { login, createFaculty, user, OWNER_EMAIL } = useAuth();
+  const { login, createFaculty, user, role, profileReady, profileMissing, loading } =
+    useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const isOwner = profileReady && role === "owner";
+  const wantsCreateMode =
+    new URLSearchParams(location.search).get("mode") === "create";
 
-  const [isSignup, setIsSignup] = useState(
-    new URLSearchParams(location.search).get("mode") === "create",
-  );
+  const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    setIsSignup(Boolean(wantsCreateMode && isOwner));
+  }, [isOwner, wantsCreateMode]);
+
+  useEffect(() => {
+    if (!loading && user && !(wantsCreateMode && isOwner)) {
+      navigate("/", { replace: true });
+    }
+  }, [isOwner, loading, navigate, user, wantsCreateMode]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,12 +43,12 @@ export default function AdminAuth() {
         navigate("/"); // redirect to home
       }
     } else {
-      const error = await login(email, password);
+      const { error } = await login(email, password);
 
       if (error) {
         alert(error.message);
       } else {
-        navigate("/"); // redirect after login
+        navigate("/", { replace: true });
       }
     }
   };
@@ -44,6 +56,7 @@ export default function AdminAuth() {
   return (
     <>
       <Helmet>
+        <meta name="robots" content="noindex,nofollow" />
         <title>Admin Login – NextGen Study Hub Admin Panel</title>
 
         <meta
@@ -115,7 +128,22 @@ admin authentication system
             </button>
           </form>
 
-          {user?.email === OWNER_EMAIL && (
+          {user && profileMissing && (
+            <p
+              style={{
+                marginTop: "18px",
+                textAlign: "center",
+                color: "var(--primary)",
+                opacity: 0.85,
+                fontSize: "13px",
+              }}
+            >
+              Your account is logged in, but the Supabase `profiles` role is not
+              set yet.
+            </p>
+          )}
+
+          {isOwner && (
             <p
               onClick={() => setIsSignup(!isSignup)}
               style={{

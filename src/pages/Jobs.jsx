@@ -8,9 +8,12 @@ import { supabase } from "../supabase";
 import UploadJobCard from "../components/UploadJobCard";
 import Swal from "sweetalert2";
 import SmartFooterSection from "../components/SmartFooterSection";
+import { useAuth } from "../context/AuthContext";
+import { isAdminRole } from "../utils/security";
 
 export default function Jobs() {
   const navigate = useNavigate();
+  const { role, profileReady, profileMissing, user } = useAuth() || {};
 
   const [jobs, setJobs] = useState([]);
 
@@ -19,10 +22,8 @@ export default function Jobs() {
   const [sortBy, setSortBy] = useState("latest");
   const [bookmarks, setBookmarks] = useState([]);
   const [showBookmarks, setShowBookmarks] = useState(false);
-  const [user, setUser] = useState(null);
-  const admins = ["atul.sharmas2806@gmail.com"];
   const [visibleJobs, setVisibleJobs] = useState(6);
-  const isAdmin = user && admins.includes(user.email);
+  const isAdmin = profileReady && isAdminRole(role);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -92,15 +93,6 @@ export default function Jobs() {
 
   /* RESET PAGE WHEN SEARCH OR FILTER CHANGES */
 
-
-  useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data?.user);
-    };
-
-    getUser();
-  }, []);
 
   useEffect(() => {
     setVisibleJobs(6);
@@ -226,6 +218,12 @@ academic productivity tools platform
             <p style={{ opacity: 0.7 }}>
               Only faculty and admins can post job opportunities.
             </p>
+            {user && profileMissing && (
+              <p style={{ opacity: 0.7, marginTop: "10px", fontSize: "13px" }}>
+                Admin profile setup is incomplete. Add your role in Supabase
+                profiles to enable posting.
+              </p>
+            )}
           </div>
         )}
         <br />

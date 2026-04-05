@@ -1,3 +1,5 @@
+import { openSafeExternalUrl } from "../utils/security";
+
 export default function JobCard({
   jobs,
   bookmarks,
@@ -5,8 +7,6 @@ export default function JobCard({
   isAdmin,
   deleteJob,
 }) {
-  console.log("JOB:", jobs);
-
   return (
     <div className="grid">
       {jobs.map((job) => (
@@ -159,11 +159,7 @@ export default function JobCard({
                 className="btn-primary btn-small"
                 onClick={() => {
                   if (job.apply_link) {
-                    window.open(
-                      job.apply_link,
-                      "_blank",
-                      "noopener,noreferrer",
-                    );
+                    openSafeExternalUrl(job.apply_link);
                   }
                 }}
               >
@@ -174,11 +170,7 @@ export default function JobCard({
                 className="btn-primary btn-small"
                 onClick={() => {
                   if (job.apply_link) {
-                    window.open(
-                      job.apply_link,
-                      "_blank",
-                      "noopener,noreferrer",
-                    );
+                    openSafeExternalUrl(job.apply_link);
                   }
                 }}
               >

@@ -6,11 +6,12 @@ import { useAuth } from "../context/AuthContext";
 import CommentsSection from "../components/CommentsSection";
 import { confirmDelete } from "../utils/deleteConfirm";
 import { useNavigate } from "react-router-dom";
+import { isAdminRole, openSafeExternalUrl } from "../utils/security";
 
 export default function NotesLibrary() {
   const navigate = useNavigate();
-  const { role } = useAuth() || {};
-  const isAdmin = role === "owner" || role === "faculty";
+  const { role, profileReady } = useAuth() || {};
+  const isAdmin = profileReady && isAdminRole(role);
 
   const [notes, setNotes] = useState([]);
   const [search, setSearch] = useState("");
@@ -46,6 +47,18 @@ export default function NotesLibrary() {
       await supabase.from("materials").delete().eq("id", id);
       fetchNotes();
     });
+  };
+
+  const handlePreview = (fileUrl) => {
+    if (!openSafeExternalUrl(fileUrl)) {
+      alert("This file link is not safe to open.");
+    }
+  };
+
+  const handleDownload = (fileUrl) => {
+    if (!openSafeExternalUrl(fileUrl, { download: true })) {
+      alert("This file link is not safe to download.");
+    }
   };
 
   const filtered = notes.filter((note) => {
@@ -479,20 +492,19 @@ semester wise subject notes
                   }}
                 >
                   <button
-                    onClick={() => window.open(note.file_url, "_blank")}
+                    onClick={() => handlePreview(note.file_url)}
                     className="btn-primary btn-small"
                   >
                     Preview
                   </button>
 
-                  <a
-                    href={note.file_url}
-                    download
+                  <button
+                    onClick={() => handleDownload(note.file_url)}
                     className="btn-primary btn-small"
                     style={{ textDecoration: "none" }}
                   >
                     Download
-                  </a>
+                  </button>
 
                   {isAdmin && (
                     <button

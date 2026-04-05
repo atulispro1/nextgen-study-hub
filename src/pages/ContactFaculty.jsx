@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { normalizeTextInput, openSafeExternalUrl } from "../utils/security";
 
 export default function ContactFaculty() {
   const location = useLocation();
@@ -28,7 +29,10 @@ export default function ContactFaculty() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!studentName || !message || !selectedSubject) {
+    const safeStudentName = normalizeTextInput(studentName, 60);
+    const safeMessage = normalizeTextInput(message, 500);
+
+    if (!safeStudentName || !safeMessage || !selectedSubject) {
       alert("Please fill all fields");
       return;
     }
@@ -43,16 +47,16 @@ export default function ContactFaculty() {
     const encodedMessage = encodeURIComponent(
       `Hello Sir/Madam,
 
-I am ${studentName}.
+I am ${safeStudentName}.
 Subject: ${selectedSubject}
 
 Message:
-${message}`,
+${safeMessage}`,
     );
 
     const whatsappURL = `https://wa.me/${number}?text=${encodedMessage}`;
 
-    window.open(whatsappURL, "_blank");
+    openSafeExternalUrl(whatsappURL);
   };
 
   return (

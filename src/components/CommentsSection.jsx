@@ -2,10 +2,15 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import { confirmDelete } from "../utils/deleteConfirm";
+import {
+  canSubmitWithCooldown,
+  isAdminRole,
+  normalizeTextInput,
+} from "../utils/security";
 
 export default function CommentsSection() {
-  const { role } = useAuth() || {};
-  const isAdmin = role === "owner" || role === "faculty";
+  const { role, profileReady } = useAuth() || {};
+  const isAdmin = profileReady && isAdminRole(role);
 
   const [comments, setComments] = useState([]);
   const [name, setName] = useState("");
@@ -32,12 +37,19 @@ export default function CommentsSection() {
   }, []);
 
   const submitComment = async () => {
-    if (!name || !text) return;
+    const safeName = normalizeTextInput(name, 60);
+    const safeText = normalizeTextInput(text, 500);
+
+    if (!safeName || !safeText) return;
+    if (!canSubmitWithCooldown("notes_comments_cooldown", 15000)) {
+      alert("Please wait a few seconds before posting again.");
+      return;
+    }
 
     await supabase.from("notes_comments").insert([
       {
-        name,
-        comment: text,
+        name: safeName,
+        comment: safeText,
         rating,
         likes: 0,
         liked_by: [],

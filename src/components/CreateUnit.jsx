@@ -2,6 +2,7 @@ import { useState } from "react";
 import { supabase } from "../supabase";
 import Swal from "sweetalert2";
 import imageCompression from "browser-image-compression";
+import { sanitizeFileName } from "../utils/security";
 
 export default function CreateUnit({ semester, subject, category, onSuccess }) {
   const [unitName, setUnitName] = useState("");
@@ -42,6 +43,14 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
       });
       return;
     }
+    if (pdfFile && pdfFile.type !== "application/pdf") {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid PDF file",
+        text: "Please upload a valid PDF document.",
+      });
+      return;
+    }
     if (imageFile && imageFile.size > MAX_FILE_SIZE) {
       Swal.fire({
         icon: "warning",
@@ -50,11 +59,19 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
       });
       return;
     }
+    if (imageFile && !imageFile.type.startsWith("image/")) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid image file",
+        text: "Please upload a valid image file.",
+      });
+      return;
+    }
 
     setLoading(true);
 
     try {
-      const fileName = `${Date.now()}-${pdfFile.name}`;
+      const fileName = `${Date.now()}-${sanitizeFileName(pdfFile.name)}`;
 
       // Upload PDF
       const { error: uploadError } = await supabase.storage
@@ -64,7 +81,13 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
       if (uploadError) {
         console.error("Upload error:", uploadError);
 
-        if (uploadError.message?.toLowerCase().includes("too large")) {
+        if (uploadError.message?.toLowerCase().includes("row-level security")) {
+          Swal.fire({
+            icon: "error",
+            title: "Upload blocked by permissions",
+            text: "Your account is missing the required Supabase profiles role or storage policy access.",
+          });
+        } else if (uploadError.message?.toLowerCase().includes("too large")) {
           Swal.fire({
             icon: "warning",
             title: "File size limit exceeded",
@@ -94,7 +117,7 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
       let imageUrl = null;
 
       if (imageFile) {
-        const imageName = `${Date.now()}-${imageFile.name}`;
+        const imageName = `${Date.now()}-${sanitizeFileName(imageFile.name)}`;
 
         const { error: imageError } = await supabase.storage
           .from("pdfs")
@@ -124,7 +147,15 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
 
       if (insertError) {
         console.error("Insert error:", insertError);
-        alert("Database insert failed");
+        if (insertError.message?.toLowerCase().includes("row-level security")) {
+          Swal.fire({
+            icon: "error",
+            title: "Publish blocked by permissions",
+            text: "Your account is logged in, but the database role or RLS policy is not allowing this action.",
+          });
+        } else {
+          alert("Database insert failed");
+        }
         setLoading(false);
         return;
       }

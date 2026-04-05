@@ -11,13 +11,14 @@ import { Check } from "lucide-react";
 import SearchFilterBar from "../components/SearchFilterBar";
 import { confirmDelete } from "../utils/deleteConfirm";
 import Swal from "sweetalert2";
+import { isAdminRole, openSafeExternalUrl } from "../utils/security";
 
 export default function SemesterPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { role } = useAuth();
+  const { role, profileReady, profileMissing, user } = useAuth();
 
-  const isAdmin = role === "owner" || role === "faculty";
+  const isAdmin = profileReady && isAdminRole(role);
 
   const [semesterProgress, setSemesterProgress] = useState(0);
   const [progressPercent, setProgressPercent] = useState(0);
@@ -551,6 +552,12 @@ semester wise subject notes
                 <p style={{ opacity: 0.7 }}>
                   Only faculty and admins can post Notes and Assignments.
                 </p>
+                {user && profileMissing && (
+                  <p style={{ opacity: 0.7, marginTop: "10px", fontSize: "13px" }}>
+                    Admin profile setup is incomplete. Add your role in Supabase
+                    `profiles` to enable uploads.
+                  </p>
+                )}
               </div>
             )}
 
@@ -904,13 +911,24 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
     navigate("/contact-faculty", { state: { subject } });
   };
 
-  const handleDownload = async () => {
-    await supabase
-      .from("materials")
-      .update({ downloads: (item.downloads || 0) + 1 })
-      .eq("id", id);
+  const handlePreview = () => {
+    if (!openSafeExternalUrl(file)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid file link",
+        text: "This file link is not safe to open.",
+      });
+    }
+  };
 
-    window.open(file, "_blank");
+  const handleDownload = () => {
+    if (!openSafeExternalUrl(file, { download: true })) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid download link",
+        text: "This file link is not safe to download.",
+      });
+    }
   };
 
   return (
@@ -975,20 +993,19 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
           }}
         >
           <button
-            onClick={() => window.open(file, "_blank")}
+            onClick={handlePreview}
             className="btn-primary btn-small"
           >
             Preview
           </button>
 
-          <a
-            href={file}
-            download
+          <button
+            onClick={handleDownload}
             className="btn-primary btn-small"
             style={{ textDecoration: "none" }}
           >
             Download
-          </a>
+          </button>
 
           <button
             onClick={() => {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { canSubmitWithCooldown, normalizeTextInput } from "../utils/security";
 
 export default function AIAssistant() {
   const [subject, setSubject] = useState("Applied Chemistry");
@@ -19,7 +20,12 @@ export default function AIAssistant() {
   ];
 
   const generateContent = async () => {
-    if (!topic) return;
+    const safeTopic = normalizeTextInput(topic, 400);
+    if (!safeTopic) return;
+    if (!canSubmitWithCooldown("ai_assistant_cooldown", 8000)) {
+      setResponse("Please wait a few seconds before generating again.");
+      return;
+    }
 
     setLoading(true);
     setResponse("");
@@ -32,7 +38,7 @@ export default function AIAssistant() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ subject, type, topic }),
+          body: JSON.stringify({ subject, type, topic: safeTopic }),
         },
       );
 

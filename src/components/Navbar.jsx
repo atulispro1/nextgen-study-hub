@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Moon, Sun, Menu, X } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import { isAdminRole } from "../utils/security";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -33,7 +34,7 @@ export default function Navbar() {
     }
   };
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { user, role, logout } = useAuth() || {};
+  const { user, role, logout, profileReady, profileMissing } = useAuth() || {};
   const [progressDropdown, setProgressDropdown] = useState(false);
   const progressRef = useRef(null);
 
@@ -44,7 +45,8 @@ export default function Navbar() {
   const dropdownRef = useRef(null);
 
   const isLoggedIn = Boolean(user);
-  const isOwner = role === "owner";
+  const isOwner = profileReady && role === "owner";
+  const adminEnabled = profileReady && isAdminRole(role);
 
   // Safe scroll (only on homepage)
   const scrollToSection = (id) => {
@@ -680,7 +682,14 @@ export default function Navbar() {
                   }}
                 >
                   <strong>{user?.email}</strong>
-                  <p style={{ fontSize: "12px", opacity: 0.7 }}>Role: {role}</p>
+                  <p style={{ fontSize: "12px", opacity: 0.7 }}>
+                    Role: {role || "pending"}
+                  </p>
+                  {isLoggedIn && !adminEnabled && profileMissing && (
+                    <p style={{ fontSize: "12px", opacity: 0.7 }}>
+                      Profile role setup is incomplete.
+                    </p>
+                  )}
                   <hr style={{ margin: "10px 0", opacity: 0.2 }} />
 
                   {isOwner && (
@@ -696,9 +705,10 @@ export default function Navbar() {
                   )}
 
                   <button
-                    onClick={() => {
-                      logout();
+                    onClick={async () => {
+                      await logout();
                       setDropdownOpen(false);
+                      navigate("/", { replace: true });
                     }}
                     style={{
                       ...dropdownButtonStyle,

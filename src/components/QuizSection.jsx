@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { canSubmitWithCooldown } from "../utils/security";
 
 export default function QuizSection() {
   const subjects = [
@@ -51,6 +52,10 @@ export default function QuizSection() {
   };
 
   const startQuiz = async () => {
+    if (!canSubmitWithCooldown("ai_quiz_cooldown", 8000)) {
+      return;
+    }
+
     setLoadingQuiz(true);
 
     await generateQuiz();
