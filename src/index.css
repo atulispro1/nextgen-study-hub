@@ -263,8 +263,8 @@ body.dark .pagination-btn {
   display: grid;
   grid-template-columns: 2.2fr 1fr;
   gap: 60px;
+  overflow: hidden;
 }
-
 .blog-content {
   font-size: 18px;
   line-height: 1.9;
@@ -904,5 +904,90 @@ body.dark .theme-btn .dark-text {
   .subject-row select {
     width: 100%;
   }
+}
+
+/* ================= GOOGLE ADS FULL FIX ================= */
+
+/* Core ad container */
+.adsbygoogle {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  margin: 35px auto !important;
+  text-align: center !important;
+  clear: both !important;
+}
+
+/* Fix iframe overflow */
+.adsbygoogle iframe {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Prevent ads breaking grid layout */
+.grid .adsbygoogle {
+  grid-column: 1 / -1 !important;
+}
+
+/* Prevent ads breaking flex layout */
+.flex .adsbygoogle {
+  flex: 1 1 100% !important;
+}
+
+/* Blog content ads spacing */
+.blog-content .adsbygoogle {
+  margin: 40px 0 !important;
+  min-height: 250px;
+}
+
+/* Sidebar ads (desktop only) */
+.blog-sidebar .adsbygoogle {
+  width: 100%;
+  position: sticky;
+  top: 20px;
+}
+
+/* Prevent overflow globally */
+body {
+  overflow-x: hidden;
+}
+
+/* Prevent text breaking due to ads */
+p, h1, h2, h3, ul {
+  word-break: break-word;
+}
+
+/* Prevent container overflow */
+.blog-content > * {
+  max-width: 100%;
+}
+
+/* Grid fix (VERY IMPORTANT) */
+.grid > * {
+  min-width: 0;
+}
+
+/* Mobile fixes */
+@media (max-width: 768px) {
+
+  .adsbygoogle {
+    margin: 20px 0 !important;
+    min-height: 100px;
+  }
+
+  /* Remove sidebar ads on mobile */
+  .blog-sidebar {
+    display: none;
+  }
+
+}
+
+section, div {
+  max-width: 100%;
+}
+
+.adsbygoogle {
+  opacity: 0.98;
 }
 

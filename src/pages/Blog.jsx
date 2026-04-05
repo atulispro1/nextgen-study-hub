@@ -21,12 +21,12 @@ export default function Blog() {
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const blogsPerPage = 6;
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
-    setCurrentPage(1);
+    setVisibleCount(6);
   }, [selectedCategory, search]);
+
 
   const filteredBlogs = allBlogs
     .filter((blog) =>
@@ -34,13 +34,7 @@ export default function Blog() {
     )
     .filter((blog) => blog.title.toLowerCase().includes(search.toLowerCase()));
 
-  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
-
-  const startIndex = (currentPage - 1) * blogsPerPage;
-  const currentBlogs = filteredBlogs.slice(
-    startIndex,
-    startIndex + blogsPerPage,
-  );
+  const currentBlogs = filteredBlogs.slice(0, visibleCount);
 
   return (
     <>
@@ -251,47 +245,21 @@ education learning resources
           ))}
         </div>
         {/* PAGINATION */}
-        <div
-          style={{
-            marginTop: "60px",
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-            flexWrap: "wrap",
-          }}
-        >
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="pagination-btn"
-          >
-            Prev
-          </button>
-
-          {[...Array(totalPages)].map((_, index) => {
-            const pageNumber = index + 1;
-            return (
-              <button
-                key={index}
-                onClick={() => setCurrentPage(pageNumber)}
-                className={`pagination-btn ${
-                  currentPage === pageNumber ? "active-page" : ""
-                }`}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="pagination-btn"
-          >
-            Next
-          </button>
-        </div>
-
+        {visibleCount < filteredBlogs.length && (
+          <div style={{ textAlign: "center", marginTop: "50px" }}>
+            <button
+              className="btn-primary"
+              onClick={() => setVisibleCount((prev) => prev + 6)}
+              style={{
+                padding: "14px 28px",
+                borderRadius: "12px",
+                fontWeight: "600",
+              }}
+            >
+              Load More Articles ↓
+            </button>
+          </div>
+        )}
         <div
           style={{
             height: "3px",
@@ -301,7 +269,7 @@ education learning resources
           }}
         />
 
-      <SmartFooterSection />
+        <SmartFooterSection />
 
         <div
           style={{
