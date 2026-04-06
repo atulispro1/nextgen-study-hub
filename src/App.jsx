@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
 import Navbar from "./components/Navbar";
@@ -64,6 +64,7 @@ function App() {
               {/* Contact */}
               <Route path="/contact-faculty" element={<ContactFaculty />} />
               <Route path="/contact-owner" element={<ContactOwner />} />
+              <Route path="/contact" element={<Navigate to="/contact-owner" replace />} />
 
               {/* Admin */}
               <Route path="/admin" element={<AdminAuth />} />
