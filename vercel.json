@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/contact",
+      "destination": "https://www.atulsharmas.in/contact-owner",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         { "type": "host", "value": "atulsharmas.in" }
