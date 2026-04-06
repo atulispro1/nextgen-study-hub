@@ -1,5 +1,2615 @@
 [
   {
+    "_id": "79ab5186-fed0-4b6a-b9e7-7bfffb730dc1",
+    "title": "Financial Changes from April 2026 in India: Income Tax Rules, Petrol Prices & Major Updates",
+    "slug": {
+      "current": "financial-changes-april-2026-india-tax-rules-updates"
+    },
+    "mainImage": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-22dbf99e2ba1e6f0e3d3c384e6ba5033df9874ad-1536x1024-png",
+        "_type": "reference"
+      }
+    },
+    "publishedAt": "2026-04-06T15:08:59.829Z",
+    "body": [
+      {
+        "_key": "05f8cfeb0eca",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "a4e5f07fc0d5",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Financial Changes from April 2026 in India: Complete Guide"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "ba25e846f171",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "45250593fd90",
+            "_type": "span",
+            "marks": [],
+            "text": "With the beginning of the new financial year 2026–27, several important financial changes have come into effect in India."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "05249190672f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e4dd91fc4225",
+            "_type": "span",
+            "marks": [],
+            "text": "These changes directly impact:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "3e86e7fbf69f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "61dec95a69d4",
+            "_type": "span",
+            "marks": [],
+            "text": "Salaried employees"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "0857d35d8fa7",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d26f8e996c28",
+            "_type": "span",
+            "marks": [],
+            "text": "Students and young professionals"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "6ff292194191",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "3034dbc4bb73",
+            "_type": "span",
+            "marks": [],
+            "text": "Investors and traders"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "1689f6d15e37",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5005c7738bd0",
+            "_type": "span",
+            "marks": [],
+            "text": "Businesses"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "e35767b4ea97",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "6b3c3e7f657f",
+            "_type": "span",
+            "marks": [],
+            "text": "From income tax updates to fuel pricing and compliance rules, understanding these changes is essential for better financial planning."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "533e4a3fbbf2",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "6fea597a70c6",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Key Highlights of Financial Changes 2026"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "0f9145a66c66",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "770513d39cd4",
+            "_type": "span",
+            "marks": [],
+            "text": "New Income Tax Act 2025 implemented"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "53d5ebac992a",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "9cd0a557e79f",
+            "_type": "span",
+            "marks": [],
+            "text": "Introduction of “Tax Year” concept"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "d5ab89f25095",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "fa5c6adb4e6f",
+            "_type": "span",
+            "marks": [],
+            "text": "Changes in ITR filing deadlines"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "9e4ab2cc1cc1",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "abd71649d1a9",
+            "_type": "span",
+            "marks": [],
+            "text": "Updates in TCS and STT rates"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "2a14856fe97a",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "98c576027cf3",
+            "_type": "span",
+            "marks": [],
+            "text": "Petrol pricing impacted by global market"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "72f9956a1e17",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "a6ead4208bfa",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "1. New Income Tax Act 2025 Implemented"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "6c1690f2b3b7",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "0dc7ac1c92c6",
+            "_type": "span",
+            "marks": [],
+            "text": "The biggest change from April 2026 is the implementation of the new Income Tax Act 2025."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "6282efd045bc",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d1dca43a9f01",
+            "_type": "span",
+            "marks": [],
+            "text": "This replaces the old Income Tax Act, 1961."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "50c246556da8",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "7453ca5b8fd3",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "What’s New"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "6342d83f78b1",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "c0d5e55819e9",
+            "_type": "span",
+            "marks": [],
+            "text": "Simplified tax language"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "e265155372e2",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e57ee05cb85d",
+            "_type": "span",
+            "marks": [],
+            "text": "Removal of outdated provisions"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "56268c281190",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ae3cbcbe93b2",
+            "_type": "span",
+            "marks": [],
+            "text": "Easier compliance"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "d7cdf9d6468f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5407ce3f9596",
+            "_type": "span",
+            "marks": [],
+            "text": "Reduced legal complexity"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "3585f1d54008",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e768d8f13129",
+            "_type": "span",
+            "marks": [],
+            "text": "This change is aimed at making taxation more understandable for common taxpayers."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "94e9c9a3e901",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ba433cde1594",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "2. New Income Tax Rules 2026"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "f5f815c18b6d",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "4de68d83c874",
+            "_type": "span",
+            "marks": [],
+            "text": "New rules have been introduced to update deductions and allowances."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "36f40eae6489",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d2f266090c35",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Major Updates in Allowances"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "01d900b9918a",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "69638a75cd57",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Children Education Allowance"
+          },
+          {
+            "_key": "4c756c4ada76",
+            "_type": "span",
+            "marks": [],
+            "text": "\nEarlier: ₹100 per month\nNow: ₹3,000 per month"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "2eadd0c6bf30",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "90f5bea0f116",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Hostel Allowance"
+          },
+          {
+            "_key": "4acb27faa7e0",
+            "_type": "span",
+            "marks": [],
+            "text": "\nEarlier: ₹300 per month\nNow: ₹9,000 per month"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "134c8d42b478",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "08256779876d",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Free Meals"
+          },
+          {
+            "_key": "35349ace6a31",
+            "_type": "span",
+            "marks": [],
+            "text": "\nEarlier: ₹50 per meal\nNow: ₹200 per meal"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "1e7fe21c979f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d40a14b07cf2",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Gifts (Non-cash)"
+          },
+          {
+            "_key": "e862dc3304eb",
+            "_type": "span",
+            "marks": [],
+            "text": "\nEarlier: ₹5,000 per year\nNow: ₹15,000 per year"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "e5055765ff19",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ed215d6f969b",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Car Lease Benefits (Small Engine)"
+          },
+          {
+            "_key": "aea992817e67",
+            "_type": "span",
+            "marks": [],
+            "text": "\nEarlier: ₹1,800 + ₹900 driver\nNow: ₹5,000 + ₹3,000 driver"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "823c9cfcb9d2",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "f1730b63e31a",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Car Lease Benefits (Large Engine)"
+          },
+          {
+            "_key": "8e5019e79ac4",
+            "_type": "span",
+            "marks": [],
+            "text": "\nEarlier: ₹2,400 + ₹900 driver\nNow: ₹7,000 + ₹3,000 driver"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "9d5f512121c0",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "705d60c05b1f",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Overseas Medical Treatment"
+          },
+          {
+            "_key": "97c04da85ddf",
+            "_type": "span",
+            "marks": [],
+            "text": "\nEarlier: Tax-free only below ₹2 lakh income\nNow: Tax-free up to ₹8 lakh income"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "8cfc389f4a5c",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "37ab57b2b69b",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "3. Income Tax Slabs FY 2026–27"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "01b083458237",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "c58566282f2f",
+            "_type": "span",
+            "marks": [],
+            "text": "There are "
+          },
+          {
+            "_key": "4ed9ded82474",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "no changes in tax slabs"
+          },
+          {
+            "_key": "b235234172b7",
+            "_type": "span",
+            "marks": [],
+            "text": ", but existing slabs continue."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "4177ce3ed075",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "80297566268d",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "New Tax Regime"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "008d45cf09af",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ee281f01eafc",
+            "_type": "span",
+            "marks": [],
+            "text": "Income up to ₹4 lakh → No tax"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "af8b61645d78",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "7e5e6533abed",
+            "_type": "span",
+            "marks": [],
+            "text": "₹4–8 lakh → 5%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "1c3e6f13caf4",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "6cf40b9f39cd",
+            "_type": "span",
+            "marks": [],
+            "text": "₹8–12 lakh → 10%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "00863d55fb96",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "aec32b6fb644",
+            "_type": "span",
+            "marks": [],
+            "text": "₹12–16 lakh → 15%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "2c05010d4cbe",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "b82c2759ba3f",
+            "_type": "span",
+            "marks": [],
+            "text": "₹16–20 lakh → 20%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "43f4eafd4caa",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "7b0100516a8d",
+            "_type": "span",
+            "marks": [],
+            "text": "₹20–24 lakh → 25%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "57bfda589b22",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "92f7539c4401",
+            "_type": "span",
+            "marks": [],
+            "text": "Above ₹24 lakh → 30%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "9c60deadab86",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "73fbf9f32d66",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Important Benefit"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "a53dc5b3d4b0",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "2ee5ecf12429",
+            "_type": "span",
+            "marks": [],
+            "text": "Income up to ₹12 lakh can effectively be tax-free due to rebate under Section 87A."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "1cc372f0054c",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "c0a66e132cc9",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "4. Introduction of “Tax Year” Concept"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "74a4fb3d11f6",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "dbbcc4227a0d",
+            "_type": "span",
+            "marks": [],
+            "text": "From April 2026:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "6d5da0b6a13c",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ac220d817930",
+            "_type": "span",
+            "marks": [],
+            "text": "“Financial Year” and “Assessment Year” are replaced"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "00d2aabc5f1f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "f2820bef6a5f",
+            "_type": "span",
+            "marks": [],
+            "text": "New term introduced: "
+          },
+          {
+            "_key": "37308d7620a1",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Tax Year"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "1f291c7c4581",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "8d4df0cee7b6",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Why This Matters"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "5dbc7aef7419",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "f40d468bc01b",
+            "_type": "span",
+            "marks": [],
+            "text": "Easier understanding"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "463052e84c9b",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "a511202dfaac",
+            "_type": "span",
+            "marks": [],
+            "text": "Simplified filing"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "b294bae0378e",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "2d2152145fd7",
+            "_type": "span",
+            "marks": [],
+            "text": "Less confusion for taxpayers"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "63825fe3046f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "7f3ec4a7bd08",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "5. Changes in ITR Filing Deadlines"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "8d8658f5c9b4",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ed8402671ec6",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Updated Deadlines"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "ceba43726dc7",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "2e685a4bc91d",
+            "_type": "span",
+            "marks": [],
+            "text": "ITR-1 & ITR-2 → 31 July (no change)"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "167ffd183df5",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "f7eb5c638837",
+            "_type": "span",
+            "marks": [],
+            "text": "ITR-3 & ITR-4 → Extended to 31 August"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "c03aa00e6dba",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "120bd0eb385b",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Revised Return"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "0a3b3fb54c77",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "9a9e5af48c22",
+            "_type": "span",
+            "marks": [],
+            "text": "Can now be filed till 31 March"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "282e9cfbe458",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "71195c41828c",
+            "_type": "span",
+            "marks": [],
+            "text": "Earlier limit was shorter"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "a0398b690efd",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "69f387727842",
+            "_type": "span",
+            "marks": [],
+            "text": "This gives taxpayers more time for corrections."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "d50fb3d6dadc",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "efba5ff16a99",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "6. TCS (Tax Collected at Source) Changes"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "5c0412b7f9f5",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "865c6fe9bd85",
+            "_type": "span",
+            "marks": [],
+            "text": "TCS rates have been rationalized."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "46ed48bfbfae",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "01d4039e47ed",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Key Changes"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "1ab2aeb6bede",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "371738b396a4",
+            "_type": "span",
+            "marks": [],
+            "text": "Alcohol, scrap, minerals → Increased to 2%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "d2fd2494a56e",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "c7baa1451fe3",
+            "_type": "span",
+            "marks": [],
+            "text": "Education & medical remittance → Reduced to 2%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "99b91cc9acb2",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "254280cad2be",
+            "_type": "span",
+            "marks": [],
+            "text": "Overseas travel packages → Flat 2%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "676df2fcd0d9",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e2017d02956e",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Impact"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "0fef4bf2c500",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "1fb86231da5d",
+            "_type": "span",
+            "marks": [],
+            "text": "Simplifies compliance"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "602dedf68885",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "812aee6b1564",
+            "_type": "span",
+            "marks": [],
+            "text": "Reduces confusion"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "3577f464c1c3",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ecd1ba659b2a",
+            "_type": "span",
+            "marks": [],
+            "text": "Improves tax collection efficiency"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "5ff51b53f302",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "a173ab1da3bd",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "7. STT (Securities Transaction Tax) Changes"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "6de6d718fb56",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "7e98fc270cfd",
+            "_type": "span",
+            "marks": [],
+            "text": "STT rates have increased for traders."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "71c576d566d6",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e5af41d143e4",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Updated Rates"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "e27d4ddb1470",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "174bdf62f551",
+            "_type": "span",
+            "marks": [],
+            "text": "Options premium → 0.15%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "048cc48d0199",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "8cd8e949540d",
+            "_type": "span",
+            "marks": [],
+            "text": "Futures → 0.05%"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "5d20cd06e16a",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "32ab73ec1541",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Impact"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "59506e48df7e",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "9720729c29c4",
+            "_type": "span",
+            "marks": [],
+            "text": "Higher cost for traders"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "eefc49082b23",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "212a83d6e36f",
+            "_type": "span",
+            "marks": [],
+            "text": "Affects stock market participants"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "46cfaf1ee65f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "9d7c3719c02d",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "8. Buyback Taxation Changes"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "0ea629821eb8",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d444813a2a46",
+            "_type": "span",
+            "marks": [],
+            "text": "From April 2026:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "f2ad551bcf13",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "cd29044b90fe",
+            "_type": "span",
+            "marks": [],
+            "text": "Buyback income treated as "
+          },
+          {
+            "_key": "2c385adbdaea",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "capital gains"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "c9d827f1ab42",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "31d4e065bfb7",
+            "_type": "span",
+            "marks": [],
+            "text": "Earlier treated as dividend"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "97f656da4f55",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "1ff69b26c35e",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Impact"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "20c17d4c2e47",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "7901847f41e1",
+            "_type": "span",
+            "marks": [],
+            "text": "More clarity in taxation"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "b973b481c7a7",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "9840ef848b7c",
+            "_type": "span",
+            "marks": [],
+            "text": "Different tax rates for individuals and companies"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "b2b2057821bc",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "9e267d584f29",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "9. Sovereign Gold Bonds (SGB) Changes"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "ae743b56865b",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5876726415b8",
+            "_type": "span",
+            "marks": [],
+            "text": "Tax exemption only for "
+          },
+          {
+            "_key": "779bb340e7b5",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "original investors"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "a8e38e63f546",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "4de8336e9874",
+            "_type": "span",
+            "marks": [],
+            "text": "Secondary market buyers must pay capital gains tax"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "9714c1910bc3",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5f584bb36257",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "10. TDS Changes"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "724e4695dce1",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "399aed0c4eac",
+            "_type": "span",
+            "marks": [],
+            "text": "Property buyers can now use PAN-based system"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "739ad6bd807a",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "fefac8530b03",
+            "_type": "span",
+            "marks": [],
+            "text": "No need for TAN registration"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "ea2a208240cb",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e28d75fcfd9c",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "11. Dividend Tax Deduction Removed"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "ea7e3f6877ca",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "834bde5bd938",
+            "_type": "span",
+            "marks": [],
+            "text": "Earlier:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "6634f7e32b07",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "a5bcc65c25c3",
+            "_type": "span",
+            "marks": [],
+            "text": "Interest deduction allowed on dividend income"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "499cdf8cd511",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "70e9d3162b4f",
+            "_type": "span",
+            "marks": [],
+            "text": "Now:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "d92e2ac8ccf9",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "c8ef5c8060bd",
+            "_type": "span",
+            "marks": [],
+            "text": "This benefit is removed"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "c5f97735e458",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d20f7f0c471f",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "12. New Income Tax Forms 2026"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "ff2700e5ba9e",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "3409fa597a5b",
+            "_type": "span",
+            "marks": [],
+            "text": "Forms have been updated:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "de8c48d0e1c5",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "35289b9b6ce1",
+            "_type": "span",
+            "marks": [],
+            "text": "Form 16 → Form 130"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "58378082d9dc",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "64cb34ea338c",
+            "_type": "span",
+            "marks": [],
+            "text": "Form 16A → Form 131"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "e1cde2507383",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "aca397ca348f",
+            "_type": "span",
+            "marks": [],
+            "text": "Form 26AS → Form 168"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "6856391e58bd",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "c80d89d77bf0",
+            "_type": "span",
+            "marks": [],
+            "text": "These changes aim to modernize tax reporting."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "d83a3a2a83c7",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "68e76e233e32",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "13. HRA (House Rent Allowance) Changes"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "68410b89143b",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "45c3c21ae4ca",
+            "_type": "span",
+            "marks": [],
+            "text": "50% HRA exemption now applies to more cities:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "817a81cb1ba5",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d43d59e1884d",
+            "_type": "span",
+            "marks": [],
+            "text": "Bengaluru"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "2b0176409fa7",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "c0be5555aab9",
+            "_type": "span",
+            "marks": [],
+            "text": "Pune"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "54f7b4fd1a31",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d76cf3b9689a",
+            "_type": "span",
+            "marks": [],
+            "text": "Hyderabad"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "8273a450e4a6",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "56d93bbf15d7",
+            "_type": "span",
+            "marks": [],
+            "text": "Ahmedabad"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "2deb68e9e439",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ca9f176460b8",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Important Update"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "74cb94c9dc59",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "0317fdfed275",
+            "_type": "span",
+            "marks": [],
+            "text": "Must disclose relationship with landlord"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "bf8484699cb0",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ea50e2e3751c",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "14. Petrol Price & Fuel Updates"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "df8f1857bce7",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d124cb077405",
+            "_type": "span",
+            "marks": [],
+            "text": "Petrol prices remain influenced by:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "d104073db48e",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "abff5ae224e4",
+            "_type": "span",
+            "marks": [],
+            "text": "Global crude oil prices"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "c4a3d10d6f59",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5f95d3ed8734",
+            "_type": "span",
+            "marks": [],
+            "text": "Government policies"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "22c4cbbfb07c",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "b3a734c8906e",
+            "_type": "span",
+            "marks": [],
+            "text": "Supply chain disruptions"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "65c71791f66e",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "856fcb3cddb0",
+            "_type": "span",
+            "marks": [],
+            "text": "Recent updates show:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "bec04cd31537",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "68eecdcd7a26",
+            "_type": "span",
+            "marks": [],
+            "text": "Government reduced excise duty to control prices"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "981c8eb1aa4a",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d2b2708174e0",
+            "_type": "span",
+            "marks": [],
+            "text": "Fuel supply remains stable"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "8aa255e0024e",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "ee559d5b272f",
+            "_type": "span",
+            "marks": [],
+            "text": "No shortage reported"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "ec49afe5aae8",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "8d10df337fd9",
+            "_type": "span",
+            "marks": [],
+            "text": "👉 For live petrol price updates, check:\nhttps://iocl.com/fuel-price"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "bca2d1d0c1a2",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "fbd2266d4674",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "15. Who is Most Affected by These Changes"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "c6a8aa9cc502",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "cc15c4b65c2a",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Salaried Employees"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "35de1582dd2d",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5b4f05a29479",
+            "_type": "span",
+            "marks": [],
+            "text": "Benefit from higher allowances"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "0d2c4405dd31",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "6775f29a4c04",
+            "_type": "span",
+            "marks": [],
+            "text": "Easier tax filing"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "f3ef5326bbc1",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "acc361130939",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Investors"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "399bca38a5f7",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "fd0176d6921a",
+            "_type": "span",
+            "marks": [],
+            "text": "Higher STT impacts trading cost"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "90bfc2a3da0a",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "fe81cc325733",
+            "_type": "span",
+            "marks": [],
+            "text": "SGB taxation changes"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "76a38809658c",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "34b174f578af",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Businesses & Professionals"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "1d774ac03132",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "eebfccadbac9",
+            "_type": "span",
+            "marks": [],
+            "text": "Extended filing deadlines"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "57f20b57b234",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "4fa5b1b7bdf6",
+            "_type": "span",
+            "marks": [],
+            "text": "Simplified compliance"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "4920c2603e8f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "343d11f46978",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "How These Changes Impact You"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "2f7245276af5",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5e2628040f4e",
+            "_type": "span",
+            "marks": [],
+            "text": "These financial changes aim to:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "36a49f9667b2",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "b671e4e8dd4f",
+            "_type": "span",
+            "marks": [],
+            "text": "Simplify tax system"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "7daea2b6d136",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d41995e88c10",
+            "_type": "span",
+            "marks": [],
+            "text": "Increase transparency"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "bc0a1c0f1ef6",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "49281106460a",
+            "_type": "span",
+            "marks": [],
+            "text": "Improve compliance"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "df1f7f017b5b",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "6719b1e2cf46",
+            "_type": "span",
+            "marks": [],
+            "text": "However, some changes also increase costs in specific areas like trading."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "9da4f9949369",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "d46de25787ef",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Conclusion"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "7111c57f35d6",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "0faa0fedff1e",
+            "_type": "span",
+            "marks": [],
+            "text": "The financial changes from April 2026 bring a mix of simplification and new compliance rules."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "def0356f8382",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "f7091dea3faf",
+            "_type": "span",
+            "marks": [],
+            "text": "Understanding these updates is essential for:"
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "a21c581ca436",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "b9f085715cc7",
+            "_type": "span",
+            "marks": [],
+            "text": "Better tax planning"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "66638b68deb5",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "dcf19055d2d7",
+            "_type": "span",
+            "marks": [],
+            "text": "Saving money"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "2a9f6a0c1cce",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "64389940341c",
+            "_type": "span",
+            "marks": [],
+            "text": "Avoiding penalties"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "019299a263ec",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "fed5e3f6cd0c",
+            "_type": "span",
+            "marks": [],
+            "text": "Staying updated will help you make smarter financial decisions in the new financial year."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "7a1b365cb5dd",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "1c26e0a14a06",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "SEO Keywords Used"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "05d9d59549f3",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5119493a9b5d",
+            "_type": "span",
+            "marks": [],
+            "text": "financial changes april 2026 india"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "f106f9d8269f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "78149c9c2fe8",
+            "_type": "span",
+            "marks": [],
+            "text": "income tax changes 2026"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "623ad0aca624",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "5c5b85206064",
+            "_type": "span",
+            "marks": [],
+            "text": "new tax rules india 2026"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "5b354111e1fd",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "c5d5519387d3",
+            "_type": "span",
+            "marks": [],
+            "text": "petrol price today india"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "bb8e26f11a82",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "0e329238b134",
+            "_type": "span",
+            "marks": [],
+            "text": "itr filing last date 2026"
+          }
+        ],
+        "level": 1,
+        "listItem": "bullet",
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "055bb41ca009",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "a0e805246a8e",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Frequently Asked Questions (FAQ)"
+          }
+        ],
+        "markDefs": [],
+        "style": "h1"
+      },
+      {
+        "_key": "bbae8f9cb2ae",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "f3f09de42d98",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Are income tax slabs changed in 2026?"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "dbf628bf4a8f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "825d2003290a",
+            "_type": "span",
+            "marks": [],
+            "text": "No, tax slabs remain the same for FY 2026–27."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "2f1c12979c73",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "2e0ec166f7c7",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "What is the new Income Tax Act 2025?"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "2d0794201231",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e7d963874059",
+            "_type": "span",
+            "marks": [],
+            "text": "It replaces the old tax law and simplifies tax rules."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "6f9df012655d",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "6834bf8b54dc",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Is income up to ₹12 lakh tax-free?"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "62f3a7abf58f",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "b899a696777e",
+            "_type": "span",
+            "marks": [],
+            "text": "Yes, due to rebate under Section 87A."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "ba9cb17b2284",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e59ecfabdb79",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "What is the new ITR filing deadline?"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "3013f78e1920",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "b5064883eb4d",
+            "_type": "span",
+            "marks": [],
+            "text": "31 July or 31 August depending on category."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      },
+      {
+        "_key": "82c5913aafd8",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "dd24e0f99c23",
+            "_type": "span",
+            "marks": [
+              "strong"
+            ],
+            "text": "Why are petrol prices changing?"
+          }
+        ],
+        "markDefs": [],
+        "style": "h2"
+      },
+      {
+        "_key": "23d14e8a2bf6",
+        "_type": "block",
+        "children": [
+          {
+            "_key": "e62e1803d864",
+            "_type": "span",
+            "marks": [],
+            "text": "Due to global crude oil prices and government policies."
+          }
+        ],
+        "markDefs": [],
+        "style": "normal"
+      }
+    ],
+    "category": null
+  },
+  {
     "_id": "bd7dbeb0-ac39-40c4-b3fd-70377371bf39",
     "title": "Best Courses After 12th in 2026: Complete Career Guide (All Streams + High Salary Options)",
     "slug": {

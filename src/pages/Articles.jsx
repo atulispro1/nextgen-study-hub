@@ -71,7 +71,7 @@ export default function Articles() {
     return matchesSearch && matchesCategory;
   });
 
-  const latestArticles = posts.slice(0, 12);
+  const latestArticles = posts.slice(0, 7);
 
   return (
     <>

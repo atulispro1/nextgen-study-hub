@@ -1,7 +1,10 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import SmartFooterSection from "../components/SmartFooterSection";
+import generatedArticles from "../data/generatedArticles.json";
+import { urlFor } from "../lib/sanityImage";
+import { ThemeContext } from "../context/ThemeContext";
 const TextTicker = lazy(() => import("../components/TextTicker"));
 const StatsSection = lazy(() => import("../components/StatsSection"));
 const SemesterSection = lazy(() => import("../components/SemesterSection"));
@@ -9,8 +12,25 @@ const Features = lazy(() => import("../components/Features"));
 const PremiumSection = lazy(() => import("../components/PremiumSection"));
 const Testimonials = lazy(() => import("../components/Testimonials"));
 
+function getArticleExcerpt(post) {
+  const firstBlock = Array.isArray(post.body)
+    ? post.body.find((block) => Array.isArray(block?.children))
+    : null;
+  const text = firstBlock?.children
+    ?.map((child) => child?.text || "")
+    .join(" ")
+    .trim();
+
+  return text
+    ? `${text.slice(0, 95)}...`
+    : "Read this latest article on NextGen Study Hub.";
+}
+
 export default function Home() {
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
+  const latestArticles = generatedArticles.slice(0, 7);
+  const isDark = theme === "dark";
   const dividerStyle = {
     height: "3px",
     background: "linear-gradient(90deg, transparent, #6366f1, transparent)",
@@ -208,10 +228,296 @@ education platform for engineering students
         <TextTicker />
       </Suspense>
 
-      <Suspense fallback={<div>Loading...</div>}>
-        <StatsSection />
-      </Suspense>
       <div style={dividerStyle} />
+
+      {latestArticles.length > 0 && (
+        <>
+          <section
+            style={{
+              position: "relative",
+              padding: "clamp(32px,5vw,56px)",
+              borderRadius: "28px",
+              margin: "70px 0",
+              overflow: "hidden",
+              background: isDark
+                ? "linear-gradient(145deg, rgba(15,23,42,0.95), rgba(30,41,59,0.92))"
+                : "linear-gradient(145deg, rgba(255,255,255,0.95), rgba(238,242,255,0.96))",
+              border: isDark
+                ? "1px solid rgba(99,102,241,0.16)"
+                : "1px solid rgba(99,102,241,0.12)",
+              boxShadow: isDark
+                ? "0 28px 80px rgba(15,23,42,0.35)"
+                : "0 24px 70px rgba(99,102,241,0.12)",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                inset: "auto auto -120px -120px",
+                width: "260px",
+                height: "260px",
+                borderRadius: "999px",
+                background: "radial-gradient(circle, rgba(34,197,94,0.28), transparent 70%)",
+                filter: "blur(18px)",
+                pointerEvents: "none",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                inset: "-90px -40px auto auto",
+                width: "260px",
+                height: "260px",
+                borderRadius: "999px",
+                background: "radial-gradient(circle, rgba(99,102,241,0.30), transparent 70%)",
+                filter: "blur(22px)",
+                pointerEvents: "none",
+              }}
+            />
+
+            <div
+              style={{
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                gap: "20px",
+                flexWrap: "wrap",
+                marginBottom: "30px",
+              }}
+            >
+              <div style={{ maxWidth: "760px" }}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    marginBottom: "12px",
+                    padding: "8px 14px",
+                    borderRadius: "999px",
+                    background: isDark
+                      ? "rgba(99,102,241,0.12)"
+                      : "rgba(79,70,229,0.08)",
+                    color: isDark ? "#a5b4fc" : "#4338ca",
+                    fontSize: "13px",
+                    fontWeight: "700",
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Fresh From Sanity
+                </span>
+
+                <h2
+                  style={{
+                    fontSize: "clamp(2rem,4vw,2.8rem)",
+                    fontWeight: "900",
+                    marginBottom: "14px",
+                    color: isDark ? "#f8fafc" : "#111827",
+                  }}
+                >
+                  Latest Published Articles
+                </h2>
+
+                <p
+                  style={{
+                    maxWidth: "720px",
+                    color: isDark ? "rgba(255,255,255,0.82)" : "#4b5563",
+                    lineHeight: "1.8",
+                    margin: 0,
+                  }}
+                >
+                  Your newest Sanity articles appear here automatically after
+                  each deploy. Only the latest 7 stay on the home page, so new
+                  posts push older ones out and keep this section fresh.
+                </p>
+              </div>
+
+              <button
+                className="btn-primary"
+                style={{
+                  padding: "14px 28px",
+                  borderRadius: "999px",
+                  fontWeight: "700",
+                  boxShadow: "0 10px 25px rgba(99,102,241,0.32)",
+                }}
+                onClick={() => navigate("/articles")}
+              >
+                View All Articles
+              </button>
+            </div>
+
+            <div
+              style={{
+                position: "relative",
+                zIndex: 1,
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                gap: "20px",
+              }}
+            >
+              {latestArticles.map((post, index) => (
+                <article
+                  key={post._id}
+                  onClick={() => navigate(`/articles/${post.slug.current}`)}
+                  style={{
+                    cursor: "pointer",
+                    borderRadius: "22px",
+                    overflow: "hidden",
+                    background: isDark
+                      ? index === 0
+                        ? "linear-gradient(180deg, rgba(99,102,241,0.24), rgba(15,23,42,0.92))"
+                        : "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(15,23,42,0.90))"
+                      : index === 0
+                        ? "linear-gradient(180deg, rgba(99,102,241,0.14), rgba(255,255,255,0.98))"
+                        : "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98))",
+                    border: isDark
+                      ? "1px solid rgba(255,255,255,0.10)"
+                      : "1px solid rgba(15,23,42,0.08)",
+                    boxShadow: isDark
+                      ? "0 18px 40px rgba(2,6,23,0.28)"
+                      : "0 14px 30px rgba(15,23,42,0.08)",
+                    transition: "transform 0.25s ease, box-shadow 0.25s ease",
+                  }}
+                  onMouseEnter={(event) => {
+                    event.currentTarget.style.transform = "translateY(-8px)";
+                    event.currentTarget.style.boxShadow =
+                      isDark
+                        ? "0 26px 44px rgba(2,6,23,0.38)"
+                        : "0 20px 38px rgba(79,70,229,0.16)";
+                  }}
+                  onMouseLeave={(event) => {
+                    event.currentTarget.style.transform = "translateY(0)";
+                    event.currentTarget.style.boxShadow =
+                      isDark
+                        ? "0 18px 40px rgba(2,6,23,0.28)"
+                        : "0 14px 30px rgba(15,23,42,0.08)";
+                  }}
+                >
+                  {post.mainImage && (
+                    <img
+                      src={urlFor(post.mainImage).width(700).height(420).url()}
+                      alt={post.title}
+                      style={{
+                        width: "100%",
+                        height: "180px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  )}
+
+                  <div style={{ padding: "20px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        gap: "10px",
+                        marginBottom: "12px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          fontSize: "12px",
+                          fontWeight: "700",
+                          color: isDark ? "#c4b5fd" : "#4f46e5",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.05em",
+                        }}
+                      >
+                        #{index + 1} Latest
+                      </span>
+
+                      {post.publishedAt && (
+                        <span
+                          style={{
+                            fontSize: "12px",
+                            color: isDark ? "rgba(255,255,255,0.76)" : "#6b7280",
+                          }}
+                        >
+                          {new Date(post.publishedAt).toLocaleDateString("en-IN")}
+                        </span>
+                      )}
+                    </div>
+
+                    <h3
+                      style={{
+                        fontSize: "18px",
+                        lineHeight: "1.5",
+                        marginBottom: "12px",
+                        color: isDark ? "#f8fafc" : "#111827",
+                      }}
+                    >
+                      {post.title}
+                    </h3>
+
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        lineHeight: "1.7",
+                        color: isDark ? "rgba(255,255,255,0.76)" : "#6b7280",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      {getArticleExcerpt(post)}
+                    </p>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        gap: "12px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {post.category?.title ? (
+                        <span
+                          style={{
+                            display: "inline-block",
+                            padding: "6px 10px",
+                            borderRadius: "999px",
+                            fontSize: "12px",
+                            background: isDark
+                              ? "rgba(34,197,94,0.14)"
+                              : "rgba(34,197,94,0.10)",
+                            color: isDark ? "#86efac" : "#15803d",
+                          }}
+                        >
+                          {post.category.title}
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            fontSize: "12px",
+                            color: isDark ? "rgba(255,255,255,0.72)" : "#6b7280",
+                          }}
+                        >
+                          Student Article
+                        </span>
+                      )}
+
+                      <span
+                        style={{
+                          fontSize: "13px",
+                          fontWeight: "700",
+                          color: isDark ? "#a5b4fc" : "#4338ca",
+                        }}
+                      >
+                        Read Article {"->"}
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+          <div style={dividerStyle} />
+        </>
+      )}
 
       <Suspense fallback={<div>Loading...</div>}>
         <SemesterSection />

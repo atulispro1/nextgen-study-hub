@@ -759,6 +759,7 @@ export default function Navbar() {
             display: "flex",
             flexDirection: "column",
             gap: "22px",
+            color: theme === "dark" ? "var(--text-dark)" : "var(--text-light)",
             boxShadow: "-10px 0 40px rgba(0,0,0,0.4)",
             overflowY: "auto",
           }}
@@ -1018,9 +1019,17 @@ export default function Navbar() {
                   style={{
                     padding: "8px",
                     borderRadius: "8px",
-                    border: "none",
+                    border:
+                      theme === "dark"
+                        ? "1px solid rgba(255,255,255,0.1)"
+                        : "1px solid rgba(79,70,229,0.12)",
                     cursor: "pointer",
-                    background: "rgba(99,102,241,0.15)",
+                    background:
+                      theme === "dark"
+                        ? "rgba(99,102,241,0.2)"
+                        : "rgba(99,102,241,0.15)",
+                    color: theme === "dark" ? "#f8fafc" : "#1f2937",
+                    fontWeight: "600",
                   }}
                   onClick={() => {
                     navigate(`/semester/${sem}`);
