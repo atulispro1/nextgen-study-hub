@@ -81,6 +81,24 @@ function App() {
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPostRouter />} />
               <Route path="/articles" element={<Articles />} />
+              <Route
+                path="/articles/how-to-stay-focused-while-studying-2026"
+                element={
+                  <Navigate
+                    to="/articles/how-to-study-effectively-2026-best-study-techniques"
+                    replace
+                  />
+                }
+              />
+              <Route
+                path="/articles/how-to-start-freelancing-as-student-2026"
+                element={
+                  <Navigate
+                    to="/articles/how-to-start-freelancing-as-a-student-2026"
+                    replace
+                  />
+                }
+              />
               <Route path="/articles/:slug" element={<ArticlePost />} />
 
               {/* Notes */}

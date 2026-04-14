@@ -2,7 +2,6 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Moon, Sun, Menu, X } from "lucide-react";
-
 import { useAuth } from "../context/AuthContext";
 import { isAdminRole } from "../utils/security";
 
