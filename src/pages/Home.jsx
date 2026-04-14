@@ -2,6 +2,7 @@ import { lazy, Suspense, useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import SmartFooterSection from "../components/SmartFooterSection";
+import SEO from "../components/SEO";
 import generatedArticles from "../data/generatedArticles.json";
 import { urlFor } from "../lib/sanityImage";
 import { ThemeContext } from "../context/ThemeContext";
@@ -121,6 +122,13 @@ education platform for engineering students
 
         <link rel="canonical" href="https://www.atulsharmas.in/" />
       </Helmet>
+      <SEO
+        title="Diploma Engineering Notes, Study Materials, Student Tools & Internships"
+        description="NextGen Study Hub helps Indian diploma and engineering students with semester-wise notes, DBMS and programming resources, CGPA calculators, Pomodoro timer, exam preparation guides, internships and career roadmaps."
+        url="https://www.atulsharmas.in/"
+        schemaType="WebPage"
+        modifiedTime="2026-04-14"
+      />
 
       <section className="section" style={heroSectionStyle}>
         {/* Background Gradient Blobs */}

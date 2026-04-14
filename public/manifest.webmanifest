@@ -1,0 +1,25 @@
+{
+  "name": "NextGen Study Hub",
+  "short_name": "NextGen Study",
+  "description": "Diploma engineering notes, semester study materials, student tools, exam guides and internships for Indian students.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["education", "productivity", "utilities"],
+  "lang": "en-IN"
+}

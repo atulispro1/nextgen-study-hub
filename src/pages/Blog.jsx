@@ -40,8 +40,15 @@ export default function Blog() {
     <>
       <SEO
         title="Student Blog – Study Tips, Exam Preparation & Learning Guides"
-        url="https://www.atulsharmas.in/blog"
-      />
+          description="Read practical study tips, exam preparation plans, productivity techniques, programming guides, career advice and government exam resources for diploma and engineering students."
+          url="https://www.atulsharmas.in/blog"
+          schemaType="Blog"
+          modifiedTime="2026-04-14"
+          breadcrumbs={[
+            { name: "Home", url: "https://www.atulsharmas.in" },
+            { name: "Blog", url: "https://www.atulsharmas.in/blog" },
+          ]}
+        />
       <Helmet>
         <title>
           Student Blog – Study Tips, Exam Preparation & Learning Guides |

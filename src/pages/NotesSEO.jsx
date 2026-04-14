@@ -42,6 +42,11 @@ const defaultPage = {
         "Yes. This page works best as a focused guide and should be used together with detailed notes, question practice and revision.",
     },
   ],
+  relatedLinks: [
+    { label: "Engineering Notes Library", href: "/notes-library" },
+    { label: "Student Tools and Calculators", href: "/student-tools" },
+    { label: "Exam Preparation Guides", href: "/blog" },
+  ],
 };
 
 const notesData = {
@@ -393,6 +398,13 @@ export default function NotesSEO() {
         title={content.title}
         description={content.description}
         url={`https://www.atulsharmas.in/${slug}`}
+        schemaType="LearningResource"
+        modifiedTime="2026-04-14"
+        breadcrumbs={[
+          { name: "Home", url: "https://www.atulsharmas.in" },
+          { name: "Notes Library", url: "https://www.atulsharmas.in/notes-library" },
+          { name: content.title, url: `https://www.atulsharmas.in/${slug}` },
+        ]}
       />
 
       <div className="section" style={{ maxWidth: "900px", margin: "auto" }}>
@@ -412,6 +424,23 @@ export default function NotesSEO() {
               <li key={topic}>{topic}</li>
             ))}
           </ul>
+        </div>
+
+        <div style={{ marginTop: "50px" }}>
+          <h2>Best Way to Study This Topic</h2>
+          <p>
+            Start with the definitions, then move to diagrams, examples and
+            previous exam questions. For technical subjects, students should not
+            only read the notes. They should write short answers, revise key
+            terms and practice topic-wise questions to improve recall in exams,
+            viva and interviews.
+          </p>
+          <p>
+            If you are preparing at the last moment, focus first on repeated
+            questions, important definitions, differences, diagrams and short
+            explanation-based answers. This makes the page useful for both
+            regular study and quick revision.
+          </p>
         </div>
 
         <div style={{ marginTop: "50px" }}>
@@ -447,6 +476,14 @@ export default function NotesSEO() {
             questions, MCQ practice sets and student productivity tools to build
             a stronger exam preparation workflow.
           </p>
+
+          <ul style={{ lineHeight: "1.9", marginTop: "15px" }}>
+            {content.relatedLinks.map((link) => (
+              <li key={link.href}>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
 
           <a
             href="/notes-library"

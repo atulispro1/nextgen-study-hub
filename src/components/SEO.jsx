@@ -1,30 +1,118 @@
 import { Helmet } from "react-helmet-async";
 
+const SITE_URL = "https://www.atulsharmas.in";
+const SITE_NAME = "NextGen Study Hub";
+const DEFAULT_IMAGE = `${SITE_URL}/preview.png`;
+
+function cleanSnippet(value) {
+  return String(value)
+    .replaceAll("â€“", "-")
+    .replaceAll("â€”", "-")
+    .replaceAll("â€™", "'")
+    .replaceAll("Â©", "(c)")
+    .trim();
+}
+
 export default function SEO({
   title = "NextGen Study Hub – Diploma Notes, Study Materials, Student Tools & Career Resources",
   description = "NextGen Study Hub provides diploma engineering notes, semester study materials, exam preparation guides, internships, career advice and student productivity tools like CGPA calculator and study timer.",
-  keywords = "diploma engineering notes, engineering notes pdf, dbms notes pdf, c programming notes pdf, computer network notes pdf, operating system notes pdf, engineering study materials, diploma computer science notes, polytechnic notes, diploma engineering syllabus, engineering exam preparation, cgpa to percentage calculator, gpa calculator online, percentage calculator online, study timer online, pomodoro study timer, study tips for students, exam preparation tips, government exams after 12th, SSC exam preparation, railway exam preparation, banking exam preparation, career options after diploma, internships for students, programming interview questions, software engineering notes, data structure notes pdf",
-  image = "https://www.atulsharmas.in/preview.png",
-  url = "https://www.atulsharmas.in",
+  keywords = "",
+  image = DEFAULT_IMAGE,
+  url = SITE_URL,
   type = "website",
+  publishedTime,
+  modifiedTime = "2026-04-14",
+  breadcrumbs = [{ name: "Home", url: SITE_URL }],
+  schemaType = "WebPage",
+  noindex = false,
 }) {
+  const normalizedUrl = url || SITE_URL;
+  const cleanTitle = cleanSnippet(title);
+  const cleanDescription = cleanSnippet(description);
+  const normalizedTitle = cleanTitle.includes(SITE_NAME)
+    ? cleanTitle
+    : `${cleanTitle} | ${SITE_NAME}`;
+  const robots = noindex
+    ? "noindex, nofollow"
+    : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+
+  const personSchema = {
+    "@type": "Person",
+    name: "Atul Sharma",
+    url: `${SITE_URL}/about`,
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: `${SITE_URL}/favicon.png`,
+    founder: personSchema,
+    sameAs: [SITE_URL],
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: cleanDescription,
+    publisher: organizationSchema,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/notes-library?search={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
+
+  const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": schemaType,
+    headline: normalizedTitle,
+    name: normalizedTitle,
+    description: cleanDescription,
+    url: normalizedUrl,
+    image,
+    author: personSchema,
+    publisher: organizationSchema,
+    dateModified: modifiedTime,
+    ...(publishedTime ? { datePublished: publishedTime } : {}),
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+
   return (
     <Helmet>
 
       {/* Basic SEO */}
 
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
+      <title>{normalizedTitle}</title>
+      <meta name="description" content={cleanDescription} />
+      {keywords && <meta name="keywords" content={keywords} />}
       <meta name="author" content="Atul Sharma" />
 
       {/* Robots */}
 
-      <meta name="robots" content="index, follow, max-image-preview:large" />
+      <meta name="robots" content={robots} />
 
       {/* Canonical */}
 
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href={normalizedUrl} />
 
       {/* Language */}
 
@@ -37,66 +125,32 @@ export default function SEO({
       {/* Open Graph (Facebook / LinkedIn) */}
 
       <meta property="og:type" content={type} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:url" content={url} />
+      <meta property="og:title" content={normalizedTitle} />
+      <meta property="og:description" content={cleanDescription} />
+      <meta property="og:url" content={normalizedUrl} />
       <meta property="og:image" content={image} />
-      <meta property="og:site_name" content="NextGen Study Hub" />
+      <meta property="og:site_name" content={SITE_NAME} />
+      <meta property="og:locale" content="en_IN" />
+      {publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )}
+      <meta property="article:modified_time" content={modifiedTime} />
 
       {/* Twitter SEO */}
 
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:title" content={normalizedTitle} />
+      <meta name="twitter:description" content={cleanDescription} />
       <meta name="twitter:image" content={image} />
 
-      {/* Website Schema */}
-
       <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          name: "NextGen Study Hub",
-          url: "https://www.atulsharmas.in",
-          description: description,
-          author: {
-            "@type": "Person",
-            name: "Atul Sharma",
-          },
-        })}
+        {JSON.stringify(websiteSchema)}
       </script>
-
-      {/* Organization Schema */}
-
       <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          name: "NextGen Study Hub",
-          url: "https://www.atulsharmas.in",
-          logo: "https://www.atulsharmas.in/favicon.png",
-          founder: {
-            "@type": "Person",
-            name: "Atul Sharma",
-          },
-        })}
+        {JSON.stringify(pageSchema)}
       </script>
-
-      {/* Breadcrumb Schema */}
-
       <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "Home",
-              item: "https://www.atulsharmas.in",
-            }
-          ],
-        })}
+        {JSON.stringify(breadcrumbSchema)}
       </script>
 
     </Helmet>

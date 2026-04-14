@@ -4,11 +4,14 @@
 
     <url>
         <loc>https://www.atulsharmas.in/</loc>
+        <lastmod>2026-04-14</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
 
     <url>
         <loc>https://www.atulsharmas.in/about</loc>
+        <lastmod>2026-04-14</lastmod>
     </url>
 
     <url>
@@ -25,18 +28,26 @@
 
     <url>
         <loc>https://www.atulsharmas.in/blog</loc>
+        <lastmod>2026-04-14</lastmod>
+        <changefreq>weekly</changefreq>
     </url>
 
     <url>
         <loc>https://www.atulsharmas.in/student-tools</loc>
+        <lastmod>2026-04-14</lastmod>
+        <changefreq>monthly</changefreq>
     </url>
 
     <url>
         <loc>https://www.atulsharmas.in/notes-library</loc>
+        <lastmod>2026-04-14</lastmod>
+        <changefreq>weekly</changefreq>
     </url>
 
     <url>
         <loc>https://www.atulsharmas.in/jobs</loc>
+        <lastmod>2026-04-14</lastmod>
+        <changefreq>daily</changefreq>
     </url>
 
     <url>

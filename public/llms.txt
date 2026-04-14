@@ -1,0 +1,25 @@
+# NextGen Study Hub
+
+> NextGen Study Hub is an educational website for Indian diploma and engineering students.
+
+## Primary Sections
+
+- [Diploma Engineering Notes](https://www.atulsharmas.in/notes-library): Semester-wise notes, assignments, practical files and exam-focused study materials.
+- [Student Blog](https://www.atulsharmas.in/blog): Study tips, exam preparation guides, programming roadmaps, career advice and government exam resources.
+- [Student Articles](https://www.atulsharmas.in/articles): Detailed learning guides and productivity resources.
+- [Student Tools](https://www.atulsharmas.in/student-tools): CGPA calculator, study timer, AI study tools, quiz practice and timetable tools.
+- [Jobs and Internships](https://www.atulsharmas.in/jobs): Internship, fresher and career opportunity listings for students.
+
+## Core Topics
+
+- Diploma engineering notes
+- DBMS notes, MCQ questions and interview questions
+- C, Java and Python programming notes
+- Data structures, operating systems and computer networks
+- Semester exam preparation
+- CGPA, GPA and study productivity tools
+- Internships and career guidance for students
+
+## Site Owner
+
+NextGen Study Hub was created by Atul Sharma to help students access organized academic resources and practical learning tools.

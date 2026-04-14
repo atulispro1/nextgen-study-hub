@@ -5,6 +5,7 @@ import { client } from "../lib/sanityClient";
 import { urlFor } from "../lib/sanityImage";
 import { PortableText } from "@portabletext/react";
 import Loader from "../components/Loader";
+import SEO from "../components/SEO";
 
 const SITE_URL = "https://www.atulsharmas.in";
 
@@ -177,6 +178,21 @@ diploma study tips
           {JSON.stringify(articleSchema)}
         </script>
       </Helmet>
+      <SEO
+        title={`${post.title} - Student Guide`}
+        description={description}
+        image={imageUrl}
+        url={articleUrl}
+        type="article"
+        schemaType="Article"
+        publishedTime={publishedDate}
+        modifiedTime={modifiedDate || "2026-04-14"}
+        breadcrumbs={[
+          { name: "Home", url: SITE_URL },
+          { name: "Articles", url: `${SITE_URL}/articles` },
+          { name: post.title, url: articleUrl },
+        ]}
+      />
       <div
         style={{
           padding: "60px 20px",

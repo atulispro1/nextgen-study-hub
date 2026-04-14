@@ -144,8 +144,15 @@ export default function NotesLibrary() {
     <>
       <SEO
         title="Engineering Notes Library – Diploma Study Materials & Semester Notes"
-        url="https://www.atulsharmas.in/notes-library"
-      />
+          description="Browse semester-wise diploma engineering notes, subject notes, assignments, practical files, exam papers and student resources for quick revision and exam preparation."
+          url="https://www.atulsharmas.in/notes-library"
+          schemaType="CollectionPage"
+          modifiedTime="2026-04-14"
+          breadcrumbs={[
+            { name: "Home", url: "https://www.atulsharmas.in" },
+            { name: "Notes Library", url: "https://www.atulsharmas.in/notes-library" },
+          ]}
+        />
       <Helmet>
         <title>
           Diploma Engineering Semester Notes – Study Materials & Subject Notes
@@ -335,7 +342,7 @@ semester wise subject notes
               cursor: "pointer",
             }}
           >
-            <option>All Semestor</option>
+            <option value="All">All Semesters</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
