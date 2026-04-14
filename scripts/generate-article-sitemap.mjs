@@ -61,6 +61,10 @@ function buildSitemap(posts) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n${urls}\n\n</urlset>\n`;
 }
 
+function isValidSlug(slug) {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
+}
+
 function buildGeneratedArticleData(posts) {
   return posts.map((post, index) => ({
     _id: post._id || `generated-${post.slug}-${index}`,
@@ -99,7 +103,10 @@ async function main() {
       }
     `);
 
-    const validPosts = posts.filter((post) => post.slug);
+    const validPosts = posts.filter((post) => post.slug && isValidSlug(post.slug));
+    const skippedPosts = posts.filter(
+      (post) => post.slug && !isValidSlug(post.slug),
+    );
     const xml = buildSitemap(validPosts);
     const generatedData = buildGeneratedArticleData(validPosts);
 
@@ -112,6 +119,13 @@ async function main() {
     console.log(
       `[sitemap] Updated article sitemap and generated article data with ${validPosts.length} Sanity articles.`,
     );
+    if (skippedPosts.length > 0) {
+      console.warn(
+        `[sitemap] Skipped ${skippedPosts.length} article(s) with invalid slugs: ${skippedPosts
+          .map((post) => post.slug)
+          .join(", ")}`,
+      );
+    }
   } catch (error) {
     if (fallbackXml || fallbackGeneratedData) {
       console.warn(

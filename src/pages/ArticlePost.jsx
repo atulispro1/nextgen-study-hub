@@ -6,13 +6,34 @@ import { urlFor } from "../lib/sanityImage";
 import { PortableText } from "@portabletext/react";
 import Loader from "../components/Loader";
 
+const SITE_URL = "https://www.atulsharmas.in";
+
+function getPlainText(blocks = []) {
+  return blocks
+    .flatMap((block) =>
+      Array.isArray(block.children)
+        ? block.children.map((child) => child.text || "")
+        : [],
+    )
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getArticleDescription(post) {
+  const bodyText = getPlainText(post.body);
+  if (bodyText) return bodyText.slice(0, 155);
+  return `${post.title} - read this student guide on NextGen Study Hub.`;
+}
+
 export default function ArticlePost() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null);
   const [related, setRelated] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(4);
+  const visibleCount = 0;
+  const setVisibleCount = () => {};
   const [loading, setLoading] = useState(true);
 
   const cardStyle = {
@@ -26,16 +47,6 @@ export default function ArticlePost() {
     border: "1px solid rgba(255,255,255,0.1)",
   };
 
-  const cardHover = (e) => {
-    e.currentTarget.style.transform = "translateY(-5px)";
-    e.currentTarget.style.background = "#334155";
-  };
-
-  const cardLeave = (e) => {
-    e.currentTarget.style.transform = "translateY(0px)";
-    e.currentTarget.style.background = "#1e293b";
-  };
-
   useEffect(() => {
     const query = `*[_type == "post"]{
       _id,
@@ -43,7 +54,9 @@ export default function ArticlePost() {
       slug,
       mainImage,
       body,
-      publishedAt
+      publishedAt,
+      _updatedAt,
+      category->{title}
     }`;
 
     setLoading(true);
@@ -87,69 +100,43 @@ export default function ArticlePost() {
     }, 0) || 0;
 
   const readingTime = Math.ceil(wordCount / 200);
-
-  const seoPages = [
-    { slug: "dbms-notes", title: "DBMS Notes" },
-    { slug: "c-programming-notes", title: "C Programming Notes" },
-    { slug: "computer-network-notes", title: "Computer Network Notes" },
-    { slug: "operating-system-notes", title: "Operating System Notes" },
-    { slug: "data-structure-notes", title: "Data Structure Notes" },
-    { slug: "java-programming-notes", title: "Java Programming Notes" },
-    { slug: "python-programming-notes", title: "Python Programming Notes" },
-    { slug: "software-engineering-notes", title: "Software Engineering Notes" },
-    {
-      slug: "computer-organization-notes",
-      title: "Computer Organization Notes",
+  const description = getArticleDescription(post);
+  const articleUrl = `${SITE_URL}/articles/${post.slug.current}`;
+  const imageUrl = post.mainImage
+    ? urlFor(post.mainImage).width(1200).height(630).url()
+    : `${SITE_URL}/logo.png`;
+  const publishedDate = post.publishedAt || post._updatedAt;
+  const modifiedDate = post._updatedAt || post.publishedAt;
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description,
+    image: imageUrl,
+    datePublished: publishedDate,
+    dateModified: modifiedDate,
+    mainEntityOfPage: articleUrl,
+    author: {
+      "@type": "Organization",
+      name: "NextGen Study Hub",
     },
-    { slug: "oop-notes", title: "OOP Notes" },
-
-    { slug: "dbms-mcq", title: "DBMS MCQ Questions" },
-    { slug: "c-programming-mcq", title: "C Programming MCQ Questions" },
-    { slug: "data-structure-mcq", title: "Data Structure MCQ Questions" },
-    { slug: "java-mcq", title: "Java MCQ Questions" },
-    { slug: "computer-network-mcq", title: "Computer Network MCQ Questions" },
-    { slug: "operating-system-mcq", title: "Operating System MCQ Questions" },
-
-    { slug: "dbms-interview-questions", title: "DBMS Interview Questions" },
-    {
-      slug: "c-programming-interview-questions",
-      title: "C Programming Interview Questions",
+    publisher: {
+      "@type": "Organization",
+      name: "NextGen Study Hub",
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/logo.png`,
+      },
     },
-    { slug: "java-interview-questions", title: "Java Interview Questions" },
-    {
-      slug: "data-structure-interview-questions",
-      title: "Data Structure Interview Questions",
-    },
-
-    { slug: "learn-c-programming", title: "Learn C Programming" },
-    { slug: "learn-java-programming", title: "Learn Java Programming" },
-    { slug: "learn-python-programming", title: "Learn Python Programming" },
-
-    { slug: "diploma-computer-science-guide", title: "Diploma CS Study Guide" },
-    {
-      slug: "how-to-study-engineering-effectively",
-      title: "Engineering Study Guide",
-    },
-    {
-      slug: "engineering-exam-preparation-guide",
-      title: "Engineering Exam Preparation Guide",
-    },
-  ];
+  };
+  const seoPages = [];
 
   return (
     <>
       <Helmet>
-        <title>
-          {post.title} | Study Tips & Learning Guide | NextGen Study Hub
-        </title>
+        <title>{post.title} | NextGen Study Hub</title>
 
-        <meta
-          name="description"
-          content={
-            post.body?.[0]?.children?.[0]?.text?.slice(0, 150) ||
-            "Read detailed study tips, exam preparation strategies and student learning guides."
-          }
-        />
+        <meta name="description" content={description} />
 
         <meta
           name="keywords"
@@ -166,8 +153,29 @@ diploma study tips
 
         <link
           rel="canonical"
-          href={`https://www.atulsharmas.in/articles/${post.slug.current}`}
+          href={articleUrl}
         />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={articleUrl} />
+        <meta property="og:image" content={imageUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={imageUrl} />
+        {publishedDate && (
+          <meta property="article:published_time" content={publishedDate} />
+        )}
+        {modifiedDate && (
+          <meta property="article:modified_time" content={modifiedDate} />
+        )}
+        {post.category?.title && (
+          <meta property="article:section" content={post.category.title} />
+        )}
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
       </Helmet>
       <div
         style={{
@@ -195,9 +203,7 @@ diploma study tips
             lineHeight: "1.7",
           }}
         >
-          This article covers {post.title.toLowerCase()} along with practical
-          study strategies, productivity techniques and learning methods to help
-          students improve performance.
+          {description}
         </p>
 
         {/* META INFO */}
@@ -394,6 +400,7 @@ diploma study tips
           style={{
             marginTop: "80px",
             padding: "40px 20px",
+            display: "none",
             background: "linear-gradient(135deg, #0f172a, #1e293b)",
             borderRadius: "16px",
             color: "#fff",
@@ -503,7 +510,7 @@ diploma study tips
             margin: "100px 0",
           }}
         />
-        <section style={{ marginTop: "100px" }}>
+        <section style={{ marginTop: "100px", display: "none" }}>
           <div style={{ textAlign: "center", marginBottom: "50px" }}>
             <h2
               style={{
@@ -569,7 +576,7 @@ diploma study tips
             </div>
           )}
         </section>
-        <div className="glass" style={{ padding: "25px", marginTop: "40px" }}>
+        <div className="glass" style={{ padding: "25px", marginTop: "40px", display: "none" }}>
           <h3>Explore More Study Resources</h3>
           <p>
             Browse our engineering notes library and student productivity tools
