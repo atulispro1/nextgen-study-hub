@@ -6,6 +6,16 @@
       "permanent": true
     },
     {
+      "source": "/articles/how-to-stay-focused-while-studying-2026",
+      "destination": "https://www.atulsharmas.in/articles/how-to-study-effectively-2026-best-study-techniques",
+      "permanent": true
+    },
+    {
+      "source": "/articles/how-to-start-freelancing-as-student-2026",
+      "destination": "https://www.atulsharmas.in/articles/how-to-start-freelancing-as-a-student-2026",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         { "type": "host", "value": "atulsharmas.in" }
