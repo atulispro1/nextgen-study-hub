@@ -72,6 +72,9 @@ export default function Articles() {
   });
 
   const latestArticles = posts.slice(0, 7);
+  const featuredArticle = latestArticles[0];
+  const secondaryArticle = latestArticles[1];
+  const compactArticles = latestArticles.slice(2, 7);
 
   return (
     <>
@@ -177,57 +180,255 @@ export default function Articles() {
             className="glass"
             style={{
               marginBottom: "40px",
-              padding: "30px",
-              borderRadius: "20px",
+              padding: "clamp(24px,4vw,38px)",
+              borderRadius: "24px",
+              overflow: "hidden",
+              position: "relative",
             }}
           >
-            <h2
-              style={{
-                textAlign: "center",
-                marginBottom: "12px",
-                fontWeight: "800",
-                color: "var(--primary)",
-              }}
-            >
-              Latest Published Articles
-            </h2>
-
-            <p
-              style={{
-                textAlign: "center",
-                opacity: "0.8",
-                marginBottom: "24px",
-              }}
-            >
-              Newly published Sanity articles appear here after each deploy, so
-              search engines can discover fresh URLs faster through internal
-              links as well as the sitemap.
-            </p>
-
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                gap: "14px",
+                position: "absolute",
+                width: "240px",
+                height: "240px",
+                borderRadius: "999px",
+                right: "-80px",
+                top: "-90px",
+                background:
+                  "radial-gradient(circle, rgba(99,102,241,0.24), transparent 70%)",
+                filter: "blur(18px)",
+                pointerEvents: "none",
+              }}
+            />
+            <div
+              style={{
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                gap: "18px",
+                flexWrap: "wrap",
+                marginBottom: "28px",
               }}
             >
-              {latestArticles.map((post) => (
-                <a
-                  key={`latest-${post._id}`}
-                  href={getArticleHref(post)}
+              <div style={{ maxWidth: "720px" }}>
+                <span
                   style={{
-                    display: "block",
-                    padding: "14px 16px",
-                    borderRadius: "12px",
-                    textDecoration: "none",
-                    color: "white",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
+                    display: "inline-block",
+                    marginBottom: "10px",
+                    padding: "7px 13px",
+                    borderRadius: "999px",
+                    background: "rgba(99,102,241,0.12)",
+                    color: "#a5b4fc",
+                    fontSize: "12px",
+                    fontWeight: "800",
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase",
                   }}
                 >
-                  {post.title}
-                </a>
-              ))}
+                  Fresh Reads
+                </span>
+
+                <h2
+                  style={{
+                    margin: "0 0 10px 0",
+                    fontWeight: "900",
+                    color: "var(--primary)",
+                    fontSize: "clamp(1.9rem,4vw,2.6rem)",
+                  }}
+                >
+                  Latest Published Articles
+                </h2>
+
+                <p
+                  style={{
+                    opacity: "0.82",
+                    lineHeight: "1.75",
+                    margin: 0,
+                  }}
+                >
+                  Newly published articles appear here in a cleaner reading
+                  layout, helping students discover the newest guides while
+                  giving search engines stronger internal links to fresh URLs.
+                </p>
+              </div>
+
+              <button
+                className="btn-primary"
+                onClick={() => {
+                  setSearch("");
+                  setCategory("All");
+                }}
+                style={{
+                  padding: "13px 24px",
+                  borderRadius: "999px",
+                  fontWeight: "700",
+                }}
+              >
+                Show All Articles
+              </button>
+            </div>
+
+            <div className="latest-articles-layout">
+              {featuredArticle && (
+                <article
+                  className="latest-feature-card latest-hover-card"
+                  onClick={() => navigate(getArticleHref(featuredArticle))}
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(99,102,241,0.18), rgba(15,23,42,0.86))",
+                    border: "1px solid rgba(255,255,255,0.10)",
+                    boxShadow: "0 22px 50px rgba(2,6,23,0.28)",
+                  }}
+                >
+                  {featuredArticle.mainImage && (
+                    <img
+                      src={urlFor(featuredArticle.mainImage).width(1100).height(620).url()}
+                      alt={featuredArticle.title}
+                      className="latest-feature-image"
+                    />
+                  )}
+
+                  <div className="latest-feature-content">
+                    <div className="latest-meta-row">
+                      <span
+                        className="latest-rank-pill"
+                        style={{
+                          background: "rgba(99,102,241,0.18)",
+                          color: "#c4b5fd",
+                        }}
+                      >
+                        Featured Article
+                      </span>
+                      {featuredArticle.publishedAt && (
+                        <span style={{ color: "rgba(255,255,255,0.74)" }}>
+                          {new Date(featuredArticle.publishedAt).toLocaleDateString("en-IN")}
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="latest-feature-title" style={{ color: "#f8fafc" }}>
+                      {featuredArticle.title}
+                    </h3>
+
+                    <p
+                      className="latest-feature-excerpt"
+                      style={{ color: "rgba(255,255,255,0.78)" }}
+                    >
+                      {getExcerpt(featuredArticle)}
+                    </p>
+
+                    <div className="latest-card-footer">
+                      <span style={{ color: "rgba(255,255,255,0.72)" }}>
+                        {featuredArticle.category?.title || "Student Article"}
+                      </span>
+                      <span style={{ color: "#a5b4fc" }}>Read More {"->"}</span>
+                    </div>
+                  </div>
+                </article>
+              )}
+
+              <div className="latest-side-column">
+                {secondaryArticle && (
+                  <article
+                    className="latest-medium-card latest-hover-card"
+                    onClick={() => navigate(getArticleHref(secondaryArticle))}
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(255,255,255,0.09), rgba(15,23,42,0.90))",
+                      border: "1px solid rgba(255,255,255,0.10)",
+                    }}
+                  >
+                    {secondaryArticle.mainImage && (
+                      <img
+                        src={urlFor(secondaryArticle.mainImage).width(460).height(280).url()}
+                        alt={secondaryArticle.title}
+                        className="latest-medium-image"
+                      />
+                    )}
+
+                    <div className="latest-medium-content">
+                      <span
+                        className="latest-rank-pill"
+                        style={{
+                          background: "rgba(34,197,94,0.13)",
+                          color: "#86efac",
+                        }}
+                      >
+                        #2 Latest
+                      </span>
+
+                      <h3 className="latest-medium-title" style={{ color: "#f8fafc" }}>
+                        {secondaryArticle.title}
+                      </h3>
+
+                      <p
+                        className="latest-medium-excerpt"
+                        style={{ color: "rgba(255,255,255,0.74)" }}
+                      >
+                        {getExcerpt(secondaryArticle)}
+                      </p>
+
+                      <div className="latest-card-footer">
+                        <span style={{ color: "rgba(255,255,255,0.72)" }}>
+                          {secondaryArticle.publishedAt
+                            ? new Date(secondaryArticle.publishedAt).toLocaleDateString("en-IN")
+                            : "Latest"}
+                        </span>
+                        <span style={{ color: "#a5b4fc" }}>Read {"->"}</span>
+                      </div>
+                    </div>
+                  </article>
+                )}
+
+                <div className="latest-compact-list">
+                  {compactArticles.map((post, index) => (
+                    <article
+                      key={`latest-${post._id}`}
+                      className="latest-compact-card latest-hover-card"
+                      onClick={() => navigate(getArticleHref(post))}
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(15,23,42,0.88))",
+                        border: "1px solid rgba(255,255,255,0.09)",
+                      }}
+                    >
+                      {post.mainImage && (
+                        <img
+                          src={urlFor(post.mainImage).width(220).height(160).url()}
+                          alt={post.title}
+                          className="latest-compact-image"
+                        />
+                      )}
+
+                      <div className="latest-compact-content">
+                        <div className="latest-compact-meta">
+                          <strong style={{ color: "#c4b5fd" }}>
+                            #{index + 3} Latest
+                          </strong>
+                          <span style={{ color: "rgba(255,255,255,0.68)" }}>
+                            {post.category?.title || "Article"}
+                          </span>
+                        </div>
+
+                        <h3 className="latest-compact-title" style={{ color: "#f8fafc" }}>
+                          {post.title}
+                        </h3>
+
+                        <div className="latest-compact-footer">
+                          <span style={{ color: "rgba(255,255,255,0.66)" }}>
+                            {post.publishedAt
+                              ? new Date(post.publishedAt).toLocaleDateString("en-IN")
+                              : "Latest"}
+                          </span>
+                          <span style={{ color: "#a5b4fc" }}>Read {"->"}</span>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
         )}

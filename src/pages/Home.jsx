@@ -32,6 +32,9 @@ export default function Home() {
   const { theme } = useContext(ThemeContext);
   const latestArticles = generatedArticles.slice(0, 7);
   const isDark = theme === "dark";
+  const featuredArticle = latestArticles[0];
+  const secondaryArticle = latestArticles[1];
+  const compactArticles = latestArticles.slice(2, 7);
   const dividerStyle = {
     height: "3px",
     background: "linear-gradient(90deg, transparent, #6366f1, transparent)",
@@ -354,173 +357,196 @@ education platform for engineering students
               </button>
             </div>
 
-            <div
-              style={{
-                position: "relative",
-                zIndex: 1,
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                gap: "20px",
-              }}
-            >
-              {latestArticles.map((post, index) => (
+            <div className="latest-articles-layout">
+              {featuredArticle && (
                 <article
-                  key={post._id}
-                  onClick={() => navigate(`/articles/${post.slug.current}`)}
+                  className="latest-feature-card latest-hover-card"
+                  onClick={() => navigate(`/articles/${featuredArticle.slug.current}`)}
                   style={{
-                    cursor: "pointer",
-                    borderRadius: "22px",
-                    overflow: "hidden",
                     background: isDark
-                      ? index === 0
-                        ? "linear-gradient(180deg, rgba(99,102,241,0.24), rgba(15,23,42,0.92))"
-                        : "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(15,23,42,0.90))"
-                      : index === 0
-                        ? "linear-gradient(180deg, rgba(99,102,241,0.14), rgba(255,255,255,0.98))"
-                        : "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98))",
+                      ? "linear-gradient(180deg, rgba(99,102,241,0.24), rgba(15,23,42,0.92))"
+                      : "linear-gradient(180deg, rgba(99,102,241,0.14), rgba(255,255,255,0.98))",
                     border: isDark
                       ? "1px solid rgba(255,255,255,0.10)"
                       : "1px solid rgba(15,23,42,0.08)",
                     boxShadow: isDark
-                      ? "0 18px 40px rgba(2,6,23,0.28)"
-                      : "0 14px 30px rgba(15,23,42,0.08)",
-                    transition: "transform 0.25s ease, box-shadow 0.25s ease",
-                  }}
-                  onMouseEnter={(event) => {
-                    event.currentTarget.style.transform = "translateY(-8px)";
-                    event.currentTarget.style.boxShadow =
-                      isDark
-                        ? "0 26px 44px rgba(2,6,23,0.38)"
-                        : "0 20px 38px rgba(79,70,229,0.16)";
-                  }}
-                  onMouseLeave={(event) => {
-                    event.currentTarget.style.transform = "translateY(0)";
-                    event.currentTarget.style.boxShadow =
-                      isDark
-                        ? "0 18px 40px rgba(2,6,23,0.28)"
-                        : "0 14px 30px rgba(15,23,42,0.08)";
+                      ? "0 22px 50px rgba(2,6,23,0.32)"
+                      : "0 18px 40px rgba(15,23,42,0.10)",
                   }}
                 >
-                  {post.mainImage && (
+                  {featuredArticle.mainImage && (
                     <img
-                      src={urlFor(post.mainImage).width(700).height(420).url()}
-                      alt={post.title}
-                      style={{
-                        width: "100%",
-                        height: "180px",
-                        objectFit: "cover",
-                      }}
+                      src={urlFor(featuredArticle.mainImage).width(1100).height(620).url()}
+                      alt={featuredArticle.title}
+                      className="latest-feature-image"
                     />
                   )}
 
-                  <div style={{ padding: "20px" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        gap: "10px",
-                        marginBottom: "12px",
-                        flexWrap: "wrap",
-                      }}
-                    >
+                  <div className="latest-feature-content">
+                    <div className="latest-meta-row">
                       <span
+                        className="latest-rank-pill"
                         style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "6px",
-                          fontSize: "12px",
-                          fontWeight: "700",
+                          background: isDark
+                            ? "rgba(99,102,241,0.18)"
+                            : "rgba(79,70,229,0.10)",
                           color: isDark ? "#c4b5fd" : "#4f46e5",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.05em",
                         }}
                       >
-                        #{index + 1} Latest
+                        Featured Article
                       </span>
 
-                      {post.publishedAt && (
-                        <span
-                          style={{
-                            fontSize: "12px",
-                            color: isDark ? "rgba(255,255,255,0.76)" : "#6b7280",
-                          }}
-                        >
-                          {new Date(post.publishedAt).toLocaleDateString("en-IN")}
+                      {featuredArticle.publishedAt && (
+                        <span style={{ color: isDark ? "rgba(255,255,255,0.74)" : "#6b7280" }}>
+                          {new Date(featuredArticle.publishedAt).toLocaleDateString("en-IN")}
                         </span>
                       )}
                     </div>
 
                     <h3
-                      style={{
-                        fontSize: "18px",
-                        lineHeight: "1.5",
-                        marginBottom: "12px",
-                        color: isDark ? "#f8fafc" : "#111827",
-                      }}
+                      className="latest-feature-title"
+                      style={{ color: isDark ? "#f8fafc" : "#111827" }}
                     >
-                      {post.title}
+                      {featuredArticle.title}
                     </h3>
 
                     <p
-                      style={{
-                        fontSize: "14px",
-                        lineHeight: "1.7",
-                        color: isDark ? "rgba(255,255,255,0.76)" : "#6b7280",
-                        marginBottom: "16px",
-                      }}
+                      className="latest-feature-excerpt"
+                      style={{ color: isDark ? "rgba(255,255,255,0.78)" : "#4b5563" }}
                     >
-                      {getArticleExcerpt(post)}
+                      {getArticleExcerpt(featuredArticle)}
                     </p>
 
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        gap: "12px",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {post.category?.title ? (
-                        <span
-                          style={{
-                            display: "inline-block",
-                            padding: "6px 10px",
-                            borderRadius: "999px",
-                            fontSize: "12px",
-                            background: isDark
-                              ? "rgba(34,197,94,0.14)"
-                              : "rgba(34,197,94,0.10)",
-                            color: isDark ? "#86efac" : "#15803d",
-                          }}
-                        >
-                          {post.category.title}
-                        </span>
-                      ) : (
-                        <span
-                          style={{
-                            fontSize: "12px",
-                            color: isDark ? "rgba(255,255,255,0.72)" : "#6b7280",
-                          }}
-                        >
-                          Student Article
-                        </span>
-                      )}
-
-                      <span
-                        style={{
-                          fontSize: "13px",
-                          fontWeight: "700",
-                          color: isDark ? "#a5b4fc" : "#4338ca",
-                        }}
-                      >
-                        Read Article {"->"}
+                    <div className="latest-card-footer">
+                      <span style={{ color: isDark ? "rgba(255,255,255,0.72)" : "#6b7280" }}>
+                        {featuredArticle.category?.title || "Student Article"}
+                      </span>
+                      <span style={{ color: isDark ? "#a5b4fc" : "#4338ca" }}>
+                        Read More {"->"}
                       </span>
                     </div>
                   </div>
                 </article>
-              ))}
+              )}
+
+              <div className="latest-side-column">
+                {secondaryArticle && (
+                  <article
+                    className="latest-medium-card latest-hover-card"
+                    onClick={() => navigate(`/articles/${secondaryArticle.slug.current}`)}
+                    style={{
+                      background: isDark
+                        ? "linear-gradient(180deg, rgba(255,255,255,0.09), rgba(15,23,42,0.92))"
+                        : "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98))",
+                      border: isDark
+                        ? "1px solid rgba(255,255,255,0.10)"
+                        : "1px solid rgba(15,23,42,0.08)",
+                    }}
+                  >
+                    {secondaryArticle.mainImage && (
+                      <img
+                        src={urlFor(secondaryArticle.mainImage).width(460).height(280).url()}
+                        alt={secondaryArticle.title}
+                        className="latest-medium-image"
+                      />
+                    )}
+
+                    <div className="latest-medium-content">
+                      <span
+                        className="latest-rank-pill"
+                        style={{
+                          background: isDark
+                            ? "rgba(34,197,94,0.13)"
+                            : "rgba(34,197,94,0.09)",
+                          color: isDark ? "#86efac" : "#15803d",
+                        }}
+                      >
+                        #2 Latest
+                      </span>
+
+                      <h3
+                        className="latest-medium-title"
+                        style={{ color: isDark ? "#f8fafc" : "#111827" }}
+                      >
+                        {secondaryArticle.title}
+                      </h3>
+
+                      <p
+                        className="latest-medium-excerpt"
+                        style={{ color: isDark ? "rgba(255,255,255,0.74)" : "#6b7280" }}
+                      >
+                        {getArticleExcerpt(secondaryArticle)}
+                      </p>
+
+                      <div className="latest-card-footer">
+                        <span style={{ color: isDark ? "rgba(255,255,255,0.72)" : "#6b7280" }}>
+                          {secondaryArticle.publishedAt
+                            ? new Date(secondaryArticle.publishedAt).toLocaleDateString("en-IN")
+                            : "Latest"}
+                        </span>
+                        <span style={{ color: isDark ? "#a5b4fc" : "#4338ca" }}>
+                          Read {"->"}
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                )}
+
+                <div className="latest-compact-list">
+                  {compactArticles.map((post, index) => (
+                    <article
+                      key={post._id}
+                      className="latest-compact-card latest-hover-card"
+                      onClick={() => navigate(`/articles/${post.slug.current}`)}
+                      style={{
+                        background: isDark
+                          ? "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(15,23,42,0.88))"
+                          : "linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98))",
+                        border: isDark
+                          ? "1px solid rgba(255,255,255,0.09)"
+                          : "1px solid rgba(15,23,42,0.07)",
+                      }}
+                    >
+                      {post.mainImage && (
+                        <img
+                          src={urlFor(post.mainImage).width(220).height(160).url()}
+                          alt={post.title}
+                          className="latest-compact-image"
+                        />
+                      )}
+
+                      <div className="latest-compact-content">
+                        <div className="latest-compact-meta">
+                          <strong style={{ color: isDark ? "#c4b5fd" : "#4f46e5" }}>
+                            #{index + 3} Latest
+                          </strong>
+                          <span style={{ color: isDark ? "rgba(255,255,255,0.68)" : "#6b7280" }}>
+                            {post.category?.title || "Article"}
+                          </span>
+                        </div>
+
+                        <h3
+                          className="latest-compact-title"
+                          style={{ color: isDark ? "#f8fafc" : "#111827" }}
+                        >
+                          {post.title}
+                        </h3>
+
+                        <div className="latest-compact-footer">
+                          <span style={{ color: isDark ? "rgba(255,255,255,0.66)" : "#6b7280" }}>
+                            {post.publishedAt
+                              ? new Date(post.publishedAt).toLocaleDateString("en-IN")
+                              : "Latest"}
+                          </span>
+                          <span style={{ color: isDark ? "#a5b4fc" : "#4338ca" }}>
+                            Read {"->"}
+                          </span>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
           <div style={dividerStyle} />
