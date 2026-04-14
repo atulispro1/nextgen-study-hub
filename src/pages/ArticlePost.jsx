@@ -27,6 +27,62 @@ function getArticleDescription(post) {
   return `${post.title} - read this student guide on NextGen Study Hub.`;
 }
 
+function extractKeywords(text = "") {
+  return text
+    .toLowerCase()
+    .split(/[^a-z0-9]+/g)
+    .filter((word) => word.length > 3)
+    .filter(
+      (word) =>
+        ![
+          "about",
+          "after",
+          "before",
+          "guide",
+          "student",
+          "study",
+          "tips",
+          "best",
+          "your",
+          "with",
+          "from",
+          "this",
+          "that",
+          "they",
+          "them",
+          "more",
+          "when",
+          "what",
+          "where",
+          "which",
+          "will",
+          "have",
+          "into",
+          "does",
+          "over",
+        ].includes(word),
+    );
+}
+
+function scoreRelated(current, candidate) {
+  if (!current || !candidate) return 0;
+  let score = 0;
+
+  const currentCategory = current.category?.title?.toLowerCase();
+  const candidateCategory = candidate.category?.title?.toLowerCase();
+  if (currentCategory && currentCategory === candidateCategory) {
+    score += 3;
+  }
+
+  const currentKeywords = new Set(extractKeywords(current.title || ""));
+  const candidateKeywords = extractKeywords(candidate.title || "");
+  candidateKeywords.forEach((word) => {
+    if (currentKeywords.has(word)) score += 1;
+  });
+
+  return score;
+}
+
 export default function ArticlePost() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -67,8 +123,20 @@ export default function ArticlePost() {
 
       setPost(current);
 
-      // related posts (excluding current)
-      const others = data.filter((p) => p.slug?.current !== slug).slice(0, 4);
+      // related posts (excluding current), rank by category + title similarity + recency
+      const others = data
+        .filter((p) => p.slug?.current !== slug)
+        .map((candidate) => ({
+          candidate,
+          score: scoreRelated(current, candidate),
+          publishedAt: candidate.publishedAt || candidate._updatedAt || "",
+        }))
+        .sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+        })
+        .map((item) => item.candidate)
+        .slice(0, 4);
 
       setRelated(others);
       setLoading(false);
@@ -403,14 +471,6 @@ diploma study tips
           </div>
         </div>
 
-        <div
-          style={{
-            height: "3px",
-            background:
-              "linear-gradient(90deg, transparent, #6366f1, transparent)",
-            margin: "100px 0",
-          }}
-        />
 
         <section
           style={{
