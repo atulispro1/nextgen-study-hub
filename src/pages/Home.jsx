@@ -321,7 +321,7 @@ education platform for engineering students
         <section className="section home-hero-section">
           <div className="home-hero-backdrop" aria-hidden="true">
             <img
-              src="/annie-spratt-J67BWDuNq0U-unsplash.jpg"
+              src="/annie-spratt-J67BWDuNq0U-unsplash.webp"
               alt=""
               className="home-hero-backdrop-image"
             />
@@ -465,7 +465,7 @@ education platform for engineering students
                 padding: "clamp(32px,5vw,56px)",
                 borderRadius: "28px",
                 margin: "70px 0",
-                overflow: "visible",
+                overflow: "hidden",
                 background: isDark
                   ? "linear-gradient(145deg, rgba(10,22,36,0.95), rgba(17,24,39,0.92))"
                   : "linear-gradient(145deg, rgba(255,252,248,0.96), rgba(247,242,236,0.98))",

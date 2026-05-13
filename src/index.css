@@ -28,11 +28,13 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   overflow-x: hidden;
   line-height: 1.6;
+  width: 100%;
 }
 
 body.light {
@@ -1338,6 +1340,7 @@ body.dark .site-navbar .theme-btn {
 
 .home-page {
   padding: 0 5.5vw 5rem;
+  overflow-x: clip;
 }
 
 .home-hero-section {
@@ -1703,6 +1706,7 @@ body.dark .home-info-list {
 .home-smart-footer,
 .home-seo-links {
   position: relative;
+  max-width: 100%;
 }
 
 /* ================= AUTO ADS SAFETY ================= */
@@ -1841,6 +1845,15 @@ body.dark .resource-link {
 
   .home-page {
     padding: 0 16px 3rem;
+  }
+
+  .home-hero-section,
+  .home-surface,
+  .home-section-block,
+  .home-smart-footer,
+  .home-seo-links,
+  .latest-section-panel {
+    overflow-x: hidden;
   }
 
   .home-hero-copy {
