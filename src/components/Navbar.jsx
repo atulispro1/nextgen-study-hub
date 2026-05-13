@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { isAdminRole } from "../utils/security";
 
@@ -42,10 +42,12 @@ export default function Navbar() {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const isLoggedIn = Boolean(user);
   const isOwner = profileReady && role === "owner";
   const adminEnabled = profileReady && isAdminRole(role);
+  const isHome = location.pathname === "/";
 
   // Safe scroll (only on homepage)
   const scrollToSection = (id) => {
@@ -85,6 +87,14 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const dropdownButtonStyle = {
     width: "100%",
     padding: "8px",
@@ -116,26 +126,45 @@ export default function Navbar() {
   return (
     <>
       <nav
+        className="site-navbar"
         style={{
           position: "sticky",
           top: 0,
           zIndex: 1000,
           backdropFilter: "blur(16px)",
-          padding: "18px 8%",
+          padding: "14px 6%",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          borderBottom: "1px solid rgba(99,102,241,0.2)",
+          borderBottom:
+            isHome && !isScrolled
+              ? "1px solid transparent"
+              : theme === "dark"
+                ? "1px solid rgba(255,255,255,0.08)"
+                : "1px solid rgba(31,59,115,0.12)",
+          background:
+            isHome && !isScrolled
+              ? "transparent"
+              : theme === "dark"
+                ? "rgba(7, 14, 22, 0.84)"
+                : "rgba(255, 250, 244, 0.86)",
+          boxShadow:
+            isHome && !isScrolled
+              ? "none"
+              : theme === "dark"
+                ? "0 18px 50px rgba(2, 6, 23, 0.32)"
+                : "0 18px 50px rgba(31, 59, 115, 0.08)",
           width: "100%",
         }}
       >
         {/* LOGO */}
         <div
+          className="navbar-brand"
           onClick={() => navigate("/")}
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "10px",
+            gap: "12px",
             cursor: "pointer",
           }}
         >
@@ -144,17 +173,25 @@ export default function Navbar() {
             alt="NextGen Study Hub Logo"
             loading="lazy"
             style={{
-              width: "110px",
-              height: "90px",
-              borderRadius: "8px",
+              width: "68px",
+              height: "68px",
+              borderRadius: "16px",
             }}
           />
 
           <span
+            className="navbar-brand-text"
             style={{
-              color: "var(--primary)",
+              color:
+                isHome && !isScrolled
+                  ? "#fffaf4"
+                  : "var(--primary)",
               fontWeight: "700",
               fontSize: "18px",
+              textShadow:
+                isHome && !isScrolled
+                  ? "0 2px 18px rgba(0,0,0,0.28)"
+                  : "none",
             }}
           >
             NextGen Study Hub
@@ -164,8 +201,22 @@ export default function Navbar() {
         {/* DESKTOP NAV */}
 
         <div
-          className="desktop-nav"
-          style={{ display: "flex", gap: "20px", alignItems: "center" }}
+          className="desktop-nav navbar-links"
+          style={{
+            display: "flex",
+            gap: "20px",
+            alignItems: "center",
+            color:
+              isHome && !isScrolled
+                ? "#fffaf4"
+                : theme === "dark"
+                  ? "var(--text-dark)"
+                  : "var(--text-light)",
+            textShadow:
+              isHome && !isScrolled
+                ? "0 2px 18px rgba(0,0,0,0.24)"
+                : "none",
+          }}
         >
           <span style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
             Home

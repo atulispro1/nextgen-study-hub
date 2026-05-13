@@ -6,11 +6,11 @@ export default function SmartFooterSection() {
 
   return (
     <div
+      className="glass home-smart-footer"
       style={{
         marginTop: "100px",
         padding: "50px 25px",
         borderRadius: "20px",
-        background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(34,197,94,0.08))",
         textAlign: "center"
       }}
     >
@@ -40,7 +40,7 @@ export default function SmartFooterSection() {
       </p>
 
       {/* GRID LINKS */}
-      <div style={{
+      <div className="home-smart-footer-grid" style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))",
         gap: "20px"
@@ -48,7 +48,7 @@ export default function SmartFooterSection() {
 
         {/* ARTICLES */}
         <div
-          className="glass"
+          className="glass home-smart-footer-card"
           style={{ padding: "25px", cursor: "pointer" }}
           onClick={() => navigate("/articles")}
         >
@@ -61,7 +61,7 @@ export default function SmartFooterSection() {
 
         {/* NOTES */}
         <div
-          className="glass"
+          className="glass home-smart-footer-card"
           style={{ padding: "25px", cursor: "pointer" }}
           onClick={() => navigate("/notes-library")}
         >
@@ -74,7 +74,7 @@ export default function SmartFooterSection() {
 
         {/* TOOLS */}
         <div
-          className="glass"
+          className="glass home-smart-footer-card"
           style={{ padding: "25px", cursor: "pointer" }}
           onClick={() => navigate("/student-tools")}
         >
@@ -87,7 +87,7 @@ export default function SmartFooterSection() {
 
         {/* COURSES */}
         <div
-          className="glass"
+          className="glass home-smart-footer-card"
           style={{ padding: "25px", cursor: "pointer" }}
           onClick={() => navigate("/courses-after-12th")}
         >
@@ -102,7 +102,7 @@ export default function SmartFooterSection() {
 
       {/* EXTRA SEO TEXT */}
       <div style={{ marginTop: "50px" }}>
-        <p style={{
+        <p className="home-smart-footer-note" style={{
           maxWidth: "850px",
           margin: "auto",
           lineHeight: "1.8",
