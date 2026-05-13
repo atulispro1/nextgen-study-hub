@@ -321,7 +321,7 @@ education platform for engineering students
         <section className="section home-hero-section">
           <div className="home-hero-backdrop" aria-hidden="true">
             <img
-              src="public/annie-spratt-J67BWDuNq0U-unsplash.jpg"
+              src="/annie-spratt-J67BWDuNq0U-unsplash.jpg"
               alt=""
               className="home-hero-backdrop-image"
             />
