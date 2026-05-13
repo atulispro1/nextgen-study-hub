@@ -22,6 +22,7 @@ const NotesLibrary = lazy(() => import("./components/NotesLibrary"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Jobs = lazy(() => import("./pages/Jobs"));
 const NotesSEO = lazy(() => import("./pages/NotesSEO"));
+const LastMinuteResources = lazy(() => import("./pages/LastMinuteResources"));
 import Loader from "./components/Loader";
 
 /* ===== COURSE PAGES ===== */
@@ -51,7 +52,7 @@ function App() {
         <Navbar />
 
         {/* MAIN LANDMARK FOR ACCESSIBILITY */}
-        <main>
+        <main style={{ paddingTop: "108px" }}>
           {/* SUSPENSE LOADER */}
           <Suspense fallback={<Loader />}>
             <Routes>
@@ -60,6 +61,10 @@ function App() {
 
               {/* Semester */}
               <Route path="/semester/:id" element={<SemesterPage />} />
+              <Route
+                path="/last-minute-resources"
+                element={<LastMinuteResources />}
+              />
 
               {/* Contact */}
               <Route path="/contact-faculty" element={<ContactFaculty />} />

@@ -1,16 +1,38 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { supabase } from "../supabase";
 import Swal from "sweetalert2";
 import imageCompression from "browser-image-compression";
 import { sanitizeFileName } from "../utils/security";
 
-export default function CreateUnit({ semester, subject, category, onSuccess }) {
+export default function CreateUnit({
+  semester,
+  subject,
+  category,
+  onSuccess,
+  title = "Create New Unit",
+  typeLabel = "Type of Notes",
+  noteTypeOptions,
+  unitLabel = "Unit Name",
+  unitPlaceholder = "Enter Unit Name",
+  pdfLabel = "Upload PDF (Required)",
+  imageLabel = "Upload Image (Optional)",
+  submitLabel = "Publish Unit",
+}) {
   const [unitName, setUnitName] = useState("");
   const [pdfFile, setPdfFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [noteType, setNoteType] = useState("teacher");
   const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+
+  const resolvedNoteTypeOptions = useMemo(
+    () =>
+      noteTypeOptions || [
+        { value: "teacher", label: "Teacher Notes" },
+        { value: "extra", label: "Extra Notes" },
+      ],
+    [noteTypeOptions],
+  );
 
   const handlePublish = async () => {
     if (!unitName || !pdfFile) {
@@ -208,15 +230,15 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
     >
       {/* HEADER */}
 
-      <h2
-        style={{
-          marginBottom: "25px",
-          fontWeight: "700",
-          textAlign: "center",
-        }}
-      >
-        Create New Unit
-      </h2>
+        <h2
+          style={{
+            marginBottom: "25px",
+            fontWeight: "700",
+            textAlign: "center",
+          }}
+        >
+        {title}
+        </h2>
 
       {/* NOTE TYPE */}
 
@@ -224,7 +246,7 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
         <label
           style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}
         >
-          Type of Notes
+          {typeLabel}
         </label>
 
         <select
@@ -238,8 +260,11 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
             background: "transparent",
           }}
         >
-          <option value="teacher">Teacher Notes</option>
-          <option value="extra">Extra Notes</option>
+          {resolvedNoteTypeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -249,12 +274,12 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
         <label
           style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}
         >
-          Unit Name
+          {unitLabel}
         </label>
 
         <input
           type="text"
-          placeholder="Enter Unit Name"
+          placeholder={unitPlaceholder}
           value={unitName}
           onChange={(e) => setUnitName(e.target.value)}
           style={{
@@ -273,7 +298,7 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
         <label
           style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}
         >
-          Upload PDF (Required)
+          {pdfLabel}
         </label>
 
         <input
@@ -298,7 +323,7 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
         <label
           style={{ fontWeight: "600", display: "block", marginBottom: "6px" }}
         >
-          Upload Image (Optional)
+          {imageLabel}
         </label>
 
         <input
@@ -326,7 +351,7 @@ export default function CreateUnit({ semester, subject, category, onSuccess }) {
           fontSize: "15px",
         }}
       >
-        {loading ? "Publishing..." : "Publish Unit"}
+        {loading ? "Publishing..." : submitLabel}
       </button>
     </div>
   );

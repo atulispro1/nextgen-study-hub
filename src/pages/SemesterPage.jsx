@@ -38,6 +38,95 @@ export default function SemesterPage() {
   "Major Exam Papers",
 ];
 
+  const categoryCards = [...categories, "Last Minute Revision Kit"];
+
+  const categoryDetails = {
+    Notes: {
+      label: "Core Learning",
+      icon: "📘",
+      accent: "#93c5fd",
+      border: "rgba(59,130,246,0.34)",
+      glow: "rgba(59,130,246,0.20)",
+      background:
+        "linear-gradient(145deg, rgba(59,130,246,0.16), rgba(14,165,233,0.10), rgba(15,23,42,0.10))",
+      description:
+        "Topic-wise notes and clean study material to build strong concepts quickly.",
+      footer: "Lecture notes | Concepts | Revision",
+    },
+    Assignments: {
+      label: "Smart Practice",
+      icon: "📝",
+      accent: "#d8b4fe",
+      border: "rgba(139,92,246,0.34)",
+      glow: "rgba(139,92,246,0.20)",
+      background:
+        "linear-gradient(145deg, rgba(139,92,246,0.16), rgba(168,85,247,0.10), rgba(15,23,42,0.10))",
+      description:
+        "Assignment PDFs to practice answers, improve speed, and stay ready for checks.",
+      footer: "Tasks | Submission help | Practice",
+    },
+    Practicals: {
+      label: "Lab Ready",
+      icon: "🧪",
+      accent: "#86efac",
+      border: "rgba(34,197,94,0.34)",
+      glow: "rgba(34,197,94,0.20)",
+      background:
+        "linear-gradient(145deg, rgba(34,197,94,0.16), rgba(16,185,129,0.10), rgba(15,23,42,0.10))",
+      description:
+        "Practical files and lab resources to help you prepare records and viva work faster.",
+      footer: "Experiments | Files | Viva support",
+    },
+    Syllabus: {
+      label: "Exam Map",
+      icon: "📚",
+      accent: "#e2e8f0",
+      border: "rgba(148,163,184,0.32)",
+      glow: "rgba(148,163,184,0.16)",
+      background:
+        "linear-gradient(145deg, rgba(148,163,184,0.16), rgba(100,116,139,0.10), rgba(15,23,42,0.10))",
+      description:
+        "The full syllabus layout so students know what to cover and what to prioritize.",
+      footer: "Units | Coverage | Planning",
+    },
+    "Minor Exam Papers": {
+      label: "Exam Focus",
+      icon: "📝",
+      accent: "#fde68a",
+      border: "rgba(250,204,21,0.38)",
+      glow: "rgba(250,204,21,0.22)",
+      background:
+        "linear-gradient(145deg, rgba(250,204,21,0.18), rgba(245,158,11,0.10), rgba(15,23,42,0.10))",
+      description:
+        "Previous and important minor exam papers to sharpen your test pattern awareness.",
+      footer: "Pattern | Practice | Important",
+    },
+    "Major Exam Papers": {
+      label: "High Priority",
+      icon: "🔥",
+      accent: "#fde68a",
+      border: "rgba(250,204,21,0.42)",
+      glow: "rgba(250,204,21,0.26)",
+      background:
+        "linear-gradient(145deg, rgba(250,204,21,0.20), rgba(251,146,60,0.12), rgba(15,23,42,0.10))",
+      description:
+        "Major exam paper resources designed for serious final preparation and scoring better.",
+      footer: "Final prep | Repeated papers | Score boost",
+    },
+    "Last Minute Revision Kit": {
+      label: "Flash Prep",
+      icon: "⚡",
+      accent: "#fde68a",
+      border: "rgba(245,158,11,0.42)",
+      glow: "rgba(249,115,22,0.24)",
+      background:
+        "linear-gradient(145deg, rgba(245,158,11,0.18), rgba(249,115,22,0.12), rgba(99,102,241,0.10))",
+      description:
+        "Quick links to last-minute revision content, important questions, and exam rescue PDFs.",
+      footer: "MCQs | Quick notes | Most important",
+    },
+  };
+
   const subjects = [
     "Applied Chemistry (DCH-101)",
     "Engineering Mechanics (DME-201)",
@@ -249,19 +338,59 @@ semester wise subject notes
 
         {/* CATEGORY LEVEL */}
         {!activeCategory && (
+          <>
+          <div
+            className="glass"
+            style={{
+              padding: "28px",
+              borderRadius: "24px",
+              marginBottom: "26px",
+              background:
+                "linear-gradient(145deg, rgba(99,102,241,0.10), rgba(14,165,233,0.06), rgba(15,23,42,0.08))",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: "clamp(1.8rem, 4vw, 2.5rem)",
+                fontWeight: "900",
+                marginBottom: "10px",
+                color: "#f8fafc",
+              }}
+            >
+              Explore Semester {id} Resources
+            </h2>
+            <p style={{ maxWidth: "780px", lineHeight: "1.8", opacity: "0.82" }}>
+              Choose the section you want to study from. Notes, assignments,
+              practicals, and syllabus now have a cleaner exam-ready layout so
+              students can move faster and stay focused.
+            </p>
+          </div>
           <div className="grid">
-            {categories.map((cat) => {
+            {categoryCards.map((cat) => {
+  const details = categoryDetails[cat];
+  const isLastMinuteCard = cat === "Last Minute Revision Kit";
   const isImportant =
     cat === "Minor Exam Papers" || cat === "Major Exam Papers";
 
   // 🎨 COLOR THEMES FOR NORMAL SECTIONS
   const getStyle = () => {
+    if (isLastMinuteCard)
+      return {
+        border: "2px solid #f59e0b",
+        background:
+          "linear-gradient(135deg, rgba(245,158,11,0.18), rgba(249,115,22,0.12), rgba(99,102,241,0.1))",
+        boxShadow:
+          "0 14px 34px rgba(249,115,22,0.24), 0 0 22px rgba(250,204,21,0.16)",
+        color: "#fde68a",
+      };
+
     if (cat === "Notes")
       return {
         border: "2px solid #3b82f6",
         background: "linear-gradient(135deg, rgba(59,130,246,0.15), transparent)",
         boxShadow: "0 8px 25px rgba(59,130,246,0.25)",
-        color: "#3b82f6",
+        color: "#bfdbfe",
       };
 
     if (cat === "Assignments")
@@ -269,7 +398,7 @@ semester wise subject notes
         border: "2px solid #8b5cf6",
         background: "linear-gradient(135deg, rgba(139,92,246,0.15), transparent)",
         boxShadow: "0 8px 25px rgba(139,92,246,0.25)",
-        color: "#8b5cf6",
+        color: "#ddd6fe",
       };
 
     if (cat === "Practicals")
@@ -277,7 +406,7 @@ semester wise subject notes
         border: "2px solid #22c55e",
         background: "linear-gradient(135deg, rgba(34,197,94,0.15), transparent)",
         boxShadow: "0 8px 25px rgba(34,197,94,0.25)",
-        color: "#22c55e",
+        color: "#bbf7d0",
       };
 
     if (cat === "Syllabus")
@@ -285,7 +414,7 @@ semester wise subject notes
         border: "2px solid #9ca3af",
         background: "linear-gradient(135deg, rgba(156,163,175,0.15), transparent)",
         boxShadow: "0 8px 25px rgba(156,163,175,0.25)",
-        color: "#9ca3af",
+        color: "#e5e7eb",
       };
 
     return {};
@@ -299,9 +428,13 @@ semester wise subject notes
       className="glass"
       style={{
         padding: "30px",
-        textAlign: "center",
+        textAlign: "left",
         cursor: "pointer",
         position: "relative",
+        overflow: "hidden",
+        border: `1px solid ${details.border}`,
+        background: details.background,
+        boxShadow: `0 18px 42px ${details.glow}`,
 
         // ⭐ EXAM STYLE (already important)
         ...(isImportant && {
@@ -317,12 +450,19 @@ semester wise subject notes
 
         transition: "all 0.3s ease",
       }}
-      onClick={() => setActiveCategory(cat)}
+      onClick={() => {
+        if (isLastMinuteCard) {
+          navigate(`/last-minute-resources?semester=${id}`);
+          return;
+        }
+
+        setActiveCategory(cat);
+      }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "scale(1.05)";
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.transform = isImportant ? "scale(1.05)" : "scale(1)";
+        e.currentTarget.style.transform = "scale(1)";
       }}
     >
       {/* 🔥 IMPORTANT TAG ONLY FOR EXAMS */}
@@ -344,10 +484,67 @@ semester wise subject notes
         </span>
       )}
 
+      {isLastMinuteCard && (
+        <span
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            background: "#f59e0b",
+            color: "#111827",
+            padding: "4px 10px",
+            fontSize: "11px",
+            fontWeight: "700",
+            borderRadius: "20px",
+            boxShadow: "0 0 18px rgba(245,158,11,0.4)",
+          }}
+        >
+          LAST MINUTE
+        </span>
+      )}
+
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: "-28% auto auto 64%",
+          width: "170px",
+          height: "170px",
+          borderRadius: "999px",
+          background:
+            "radial-gradient(circle, rgba(255,255,255,0.22), transparent 72%)",
+          filter: "blur(4px)",
+        }}
+      />
+
+      <div
+        style={{
+          width: "56px",
+          height: "56px",
+          borderRadius: "18px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "28px",
+          marginBottom: "18px",
+          background: "rgba(255,255,255,0.08)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+        }}
+      >
+        {details.icon}
+      </div>
+
       <h3
         style={{
-          fontWeight: "700",
-          color: isImportant ? "#facc15" : normalStyle.color || "white",
+          fontWeight: "800",
+          fontSize: "24px",
+          marginBottom: "12px",
+          color: details.accent,
+          textShadow: isLastMinuteCard
+            ? "0 0 18px rgba(245,158,11,0.22)"
+            : isImportant
+              ? "0 0 18px rgba(250,204,21,0.22)"
+              : "0 0 14px rgba(255,255,255,0.08)",
         }}
       >
         {/* ICONS */}
@@ -358,12 +555,37 @@ semester wise subject notes
         {cat === "Minor Exam Papers" && "📝 "}
         {cat === "Major Exam Papers" && "🔥 "}
 
+        {isLastMinuteCard && "Flash "}
         {cat}
       </h3>
+
+      <p
+        style={{
+          lineHeight: "1.75",
+          opacity: "0.86",
+          marginBottom: "18px",
+          maxWidth: "320px",
+        }}
+      >
+        {details.description}
+      </p>
+
+      <div
+        style={{
+          fontSize: "13px",
+          fontWeight: "700",
+          letterSpacing: "0.02em",
+          color: details.accent,
+          opacity: "0.92",
+        }}
+      >
+        {details.footer}
+      </div>
     </div>
   );
 })}
           </div>
+          </>
         )}
 
         {/* SUBJECT LEVEL */}
@@ -381,6 +603,23 @@ semester wise subject notes
               {activeCategory} – Subjects
             </h2>
 
+            <div
+              className="glass"
+              style={{
+                padding: "24px",
+                borderRadius: "22px",
+                marginBottom: "24px",
+                border: "1px solid rgba(255,255,255,0.08)",
+                background:
+                  "linear-gradient(145deg, rgba(99,102,241,0.08), rgba(14,165,233,0.06), rgba(15,23,42,0.10))",
+              }}
+            >
+              <p style={{ lineHeight: "1.8", opacity: "0.82", maxWidth: "760px" }}>
+                Select the subject you want to open for <strong>{activeCategory}</strong>.
+                This layout keeps every subject easier to scan and quicker to open.
+              </p>
+            </div>
+
             <div className="grid">
               <div className="grid">
   {subjects.map((sub) => {
@@ -388,38 +627,46 @@ semester wise subject notes
     const getSubjectStyle = () => {
       if (activeCategory === "Notes")
         return {
-          border: "2px solid #3b82f6",
+          border: "1px solid rgba(59,130,246,0.34)",
           background:
-            "linear-gradient(135deg, rgba(59,130,246,0.15), transparent)",
-          boxShadow: "0 8px 25px rgba(59,130,246,0.25)",
-          color: "#3b82f6",
+            "linear-gradient(145deg, rgba(59,130,246,0.16), rgba(14,165,233,0.10), rgba(15,23,42,0.10))",
+          boxShadow: "0 16px 34px rgba(59,130,246,0.18)",
+          color: "#bfdbfe",
+          badge: "Study Notes",
+          icon: "📘",
         };
 
       if (activeCategory === "Assignments")
         return {
-          border: "2px solid #8b5cf6",
+          border: "1px solid rgba(139,92,246,0.34)",
           background:
-            "linear-gradient(135deg, rgba(139,92,246,0.15), transparent)",
-          boxShadow: "0 8px 25px rgba(139,92,246,0.25)",
-          color: "#8b5cf6",
+            "linear-gradient(145deg, rgba(139,92,246,0.16), rgba(168,85,247,0.10), rgba(15,23,42,0.10))",
+          boxShadow: "0 16px 34px rgba(139,92,246,0.18)",
+          color: "#ddd6fe",
+          badge: "Assignment Work",
+          icon: "📝",
         };
 
       if (activeCategory === "Practicals")
         return {
-          border: "2px solid #22c55e",
+          border: "1px solid rgba(34,197,94,0.34)",
           background:
-            "linear-gradient(135deg, rgba(34,197,94,0.15), transparent)",
-          boxShadow: "0 8px 25px rgba(34,197,94,0.25)",
-          color: "#22c55e",
+            "linear-gradient(145deg, rgba(34,197,94,0.16), rgba(16,185,129,0.10), rgba(15,23,42,0.10))",
+          boxShadow: "0 16px 34px rgba(34,197,94,0.18)",
+          color: "#bbf7d0",
+          badge: "Lab Ready",
+          icon: "🧪",
         };
 
       if (activeCategory === "Syllabus")
         return {
-          border: "2px solid #9ca3af",
+          border: "1px solid rgba(148,163,184,0.34)",
           background:
-            "linear-gradient(135deg, rgba(156,163,175,0.15), transparent)",
-          boxShadow: "0 8px 25px rgba(156,163,175,0.25)",
-          color: "#9ca3af",
+            "linear-gradient(145deg, rgba(148,163,184,0.16), rgba(100,116,139,0.10), rgba(15,23,42,0.10))",
+          boxShadow: "0 16px 34px rgba(148,163,184,0.16)",
+          color: "#e5e7eb",
+          badge: "Course Map",
+          icon: "📚",
         };
 
       if (
@@ -427,12 +674,13 @@ semester wise subject notes
         activeCategory === "Major Exam Papers"
       )
         return {
-          border: "2px solid #facc15",
+          border: "1px solid rgba(250,204,21,0.38)",
           background:
-            "linear-gradient(135deg, rgba(250,204,21,0.2), transparent)",
-          boxShadow: "0 10px 30px rgba(250,204,21,0.35)",
-          color: "#facc15",
-          transform: "scale(1.03)",
+            "linear-gradient(145deg, rgba(250,204,21,0.18), rgba(245,158,11,0.10), rgba(15,23,42,0.10))",
+          boxShadow: "0 18px 38px rgba(250,204,21,0.20)",
+          color: "#fde68a",
+          badge: "Exam Priority",
+          icon: activeCategory === "Major Exam Papers" ? "🔥" : "📝",
         };
 
       return {};
@@ -445,11 +693,12 @@ semester wise subject notes
         key={sub}
         className="glass"
         style={{
-          padding: "30px",
-          textAlign: "center",
+          padding: "28px",
+          textAlign: "left",
           cursor: "pointer",
           transition: "all 0.3s ease",
-
+          position: "relative",
+          overflow: "hidden",
           ...style,
         }}
         onClick={() => setActiveSubject(sub)}
@@ -457,21 +706,59 @@ semester wise subject notes
           e.currentTarget.style.transform = "scale(1.05)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.transform =
-            activeCategory === "Minor Exam Papers" ||
-            activeCategory === "Major Exam Papers"
-              ? "scale(1.03)"
-              : "scale(1)";
+          e.currentTarget.style.transform = "scale(1)";
         }}
       >
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: "-32% auto auto 68%",
+            width: "150px",
+            height: "150px",
+            borderRadius: "999px",
+            background:
+              "radial-gradient(circle, rgba(255,255,255,0.18), transparent 72%)",
+            filter: "blur(4px)",
+          }}
+        />
+
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            padding: "8px 14px",
+            borderRadius: "999px",
+            background: "rgba(255,255,255,0.08)",
+            color: style.color || "white",
+            fontSize: "12px",
+            fontWeight: "800",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            marginBottom: "18px",
+          }}
+        >
+          <span style={{ fontSize: "18px" }}>{style.icon}</span>
+          {style.badge}
+        </div>
+
         <h3
           style={{
-            fontWeight: "700",
+            fontWeight: "800",
+            fontSize: "22px",
             color: style.color || "white",
+            lineHeight: "1.55",
+            marginBottom: "14px",
           }}
         >
           {sub}
         </h3>
+
+        <p style={{ opacity: "0.82", lineHeight: "1.75", maxWidth: "330px" }}>
+          Open {activeCategory.toLowerCase()} resources for this subject and
+          continue directly to the uploaded material.
+        </p>
       </div>
     );
   })}

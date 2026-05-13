@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 
 export default function SemesterSection() {
@@ -13,18 +12,34 @@ export default function SemesterSection() {
     { id: 6, desc: "Final Year Specialization" },
   ];
 
-  return (
-    <section
-      className="section"
+  const semesterCardTheme = {
+    border: "1px solid rgba(45,212,191,0.34)",
+    background:
+      "linear-gradient(145deg, rgba(45,212,191,0.15), rgba(14,165,233,0.14), rgba(59,130,246,0.10))",
+    boxShadow:
+      "0 18px 44px rgba(14,165,233,0.18), 0 0 24px rgba(45,212,191,0.12)",
+    title: "#ccfbf1",
+    meta: "#99f6e4",
+    accent: "#67e8f9",
+  };
 
-    
-    >
+  return (
+    <section className="section">
       <div id="semester" style={{ textAlign: "center", marginBottom: "60px" }}>
-        <h2 style={{ fontSize: "36px", marginBottom: "15px" }}>
+        <h2
+          style={{
+            fontSize: "36px",
+            marginBottom: "15px",
+            background: "linear-gradient(90deg, #d5f5ff, #8be9ff, #99f6e4)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            textShadow: "0 0 18px rgba(103,232,249,0.16)",
+          }}
+        >
           Explore By Semester
         </h2>
-        <p style={{ opacity: 0.7 }}>
-          Access notes, assignments, practical files & premium materials
+        <p style={{ opacity: 0.76 }}>
+          Access notes, assignments, practical files and premium materials
         </p>
       </div>
 
@@ -35,8 +50,83 @@ export default function SemesterSection() {
           gap: "30px",
         }}
       >
-        {semesters.map((sem, index) => (
-          <div 
+        <div
+          onClick={() => navigate("/last-minute-resources")}
+          className="glass"
+          style={{
+            padding: "40px",
+            cursor: "pointer",
+            position: "relative",
+            border: "1px solid rgba(251,191,36,0.45)",
+            overflow: "hidden",
+            background:
+              "linear-gradient(145deg, rgba(250,204,21,0.18), rgba(249,115,22,0.14), rgba(99,102,241,0.14))",
+            boxShadow:
+              "0 18px 45px rgba(249,115,22,0.22), 0 0 24px rgba(250,204,21,0.18)",
+          }}
+        >
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: "-35% auto auto 58%",
+              width: "170px",
+              height: "170px",
+              borderRadius: "999px",
+              background:
+                "radial-gradient(circle, rgba(255,255,255,0.34), transparent 70%)",
+              filter: "blur(4px)",
+            }}
+          />
+
+          <span
+            style={{
+              position: "absolute",
+              top: "16px",
+              right: "16px",
+              background: "#facc15",
+              color: "#111827",
+              padding: "6px 12px",
+              fontSize: "11px",
+              fontWeight: "800",
+              letterSpacing: "0.08em",
+              borderRadius: "999px",
+              boxShadow: "0 0 18px rgba(250,204,21,0.55)",
+              textTransform: "uppercase",
+            }}
+          >
+            Hot Pick
+          </span>
+
+          <h3
+            style={{
+              fontSize: "24px",
+              marginBottom: "12px",
+              color: "#fef3c7",
+              textShadow: "0 0 18px rgba(250,204,21,0.28)",
+            }}
+          >
+            Last Minute Exam Boost
+          </h3>
+
+          <p style={{ opacity: 0.88, marginBottom: "20px", lineHeight: "1.7" }}>
+            Quick-revision notes, important questions, and exam-time material
+            for students who need fast, high-impact preparation.
+          </p>
+
+          <div
+            style={{
+              fontSize: "14px",
+              fontWeight: "600",
+              color: "#fde68a",
+            }}
+          >
+            Revision PDFs | Important Questions | Score Better Fast
+          </div>
+        </div>
+
+        {semesters.map((sem) => (
+          <div
             key={sem.id}
             onClick={() => navigate(`/semester/${sem.id}`)}
             className="glass"
@@ -44,45 +134,66 @@ export default function SemesterSection() {
               padding: "40px",
               cursor: "pointer",
               position: "relative",
-              border: "1px solid rgba(99,102,241,0.2)",
               overflow: "hidden",
+              ...semesterCardTheme,
             }}
-            >
-          
-            {/* Gradient Hover Glow */}
+          >
             <div
+              aria-hidden="true"
               style={{
                 position: "absolute",
-                inset: 0,
+                inset: "-30% auto auto 62%",
+                width: "160px",
+                height: "160px",
+                borderRadius: "999px",
                 background:
-                  "linear-gradient(135deg, rgba(79,70,229,0.15), rgba(147,51,234,0.15))",
-                opacity: 0,
-                transition: "0.3s",
+                  "radial-gradient(circle, rgba(255,255,255,0.22), transparent 72%)",
+                filter: "blur(3px)",
               }}
-              className="hover-bg"
             />
+
+            <span
+              style={{
+                position: "absolute",
+                top: "16px",
+                right: "16px",
+                background: "rgba(103,232,249,0.16)",
+                color: semesterCardTheme.accent,
+                padding: "6px 12px",
+                fontSize: "11px",
+                fontWeight: "800",
+                letterSpacing: "0.08em",
+                borderRadius: "999px",
+                boxShadow: "0 0 16px rgba(103,232,249,0.18)",
+                textTransform: "uppercase",
+              }}
+            >
+              Semester Hub
+            </span>
 
             <h3
               style={{
-                fontSize: "22px",
-                marginBottom: "10px",
-                color: "var(--primary)",
+                fontSize: "24px",
+                marginBottom: "12px",
+                color: semesterCardTheme.title,
+                textShadow: "0 0 18px rgba(45,212,191,0.18)",
               }}
             >
               Semester {sem.id}
             </h3>
 
-            <p style={{ opacity: 0.7, marginBottom: "20px" }}>
+            <p style={{ opacity: 0.82, marginBottom: "20px", lineHeight: "1.7" }}>
               {sem.desc}
             </p>
 
             <div
               style={{
                 fontSize: "14px",
-                opacity: 0.6,
+                fontWeight: "600",
+                color: semesterCardTheme.meta,
               }}
             >
-              Notes • Assignments • Practicals • Premium
+              Notes | Assignments | Practicals | Premium
             </div>
           </div>
         ))}

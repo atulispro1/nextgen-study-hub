@@ -128,8 +128,10 @@ export default function Navbar() {
       <nav
         className="site-navbar"
         style={{
-          position: "sticky",
+          position: "fixed",
           top: 0,
+          left: 0,
+          right: 0,
           zIndex: 1000,
           backdropFilter: "blur(16px)",
           padding: "14px 6%",
