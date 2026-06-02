@@ -23,6 +23,15 @@ export default function NotesLibrary() {
   const [category, setCategory] = useState("All");
   const [subject, setSubject] = useState("All");
 
+  async function fetchNotes() {
+    const { data } = await supabase
+      .from("materials")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    setNotes(data || []);
+  }
+
   useEffect(() => {
     fetchNotes();
   }, []);
@@ -30,17 +39,6 @@ export default function NotesLibrary() {
   useEffect(() => {
     setVisibleNotes(9);
   }, [search, semester, category, subject]);
-
-
-
-  const fetchNotes = async () => {
-    const { data } = await supabase
-      .from("materials")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    setNotes(data || []);
-  };
 
   const deleteNote = async (id) => {
     confirmDelete(async () => {
@@ -62,6 +60,19 @@ export default function NotesLibrary() {
   };
 
   const filtered = notes.filter((note) => {
+    const noteCategory = note.category?.toLowerCase() || "";
+    const noteType = note.note_type?.toLowerCase() || "";
+    const lastMinuteMatch = [
+      "last minute",
+      "important mcqs",
+      "quick revision notes",
+      "most important questions",
+      "question banks",
+    ].some(
+      (keyword) =>
+        noteCategory.includes(keyword) || noteType.includes(keyword),
+    );
+
     const searchMatch =
       (note.title || note.unit_name || "")
         .toLowerCase()
@@ -72,8 +83,9 @@ export default function NotesLibrary() {
 
     const catMatch =
       category === "All" ||
-      note.category?.toLowerCase().includes(category.toLowerCase()) ||
-      note.note_type?.toLowerCase().includes(category.toLowerCase());
+      (category === "Last Minute" && lastMinuteMatch) ||
+      noteCategory.includes(category.toLowerCase()) ||
+      noteType.includes(category.toLowerCase());
 
     const subMatch =
       subject === "All" ||
@@ -333,12 +345,12 @@ semester wise subject notes
           }}
         >
           <select
+            value={semester}
             onChange={(e) => setSemester(e.target.value)}
-            className="glass"
+            className="glass notes-library-filter"
             style={{
               padding: "10px 14px",
               borderRadius: "10px",
-              border: "none",
               cursor: "pointer",
             }}
           >
@@ -352,12 +364,12 @@ semester wise subject notes
           </select>
 
           <select
+            value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="glass"
+            className="glass notes-library-filter"
             style={{
               padding: "10px 14px",
               borderRadius: "10px",
-              border: "none",
               cursor: "pointer",
             }}
           >
@@ -370,15 +382,16 @@ semester wise subject notes
             {/* NEW OPTIONS 🔥 */}
             <option value="Minor Exam Papers">Minor Exam</option>
             <option value="Major Exam Papers">Major Exam</option>
+            <option value="Last Minute">Last Minute</option>
           </select>
 
           <select
+            value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="glass"
+            className="glass notes-library-filter"
             style={{
               padding: "10px 14px",
               borderRadius: "10px",
-              border: "none",
               cursor: "pointer",
             }}
           >

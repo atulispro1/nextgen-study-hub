@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase";
 import CreateUnit from "../components/CreateUnit";
@@ -12,16 +12,18 @@ import SearchFilterBar from "../components/SearchFilterBar";
 import { confirmDelete } from "../utils/deleteConfirm";
 import Swal from "sweetalert2";
 import { isAdminRole, openSafeExternalUrl } from "../utils/security";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function SemesterPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { role, profileReady, profileMissing, user } = useAuth();
+  const { theme } = useContext(ThemeContext);
+  const isLightTheme = theme === "light";
 
   const isAdmin = profileReady && isAdminRole(role);
 
   const [semesterProgress, setSemesterProgress] = useState(0);
-  const [progressPercent, setProgressPercent] = useState(0);
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeSubject, setActiveSubject] = useState(null);
   const [materials, setMaterials] = useState([]);
@@ -146,33 +148,9 @@ export default function SemesterPage() {
     fetchData();
   }, []);
 
-  // PROGRESS CALCULATION
   useEffect(() => {
-    if (!activeSubject) return;
-
-    const subjectProgress = getProgress(activeSubject);
-
-    const relevantUnits = materials.filter(
-      (item) =>
-        item.semester === id &&
-        item.subject === activeSubject &&
-        ["Notes", "Assignments", "Practicals"].includes(item.category),
-    );
-
-    const total = relevantUnits.length;
-
-    if (total === 0) {
-      setProgressPercent(0);
-      return;
-    }
-
-    const completed = relevantUnits.filter(
-      (item) => subjectProgress[item.id] === true,
-    ).length;
-
-    const percent = Math.round((completed / total) * 100);
-    setProgressPercent(percent);
-  }, [materials, activeSubject, id]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id, activeCategory, activeSubject]);
 
   useEffect(() => {
     const allRelevantUnits = materials.filter(
@@ -346,8 +324,12 @@ semester wise subject notes
               borderRadius: "24px",
               marginBottom: "26px",
               background:
-                "linear-gradient(145deg, rgba(99,102,241,0.10), rgba(14,165,233,0.06), rgba(15,23,42,0.08))",
-              border: "1px solid rgba(255,255,255,0.08)",
+                isLightTheme
+                  ? "linear-gradient(145deg, rgba(255,255,255,0.84), rgba(226,232,240,0.62))"
+                  : "linear-gradient(145deg, rgba(99,102,241,0.10), rgba(14,165,233,0.06), rgba(15,23,42,0.08))",
+              border: isLightTheme
+                ? "1px solid rgba(31,59,115,0.14)"
+                : "1px solid rgba(255,255,255,0.08)",
             }}
           >
             <h2
@@ -355,7 +337,7 @@ semester wise subject notes
                 fontSize: "clamp(1.8rem, 4vw, 2.5rem)",
                 fontWeight: "900",
                 marginBottom: "10px",
-                color: "#f8fafc",
+                color: isLightTheme ? "var(--text-light)" : "#f8fafc",
               }}
             >
               Explore Semester {id} Resources
@@ -377,50 +359,64 @@ semester wise subject notes
   const getStyle = () => {
     if (isLastMinuteCard)
       return {
-        border: "2px solid #f59e0b",
+        border: isLightTheme ? "1px solid rgba(180,83,9,0.42)" : "2px solid #f59e0b",
         background:
-          "linear-gradient(135deg, rgba(245,158,11,0.18), rgba(249,115,22,0.12), rgba(99,102,241,0.1))",
+          isLightTheme
+            ? "linear-gradient(135deg, rgba(255,247,237,0.98), rgba(254,243,199,0.78))"
+            : "linear-gradient(135deg, rgba(245,158,11,0.18), rgba(249,115,22,0.12), rgba(99,102,241,0.1))",
         boxShadow:
-          "0 14px 34px rgba(249,115,22,0.24), 0 0 22px rgba(250,204,21,0.16)",
-        color: "#fde68a",
+          isLightTheme
+            ? "0 12px 28px rgba(180,83,9,0.10)"
+            : "0 14px 34px rgba(249,115,22,0.24), 0 0 22px rgba(250,204,21,0.16)",
+        color: isLightTheme ? "#92400e" : "#fde68a",
       };
 
     if (cat === "Notes")
       return {
-        border: "2px solid #3b82f6",
-        background: "linear-gradient(135deg, rgba(59,130,246,0.15), transparent)",
-        boxShadow: "0 8px 25px rgba(59,130,246,0.25)",
-        color: "#bfdbfe",
+        border: isLightTheme ? "1px solid rgba(37,99,235,0.28)" : "2px solid #3b82f6",
+        background: isLightTheme
+          ? "linear-gradient(135deg, rgba(239,246,255,0.98), rgba(255,255,255,0.82))"
+          : "linear-gradient(135deg, rgba(59,130,246,0.15), transparent)",
+        boxShadow: isLightTheme ? "0 12px 28px rgba(37,99,235,0.08)" : "0 8px 25px rgba(59,130,246,0.25)",
+        color: isLightTheme ? "#1d4ed8" : "#bfdbfe",
       };
 
     if (cat === "Assignments")
       return {
-        border: "2px solid #8b5cf6",
-        background: "linear-gradient(135deg, rgba(139,92,246,0.15), transparent)",
-        boxShadow: "0 8px 25px rgba(139,92,246,0.25)",
-        color: "#ddd6fe",
+        border: isLightTheme ? "1px solid rgba(109,40,217,0.25)" : "2px solid #8b5cf6",
+        background: isLightTheme
+          ? "linear-gradient(135deg, rgba(245,243,255,0.98), rgba(255,255,255,0.82))"
+          : "linear-gradient(135deg, rgba(139,92,246,0.15), transparent)",
+        boxShadow: isLightTheme ? "0 12px 28px rgba(109,40,217,0.08)" : "0 8px 25px rgba(139,92,246,0.25)",
+        color: isLightTheme ? "#6d28d9" : "#ddd6fe",
       };
 
     if (cat === "Practicals")
       return {
-        border: "2px solid #22c55e",
-        background: "linear-gradient(135deg, rgba(34,197,94,0.15), transparent)",
-        boxShadow: "0 8px 25px rgba(34,197,94,0.25)",
-        color: "#bbf7d0",
+        border: isLightTheme ? "1px solid rgba(21,128,61,0.25)" : "2px solid #22c55e",
+        background: isLightTheme
+          ? "linear-gradient(135deg, rgba(240,253,244,0.98), rgba(255,255,255,0.82))"
+          : "linear-gradient(135deg, rgba(34,197,94,0.15), transparent)",
+        boxShadow: isLightTheme ? "0 12px 28px rgba(21,128,61,0.08)" : "0 8px 25px rgba(34,197,94,0.25)",
+        color: isLightTheme ? "#15803d" : "#bbf7d0",
       };
 
     if (cat === "Syllabus")
       return {
-        border: "2px solid #9ca3af",
-        background: "linear-gradient(135deg, rgba(156,163,175,0.15), transparent)",
-        boxShadow: "0 8px 25px rgba(156,163,175,0.25)",
-        color: "#e5e7eb",
+        border: isLightTheme ? "1px solid rgba(71,85,105,0.22)" : "2px solid #9ca3af",
+        background: isLightTheme
+          ? "linear-gradient(135deg, rgba(248,250,252,0.98), rgba(255,255,255,0.82))"
+          : "linear-gradient(135deg, rgba(156,163,175,0.15), transparent)",
+        boxShadow: isLightTheme ? "0 12px 28px rgba(71,85,105,0.07)" : "0 8px 25px rgba(156,163,175,0.25)",
+        color: isLightTheme ? "#334155" : "#e5e7eb",
       };
 
     return {};
   };
 
   const normalStyle = getStyle();
+  const cardAccentColor =
+    normalStyle.color || (isLightTheme && isImportant ? "#92400e" : details.accent);
 
   return (
     <div
@@ -440,9 +436,12 @@ semester wise subject notes
         ...(isImportant && {
           border: "2px solid #facc15",
           background:
-            "linear-gradient(135deg, rgba(250,204,21,0.15), rgba(251,191,36,0.1))",
-          transform: "scale(1.05)",
-          boxShadow: "0 10px 30px rgba(250,204,21,0.3)",
+            isLightTheme
+              ? "linear-gradient(135deg, rgba(254,252,232,0.98), rgba(255,251,235,0.84))"
+              : "linear-gradient(135deg, rgba(250,204,21,0.15), rgba(251,191,36,0.1))",
+          boxShadow: isLightTheme
+            ? "0 12px 28px rgba(161,98,7,0.10)"
+            : "0 10px 30px rgba(250,204,21,0.3)",
         }),
 
         // 🎨 NORMAL SECTION STYLING
@@ -459,10 +458,12 @@ semester wise subject notes
         setActiveCategory(cat);
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "scale(1.05)";
+        e.currentTarget.style.transform = "translateY(-4px)";
+        e.currentTarget.style.zIndex = "2";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "scale(1)";
+        e.currentTarget.style.zIndex = "1";
       }}
     >
       {/* 🔥 IMPORTANT TAG ONLY FOR EXAMS */}
@@ -512,7 +513,9 @@ semester wise subject notes
           height: "170px",
           borderRadius: "999px",
           background:
-            "radial-gradient(circle, rgba(255,255,255,0.22), transparent 72%)",
+            isLightTheme
+              ? "radial-gradient(circle, rgba(37,99,235,0.08), transparent 72%)"
+              : "radial-gradient(circle, rgba(255,255,255,0.22), transparent 72%)",
           filter: "blur(4px)",
         }}
       />
@@ -527,8 +530,10 @@ semester wise subject notes
           justifyContent: "center",
           fontSize: "28px",
           marginBottom: "18px",
-          background: "rgba(255,255,255,0.08)",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+          background: isLightTheme ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.08)",
+          boxShadow: isLightTheme
+            ? "inset 0 1px 0 rgba(255,255,255,0.9), 0 8px 18px rgba(15,23,42,0.06)"
+            : "inset 0 1px 0 rgba(255,255,255,0.08)",
         }}
       >
         {details.icon}
@@ -539,8 +544,10 @@ semester wise subject notes
           fontWeight: "800",
           fontSize: "24px",
           marginBottom: "12px",
-          color: details.accent,
-          textShadow: isLastMinuteCard
+          color: cardAccentColor,
+          textShadow: isLightTheme
+            ? "none"
+            : isLastMinuteCard
             ? "0 0 18px rgba(245,158,11,0.22)"
             : isImportant
               ? "0 0 18px rgba(250,204,21,0.22)"
@@ -575,7 +582,7 @@ semester wise subject notes
           fontSize: "13px",
           fontWeight: "700",
           letterSpacing: "0.02em",
-          color: details.accent,
+          color: cardAccentColor,
           opacity: "0.92",
         }}
       >
@@ -611,7 +618,9 @@ semester wise subject notes
                 marginBottom: "24px",
                 border: "1px solid rgba(255,255,255,0.08)",
                 background:
-                  "linear-gradient(145deg, rgba(99,102,241,0.08), rgba(14,165,233,0.06), rgba(15,23,42,0.10))",
+                  isLightTheme
+                    ? "linear-gradient(145deg, rgba(255,255,255,0.84), rgba(226,232,240,0.62))"
+                    : "linear-gradient(145deg, rgba(99,102,241,0.08), rgba(14,165,233,0.06), rgba(15,23,42,0.10))",
               }}
             >
               <p style={{ lineHeight: "1.8", opacity: "0.82", maxWidth: "760px" }}>
@@ -631,7 +640,7 @@ semester wise subject notes
           background:
             "linear-gradient(145deg, rgba(59,130,246,0.16), rgba(14,165,233,0.10), rgba(15,23,42,0.10))",
           boxShadow: "0 16px 34px rgba(59,130,246,0.18)",
-          color: "#bfdbfe",
+          color: isLightTheme ? "#1d4ed8" : "#bfdbfe",
           badge: "Study Notes",
           icon: "📘",
         };
@@ -642,7 +651,7 @@ semester wise subject notes
           background:
             "linear-gradient(145deg, rgba(139,92,246,0.16), rgba(168,85,247,0.10), rgba(15,23,42,0.10))",
           boxShadow: "0 16px 34px rgba(139,92,246,0.18)",
-          color: "#ddd6fe",
+          color: isLightTheme ? "#6d28d9" : "#ddd6fe",
           badge: "Assignment Work",
           icon: "📝",
         };
@@ -653,7 +662,7 @@ semester wise subject notes
           background:
             "linear-gradient(145deg, rgba(34,197,94,0.16), rgba(16,185,129,0.10), rgba(15,23,42,0.10))",
           boxShadow: "0 16px 34px rgba(34,197,94,0.18)",
-          color: "#bbf7d0",
+          color: isLightTheme ? "#15803d" : "#bbf7d0",
           badge: "Lab Ready",
           icon: "🧪",
         };
@@ -664,7 +673,7 @@ semester wise subject notes
           background:
             "linear-gradient(145deg, rgba(148,163,184,0.16), rgba(100,116,139,0.10), rgba(15,23,42,0.10))",
           boxShadow: "0 16px 34px rgba(148,163,184,0.16)",
-          color: "#e5e7eb",
+          color: isLightTheme ? "#334155" : "#e5e7eb",
           badge: "Course Map",
           icon: "📚",
         };
@@ -678,7 +687,7 @@ semester wise subject notes
           background:
             "linear-gradient(145deg, rgba(250,204,21,0.18), rgba(245,158,11,0.10), rgba(15,23,42,0.10))",
           boxShadow: "0 18px 38px rgba(250,204,21,0.20)",
-          color: "#fde68a",
+          color: isLightTheme ? "#92400e" : "#fde68a",
           badge: "Exam Priority",
           icon: activeCategory === "Major Exam Papers" ? "🔥" : "📝",
         };
@@ -703,10 +712,12 @@ semester wise subject notes
         }}
         onClick={() => setActiveSubject(sub)}
         onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.transform = "translateY(-4px)";
+          e.currentTarget.style.zIndex = "2";
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.zIndex = "1";
         }}
       >
         <div
@@ -718,7 +729,9 @@ semester wise subject notes
             height: "150px",
             borderRadius: "999px",
             background:
-              "radial-gradient(circle, rgba(255,255,255,0.18), transparent 72%)",
+              isLightTheme
+                ? "radial-gradient(circle, rgba(37,99,235,0.08), transparent 72%)"
+                : "radial-gradient(circle, rgba(255,255,255,0.18), transparent 72%)",
             filter: "blur(4px)",
           }}
         />
@@ -730,7 +743,7 @@ semester wise subject notes
             gap: "10px",
             padding: "8px 14px",
             borderRadius: "999px",
-            background: "rgba(255,255,255,0.08)",
+            background: isLightTheme ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.08)",
             color: style.color || "white",
             fontSize: "12px",
             fontWeight: "800",

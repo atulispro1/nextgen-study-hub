@@ -671,6 +671,29 @@ body.dark .job-filter{
   border:1px solid rgba(255,255,255,0.15);
 }
 
+.notes-library-filter {
+  min-width: 150px;
+  border: 1px solid rgba(31,59,115,0.16);
+  color: var(--text-light);
+  background: rgba(255,250,244,0.92);
+}
+
+.notes-library-filter option {
+  color: var(--text-light);
+  background: #fffaf4;
+}
+
+body.dark .notes-library-filter {
+  color: var(--text-dark);
+  background: rgba(10,22,36,0.92);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+body.dark .notes-library-filter option {
+  color: var(--text-dark);
+  background: #0f172a;
+}
+
 /* ================= RESOURCE LINKS ================= */
 
 .resource-link{

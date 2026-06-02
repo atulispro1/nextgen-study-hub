@@ -81,6 +81,49 @@ const categoryCards = [
   },
 ];
 
+const lightCategoryColors = {
+  "Important MCQs": {
+    border: "rgba(180, 83, 9, 0.28)",
+    glow: "rgba(180, 83, 9, 0.10)",
+    title: "#b45309",
+    tagBg: "#fef3c7",
+    tagText: "#78350f",
+    bg: "linear-gradient(145deg, rgba(255,251,235,0.96), rgba(255,247,237,0.84))",
+  },
+  "Quick Revision Notes": {
+    border: "rgba(15, 118, 110, 0.28)",
+    glow: "rgba(15, 118, 110, 0.10)",
+    title: "#0f766e",
+    tagBg: "#ccfbf1",
+    tagText: "#134e4a",
+    bg: "linear-gradient(145deg, rgba(240,253,250,0.96), rgba(236,253,245,0.84))",
+  },
+  "Most Important Questions": {
+    border: "rgba(109, 40, 217, 0.24)",
+    glow: "rgba(109, 40, 217, 0.09)",
+    title: "#6d28d9",
+    tagBg: "#ede9fe",
+    tagText: "#4c1d95",
+    bg: "linear-gradient(145deg, rgba(245,243,255,0.96), rgba(250,245,255,0.84))",
+  },
+  "Question Banks": {
+    border: "rgba(37, 99, 235, 0.24)",
+    glow: "rgba(37, 99, 235, 0.09)",
+    title: "#2563eb",
+    tagBg: "#dbeafe",
+    tagText: "#1e3a8a",
+    bg: "linear-gradient(145deg, rgba(239,246,255,0.96), rgba(240,249,255,0.84))",
+  },
+  "More Coming Soon": {
+    border: "rgba(100, 116, 139, 0.22)",
+    glow: "rgba(100, 116, 139, 0.08)",
+    title: "#475569",
+    tagBg: "#e2e8f0",
+    tagText: "#334155",
+    bg: "linear-gradient(145deg, rgba(248,250,252,0.96), rgba(241,245,249,0.84))",
+  },
+};
+
 const defaultSubjectsBySemester = {
   1: [
     "Applied Chemistry (DCH-101)",
@@ -275,9 +318,12 @@ export default function LastMinuteResources() {
                     textAlign: "left",
                     cursor: "pointer",
                     border: "1px solid rgba(99,102,241,0.18)",
-                    background:
-                      "linear-gradient(145deg, rgba(99,102,241,0.12), rgba(14,165,233,0.08))",
-                    boxShadow: "0 12px 30px rgba(30,41,59,0.12)",
+                    background: isDark
+                      ? "linear-gradient(145deg, rgba(99,102,241,0.12), rgba(14,165,233,0.08))"
+                      : "linear-gradient(145deg, rgba(255,255,255,0.88), rgba(239,246,255,0.78))",
+                    boxShadow: isDark
+                      ? "0 12px 30px rgba(30,41,59,0.12)"
+                      : "0 12px 28px rgba(15,23,42,0.07)",
                     color: isDark ? "#e5eefb" : "#1f2937",
                   }}
                 >
@@ -286,7 +332,7 @@ export default function LastMinuteResources() {
                       display: "block",
                       fontSize: "22px",
                       marginBottom: "10px",
-                      color: "#dbeafe",
+                      color: isDark ? "#dbeafe" : "#1f3b73",
                     }}
                   >
                     Semester {sem}
@@ -310,70 +356,80 @@ export default function LastMinuteResources() {
             />
 
             <div className="grid" style={{ gap: "24px" }}>
-              {categoryCards.map((card) => (
-                <button
-                  key={card.id}
-                  type="button"
-                  disabled={card.disabled}
-                  className="glass"
-                  onClick={() => !card.disabled && setSelectedCategory(card.id)}
-                  style={{
-                    padding: "30px",
-                    textAlign: "left",
-                    cursor: card.disabled ? "not-allowed" : "pointer",
-                    position: "relative",
-                    overflow: "hidden",
-                    opacity: card.disabled ? 0.82 : 1,
-                    border: `1px solid ${card.colors.border}`,
-                    background: card.colors.bg,
-                    boxShadow: `0 18px 44px ${card.colors.glow}`,
-                    color: isDark ? "#edf2f7" : "#1f2937",
-                  }}
-                >
-                  <span
+              {categoryCards.map((card) => {
+                const colors = isDark
+                  ? {
+                      ...card.colors,
+                      tagBg: card.colors.title,
+                      tagText: "#0f172a",
+                    }
+                  : lightCategoryColors[card.id];
+
+                return (
+                  <button
+                    key={card.id}
+                    type="button"
+                    disabled={card.disabled}
+                    className="glass"
+                    onClick={() => !card.disabled && setSelectedCategory(card.id)}
                     style={{
-                      position: "absolute",
-                      top: "16px",
-                      right: "16px",
-                      padding: "6px 12px",
-                      borderRadius: "999px",
-                      fontSize: "11px",
-                      fontWeight: "800",
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                      color: "#0f172a",
-                      background: card.colors.title,
+                      padding: "30px",
+                      textAlign: "left",
+                      cursor: card.disabled ? "not-allowed" : "pointer",
+                      position: "relative",
+                      overflow: "hidden",
+                      opacity: card.disabled ? 0.86 : 1,
+                      border: `1px solid ${colors.border}`,
+                      background: colors.bg,
+                      boxShadow: `0 18px 44px ${colors.glow}`,
+                      color: isDark ? "#edf2f7" : "#1f2937",
                     }}
                   >
-                    {card.tag}
-                  </span>
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "16px",
+                        right: "16px",
+                        padding: "6px 12px",
+                        borderRadius: "999px",
+                        fontSize: "11px",
+                        fontWeight: "800",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: colors.tagText,
+                        background: colors.tagBg,
+                      }}
+                    >
+                      {card.tag}
+                    </span>
 
-                  <h3
-                    style={{
-                      fontSize: "24px",
-                      marginBottom: "12px",
-                      color: card.colors.title,
-                    }}
-                  >
-                    {card.title}
-                  </h3>
+                    <h3
+                      style={{
+                        fontSize: "24px",
+                        marginBottom: "12px",
+                        color: colors.title,
+                      }}
+                    >
+                      {card.title}
+                    </h3>
 
-                  <p
-                    style={{
-                      lineHeight: "1.75",
-                      opacity: isDark ? 0.86 : 0.92,
-                      marginBottom: "18px",
-                      color: isDark ? "rgba(255,255,255,0.88)" : "#334155",
-                    }}
-                  >
-                    {card.description}
-                  </p>
+                    <p
+                      style={{
+                        lineHeight: "1.75",
+                        opacity: isDark ? 0.86 : 0.94,
+                        marginBottom: "18px",
+                        color: isDark ? "rgba(255,255,255,0.88)" : "#334155",
+                      }}
+                    >
+                      {card.description}
+                    </p>
 
-                  <div style={{ color: card.colors.title, fontWeight: "700" }}>
-                    {card.disabled ? "More sections on the way" : "Open this section"}
-                  </div>
-                </button>
-              ))}
+                    <div style={{ color: colors.title, fontWeight: "700" }}>
+                      {card.disabled ? "More sections on the way" : "Open this section"}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
@@ -398,9 +454,12 @@ export default function LastMinuteResources() {
                     textAlign: "left",
                     cursor: "pointer",
                     border: "1px solid rgba(255,255,255,0.08)",
-                    background:
-                      "linear-gradient(145deg, rgba(15,23,42,0.16), rgba(99,102,241,0.08))",
-                    boxShadow: "0 14px 34px rgba(15,23,42,0.18)",
+                    background: isDark
+                      ? "linear-gradient(145deg, rgba(15,23,42,0.16), rgba(99,102,241,0.08))"
+                      : "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(245,243,255,0.72))",
+                    boxShadow: isDark
+                      ? "0 14px 34px rgba(15,23,42,0.18)"
+                      : "0 12px 28px rgba(15,23,42,0.07)",
                     color: isDark ? "#f8fafc" : "#1f2937",
                   }}
                 >
@@ -530,8 +589,9 @@ export default function LastMinuteResources() {
                 borderRadius: "22px",
                 textAlign: "center",
                 border: "1px solid rgba(255,255,255,0.08)",
-                background:
-                  "linear-gradient(145deg, rgba(45,212,191,0.08), rgba(14,165,233,0.06), rgba(15,23,42,0.18))",
+                background: isDark
+                  ? "linear-gradient(145deg, rgba(45,212,191,0.08), rgba(14,165,233,0.06), rgba(15,23,42,0.18))"
+                  : "linear-gradient(145deg, rgba(240,253,250,0.9), rgba(239,246,255,0.72))",
                 color: isDark ? "#e5e7eb" : "#334155",
               }}
             >
@@ -539,7 +599,7 @@ export default function LastMinuteResources() {
                 style={{
                   marginBottom: "12px",
                   fontWeight: "800",
-                  color: "#ccfbf1",
+                  color: isDark ? "#ccfbf1" : "#0f766e",
                 }}
               >
                 Add only the most score-improving PDFs here
@@ -728,10 +788,12 @@ function LastMinuteHero({
         padding: "clamp(30px, 6vw, 62px)",
         borderRadius: "30px",
         border: "1px solid rgba(250, 204, 21, 0.24)",
-        background:
-          "linear-gradient(145deg, rgba(250,204,21,0.14), rgba(249,115,22,0.10), rgba(59,130,246,0.08))",
-        boxShadow:
-          "0 26px 68px rgba(15,23,42,0.26), 0 0 34px rgba(250,204,21,0.12)",
+        background: isDark
+          ? "linear-gradient(145deg, rgba(250,204,21,0.14), rgba(249,115,22,0.10), rgba(59,130,246,0.08))"
+          : "linear-gradient(145deg, rgba(255,251,235,0.88), rgba(255,247,237,0.72), rgba(239,246,255,0.58))",
+        boxShadow: isDark
+          ? "0 26px 68px rgba(15,23,42,0.26), 0 0 34px rgba(250,204,21,0.12)"
+          : "0 22px 56px rgba(15,23,42,0.12)",
       }}
     >
       <div
@@ -744,7 +806,9 @@ function LastMinuteHero({
           height: "240px",
           borderRadius: "999px",
           background:
-            "radial-gradient(circle, rgba(250,204,21,0.28), transparent 68%)",
+            isDark
+              ? "radial-gradient(circle, rgba(250,204,21,0.28), transparent 68%)"
+              : "radial-gradient(circle, rgba(245,158,11,0.16), transparent 68%)",
           filter: "blur(12px)",
         }}
       />
@@ -757,8 +821,8 @@ function LastMinuteHero({
           marginBottom: "18px",
           padding: "8px 16px",
           borderRadius: "999px",
-          background: "rgba(250,204,21,0.16)",
-          color: "#fde68a",
+          background: isDark ? "rgba(250,204,21,0.16)" : "rgba(254,243,199,0.9)",
+          color: isDark ? "#fde68a" : "#92400e",
           fontWeight: "800",
           letterSpacing: "0.08em",
           textTransform: "uppercase",
@@ -773,7 +837,9 @@ function LastMinuteHero({
           fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
           marginBottom: "14px",
           fontWeight: "900",
-          background: "linear-gradient(90deg, #fef3c7, #facc15, #fb923c)",
+          background: isDark
+            ? "linear-gradient(90deg, #fef3c7, #facc15, #fb923c)"
+            : "linear-gradient(90deg, #92400e, #ca8a04, #ea580c)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
         }}
@@ -823,13 +889,25 @@ function LastMinuteHero({
       )}
 
       {selectedSemester && !selectedCategory && (
-        <p style={{ marginTop: "18px", color: "#fde68a", fontWeight: "700" }}>
+        <p
+          style={{
+            marginTop: "18px",
+            color: isDark ? "#fde68a" : "#b45309",
+            fontWeight: "700",
+          }}
+        >
           You are browsing Semester {selectedSemester}.
         </p>
       )}
 
       {selectedSemester && selectedCategory && selectedSubject && (
-        <p style={{ marginTop: "18px", color: "#fde68a", fontWeight: "700" }}>
+        <p
+          style={{
+            marginTop: "18px",
+            color: isDark ? "#fde68a" : "#b45309",
+            fontWeight: "700",
+          }}
+        >
           Upload and manage PDFs for this exact exam section.
         </p>
       )}
@@ -939,7 +1017,14 @@ function ResourceSection({
             color: isDark ? "#e5e7eb" : "#334155",
           }}
         >
-          <h3 style={{ color: "#fde68a", marginBottom: "10px" }}>{emptyTitle}</h3>
+          <h3
+            style={{
+              color: isDark ? "#fde68a" : "#b45309",
+              marginBottom: "10px",
+            }}
+          >
+            {emptyTitle}
+          </h3>
           <p style={{ opacity: 0.8, maxWidth: "620px", margin: "0 auto", lineHeight: "1.7" }}>
             {emptyText}
           </p>
@@ -1041,7 +1126,12 @@ function LastMinuteContentCard({
             }}
           />
         ) : (
-          <div style={{ textAlign: "center", color: "#fde68a" }}>
+          <div
+            style={{
+              textAlign: "center",
+              color: isDark ? "#fde68a" : "#b45309",
+            }}
+          >
             <FileText size={38} />
             <div style={{ marginTop: "10px", fontWeight: "700" }}>Exam PDF</div>
           </div>
@@ -1075,7 +1165,9 @@ function LastMinuteContentCard({
             background: item.note_type === "teacher"
               ? "rgba(250,204,21,0.14)"
               : "rgba(45,212,191,0.14)",
-            color: item.note_type === "teacher" ? "#fde68a" : "#99f6e4",
+            color: item.note_type === "teacher"
+              ? isDark ? "#fde68a" : "#b45309"
+              : isDark ? "#99f6e4" : "#0f766e",
             fontSize: "12px",
             fontWeight: "800",
             letterSpacing: "0.06em",

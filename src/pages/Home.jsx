@@ -364,15 +364,6 @@ education platform for engineering students
                   Start Learning
                 </button>
               </div>
-
-              <div className="home-hero-stats">
-                {heroHighlights.map((item) => (
-                  <div key={item.title} className="home-hero-stat">
-                    <strong>{item.title}</strong>
-                    <span>{item.description}</span>
-                  </div>
-                ))}
-              </div>
             </div>
 
             <div className="glass home-hero-visual">
@@ -453,6 +444,12 @@ education platform for engineering students
             <TextTicker />
           </Suspense>
         </div>
+
+        <div style={dividerStyle} />
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <SemesterSection />
+        </Suspense>
 
         <div style={dividerStyle} />
 
@@ -733,8 +730,8 @@ education platform for engineering students
                           >
                             {secondaryArticle.publishedAt
                               ? new Date(
-                                  secondaryArticle.publishedAt,
-                                ).toLocaleDateString("en-IN")
+                                secondaryArticle.publishedAt,
+                              ).toLocaleDateString("en-IN")
                               : "Latest"}
                           </span>
                           <span style={{ color: isDark ? "#dbeafe" : "#1f3b73" }}>
@@ -817,10 +814,6 @@ education platform for engineering students
             <div style={dividerStyle} />
           </>
         )}
-
-        <Suspense fallback={<div>Loading...</div>}>
-          <SemesterSection />
-        </Suspense>
 
         <Suspense fallback={<div>Loading...</div>}>
           <SmartFooterSection />
