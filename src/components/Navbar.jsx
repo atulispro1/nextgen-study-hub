@@ -472,12 +472,12 @@ export default function Navbar() {
                 className="navbar-avatar"
                 onClick={() => setDropdownOpen((prev) => !prev)}
               >
-                {user?.email?.charAt(0)?.toUpperCase() || "A"}
+                {(user?.email || user?.user_metadata?.email)?.charAt(0)?.toUpperCase() || "A"}
               </div>
 
               {dropdownOpen && (
                 <div className="dropdown-panel">
-                  <strong>{user?.email}</strong>
+                  <strong>{user?.email || user?.user_metadata?.email}</strong>
                   <p style={{ fontSize: "12px", opacity: 0.7 }}>
                     Role: {role || "pending"}
                   </p>
@@ -818,29 +818,35 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* ADMIN LOGIN AT THE VERY BOTTOM OF HAMBURGER MENU */}
+          {/* ADMIN / ACCOUNT SECTION AT BOTTOM OF DRAWER */}
           <div className="mobile-admin-wrap">
-            {!isLoggedIn ? (
-              <button
-                className="nav-cta mobile-admin-cta"
-                onClick={() => {
-                  navigate("/admin");
-                  closeMobile();
-                }}
-              >
-                🔐 Admin Login
-              </button>
-            ) : (
+            {isLoggedIn ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "8px", width: "100%" }}>
-                <button
-                  className="nav-cta mobile-admin-cta"
-                  onClick={() => {
-                    navigate("/admin");
-                    closeMobile();
-                  }}
-                >
-                  🔐 Admin Panel
-                </button>
+                {/* Email badge */}
+                <div style={{
+                  fontSize: "12px",
+                  opacity: 0.7,
+                  textAlign: "center",
+                  padding: "4px 8px",
+                  wordBreak: "break-all",
+                }}>
+                  {user?.email || user?.user_metadata?.email || "Logged in"}
+                </div>
+
+                {/* Admin Panel shortcut — only for admins */}
+                {adminEnabled && (
+                  <button
+                    className="nav-cta mobile-admin-cta"
+                    onClick={() => {
+                      navigate("/admin");
+                      closeMobile();
+                    }}
+                  >
+                    🔐 Admin Panel
+                  </button>
+                )}
+
+                {/* Logout — always shown when logged in */}
                 <button
                   className="btn-primary"
                   style={{ background: "#ef4444", color: "white", width: "100%", padding: "10px", borderRadius: "var(--radius-pill)" }}
@@ -850,9 +856,20 @@ export default function Navbar() {
                     navigate("/", { replace: true });
                   }}
                 >
-                  Logout ({user?.email?.split("@")[0]})
+                  Logout
                 </button>
               </div>
+            ) : (
+              /* Not logged in — show only Admin Login */
+              <button
+                className="nav-cta mobile-admin-cta"
+                onClick={() => {
+                  navigate("/admin");
+                  closeMobile();
+                }}
+              >
+                🔐 Admin Login
+              </button>
             )}
           </div>
           </div>

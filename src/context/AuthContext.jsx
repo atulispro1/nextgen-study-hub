@@ -50,9 +50,13 @@ export function AuthProvider({ children }) {
 
     if (error) {
       console.error("Profile fetch failed:", error);
+      // If we can derive the role from the email (e.g. owner) treat it as
+      // ready even if the DB fetch failed — avoids blocking the owner on
+      // mobile when the network hiccups on first load.
+      const canTrust = Boolean(fallbackRole);
       setRole(fallbackRole);
-      setProfileReady(false);
-      setProfileMissing(true);
+      setProfileReady(canTrust);
+      setProfileMissing(!canTrust);
       return fallbackRole;
     }
 
@@ -63,20 +67,26 @@ export function AuthProvider({ children }) {
       return profile.role;
     }
 
+    // No profile row yet — try to bootstrap it.
     const bootstrapped = await ensureProfileRole(currentUser, fallbackRole);
 
-    if (bootstrapped && fallbackRole) {
+    if (fallbackRole) {
+      // We know the role from the email allow-list / owner email; treat it
+      // as ready regardless of whether the upsert succeeded.  The banner
+      // should never block the owner on mobile.
       setRole(fallbackRole);
       setProfileReady(true);
       setProfileMissing(false);
       return fallbackRole;
     }
 
-    setRole(fallbackRole);
-    setProfileReady(Boolean(fallbackRole));
+    // Unknown user — genuinely incomplete profile.
+    setRole(null);
+    setProfileReady(false);
     setProfileMissing(true);
-    return fallbackRole;
+    return null;
   }, [ensureProfileRole]);
+
 
   const resolveRoleInBackground = useCallback(
     (currentUser) => {

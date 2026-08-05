@@ -12,7 +12,13 @@ export function getOwnerEmail() {
 }
 
 export function getTrustedRole(user) {
-  const email = user?.email?.trim().toLowerCase();
+  // Supabase mobile sessions sometimes omit the top-level `email` field and
+  // only populate it inside `user_metadata`. Check both to be safe.
+  const email = (
+    user?.email ||
+    user?.user_metadata?.email ||
+    ""
+  ).trim().toLowerCase();
 
   if (!email) {
     return null;
@@ -31,6 +37,7 @@ export function getTrustedRole(user) {
 
   return null;
 }
+
 
 export function isAdminRole(role) {
   return role === "owner" || role === "faculty";
