@@ -71,8 +71,8 @@ export default function Features() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
-          gap: "25px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
+          gap: "clamp(16px, 4vw, 25px)",
         }}
       >
         {features.map((feature) => (
@@ -80,7 +80,7 @@ export default function Features() {
             key={feature.title}
             className="glass"
             style={{
-              padding: "30px",
+              padding: "clamp(18px, 4vw, 30px)",
               textAlign: "center",
               cursor: "pointer",
             }}

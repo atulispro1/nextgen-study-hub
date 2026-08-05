@@ -818,18 +818,43 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* ADMIN */}
-          {!isLoggedIn && (
-            <button
-              className="btn-primary"
-              onClick={() => {
-                navigate("/admin");
-                closeMobile();
-              }}
-            >
-              Admin Login
-            </button>
-          )}
+          {/* ADMIN LOGIN AT THE VERY BOTTOM OF HAMBURGER MENU */}
+          <div className="mobile-admin-wrap">
+            {!isLoggedIn ? (
+              <button
+                className="nav-cta mobile-admin-cta"
+                onClick={() => {
+                  navigate("/admin");
+                  closeMobile();
+                }}
+              >
+                🔐 Admin Login
+              </button>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px", width: "100%" }}>
+                <button
+                  className="nav-cta mobile-admin-cta"
+                  onClick={() => {
+                    navigate("/admin");
+                    closeMobile();
+                  }}
+                >
+                  🔐 Admin Panel
+                </button>
+                <button
+                  className="btn-primary"
+                  style={{ background: "#ef4444", color: "white", width: "100%", padding: "10px", borderRadius: "var(--radius-pill)" }}
+                  onClick={async () => {
+                    await logout();
+                    closeMobile();
+                    navigate("/", { replace: true });
+                  }}
+                >
+                  Logout ({user?.email?.split("@")[0]})
+                </button>
+              </div>
+            )}
+          </div>
           </div>
         </>
       )}

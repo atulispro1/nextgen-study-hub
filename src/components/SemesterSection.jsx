@@ -59,15 +59,15 @@ export default function SemesterSection() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "30px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
+          gap: "clamp(16px, 4vw, 30px)",
         }}
       >
         <div
           onClick={() => navigate("/last-minute-resources")}
           className="glass"
           style={{
-            padding: "40px",
+            padding: "clamp(18px, 4vw, 36px)",
             cursor: "pointer",
             position: "relative",
             border: "1px solid rgba(251,191,36,0.45)",
@@ -117,8 +117,9 @@ export default function SemesterSection() {
 
           <h3
             style={{
-              fontSize: "24px",
+              fontSize: "clamp(18px, 4vw, 24px)",
               marginBottom: "12px",
+              paddingRight: "75px",
               color: isLightTheme ? "#92400e" : "#fef3c7",
               textShadow: isLightTheme
                 ? "none"
@@ -128,14 +129,14 @@ export default function SemesterSection() {
             Last Minute Exam Boost
           </h3>
 
-          <p style={{ opacity: 0.88, marginBottom: "20px", lineHeight: "1.7" }}>
+          <p style={{ opacity: 0.88, marginBottom: "20px", lineHeight: "1.7", fontSize: "14px" }}>
             Quick-revision notes, important questions, and exam-time material
             for students who need fast, high-impact preparation.
           </p>
 
           <div
             style={{
-              fontSize: "14px",
+              fontSize: "13px",
               fontWeight: "600",
               color: isLightTheme ? "#92400e" : "#fde68a",
             }}
@@ -156,7 +157,7 @@ export default function SemesterSection() {
             }
             className="glass"
             style={{
-              padding: "40px",
+              padding: "clamp(18px, 4vw, 36px)",
               cursor: "pointer",
               position: "relative",
               overflow: "hidden",
@@ -200,8 +201,9 @@ export default function SemesterSection() {
 
             <h3
               style={{
-                fontSize: "24px",
+                fontSize: "clamp(18px, 4vw, 24px)",
                 marginBottom: "12px",
+                paddingRight: "75px",
                 color: semesterCardTheme.title,
                 textShadow: isLightTheme
                   ? "none"
@@ -211,13 +213,13 @@ export default function SemesterSection() {
               Semester {sem.id}
             </h3>
 
-            <p style={{ opacity: 0.82, marginBottom: "20px", lineHeight: "1.7" }}>
+            <p style={{ opacity: 0.82, marginBottom: "20px", lineHeight: "1.7", fontSize: "14px" }}>
               {sem.desc}
             </p>
 
             <div
               style={{
-                fontSize: "14px",
+                fontSize: "13px",
                 fontWeight: "600",
                 color: semesterCardTheme.meta,
               }}

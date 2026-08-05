@@ -10,6 +10,7 @@ import { Suspense, lazy } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import ScrollUpButton from "./components/ScrollUpButton";
 import { PomodoroProvider } from "./context/PomodoroContext";
 import { PageSkeleton } from "./components/Skeleton";
 
@@ -166,6 +167,7 @@ function AppShell() {
       </main>
 
       <Footer />
+      <ScrollUpButton />
     </>
   );
 }

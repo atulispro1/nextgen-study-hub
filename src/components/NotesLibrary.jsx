@@ -520,8 +520,8 @@ semester wise subject notes
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
-            gap: "25px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(250px, 100%), 1fr))",
+            gap: "20px",
             marginTop: "20px",
           }}
         >

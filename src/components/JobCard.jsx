@@ -66,9 +66,9 @@ export default function JobCard({
               )}
             </div>
 
-            <div>
-              <h3 style={{ fontSize: "18px" }}>{job.title}</h3>
-              <p style={{ opacity: 0.7 }}>{job.company}</p>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <h3 style={{ fontSize: "17px", paddingRight: "65px", wordBreak: "break-word" }}>{job.title}</h3>
+              <p style={{ opacity: 0.7, fontSize: "14px" }}>{job.company}</p>
             </div>
           </div>
 

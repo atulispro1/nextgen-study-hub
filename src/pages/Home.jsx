@@ -849,8 +849,8 @@ education platform for engineering students
           className="glass home-surface"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: "44px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
+            gap: "clamp(20px, 4vw, 44px)",
             alignItems: "center",
           }}
         >
@@ -1013,8 +1013,8 @@ education platform for engineering students
           className="glass home-surface"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: "44px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
+            gap: "clamp(20px, 4vw, 44px)",
             alignItems: "center",
           }}
         >
@@ -1073,8 +1073,8 @@ education platform for engineering students
           className="glass home-surface"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: "44px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
+            gap: "clamp(20px, 4vw, 44px)",
             alignItems: "center",
           }}
         >

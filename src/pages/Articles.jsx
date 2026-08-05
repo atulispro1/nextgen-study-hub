@@ -499,8 +499,8 @@ export default function Articles() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "30px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
+            gap: "24px",
           }}
         >
           {filteredPosts.length === 0 && (

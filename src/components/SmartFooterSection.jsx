@@ -1,15 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
 export default function SmartFooterSection() {
-
   const navigate = useNavigate();
 
   return (
     <div
       className="glass home-smart-footer"
       style={{
-        marginTop: "100px",
-        padding: "50px 25px",
+        marginTop: "clamp(40px, 6vw, 100px)",
+        padding: "clamp(24px, 4vw, 50px) clamp(16px, 3.5vw, 25px)",
         borderRadius: "20px",
         textAlign: "center"
       }}
@@ -17,7 +16,7 @@ export default function SmartFooterSection() {
 
       {/* HEADING */}
       <h2 style={{
-        fontSize: "clamp(1.8rem,4vw,2.4rem)",
+        fontSize: "clamp(1.5rem, 4vw, 2.4rem)",
         fontWeight: "800",
         marginBottom: "15px"
       }}>
@@ -30,7 +29,8 @@ export default function SmartFooterSection() {
         margin: "auto",
         lineHeight: "1.8",
         opacity: "0.85",
-        marginBottom: "40px"
+        marginBottom: "30px",
+        fontSize: "14.5px"
       }}>
         Discover high-quality educational resources including study tips,
         exam preparation strategies, programming tutorials, engineering notes,
@@ -42,8 +42,8 @@ export default function SmartFooterSection() {
       {/* GRID LINKS */}
       <div className="home-smart-footer-grid" style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px,1fr))",
-        gap: "20px"
+        gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))",
+        gap: "16px"
       }}>
 
         {/* ARTICLES */}
