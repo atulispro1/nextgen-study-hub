@@ -1,4 +1,4 @@
-# 🌐 NextGenHub
+# 🎓 NextGenHub
 
 🚀 Welcome to **NextGenHub** – your go-to platform for trending updates, educational content, digital insights, and real-time information.
 
