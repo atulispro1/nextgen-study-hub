@@ -2,18 +2,22 @@ import { useState, useEffect } from "react";
 import { Check, Trash2 } from "lucide-react";
 
 export default function AdvancedTodo() {
-  const [tasks, setTasks] = useState([]);
+  // Load saved tasks lazily so storage is read once in the initializer — never
+  // inside an effect — and corrupted data can never crash the page.
+  const [tasks, setTasks] = useState(() => {
+    try {
+      const saved = localStorage.getItem("nextgen_tasks");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [text, setText] = useState("");
   const [category, setCategory] = useState("Notes");
   const [priority, setPriority] = useState("Medium");
   const [dueDate, setDueDate] = useState("");
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("nextgen_tasks");
-    if (saved) setTasks(JSON.parse(saved));
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("nextgen_tasks", JSON.stringify(tasks));
@@ -95,10 +99,12 @@ export default function AdvancedTodo() {
           placeholder="Enter a new task..."
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") addTask();
+          }}
           style={{
             padding: "14px",
             borderRadius: "10px",
-            border: "1px solid rgba(255,255,255,0.1)",
           }}
         />
 
@@ -179,7 +185,7 @@ export default function AdvancedTodo() {
         <div
           style={{
             height: "10px",
-            background: "rgba(255,255,255,0.1)",
+            background: "var(--surface-2)",
             borderRadius: "20px",
             overflow: "hidden",
           }}
@@ -208,45 +214,68 @@ export default function AdvancedTodo() {
 
       {/* TASK LIST */}
 
+      {filteredTasks.length === 0 && (
+        <div
+          style={{
+            padding: "36px 20px",
+            textAlign: "center",
+            borderRadius: "14px",
+            border: "1px dashed var(--border)",
+            opacity: 0.8,
+          }}
+        >
+          <p style={{ fontSize: "30px", marginBottom: "8px" }}>📝</p>
+          <p style={{ fontWeight: "600" }}>
+            {tasks.length === 0
+              ? "No tasks yet — add your first task above!"
+              : "No tasks match your search / filter."}
+          </p>
+        </div>
+      )}
 
-        {filteredTasks.map((task) => (
-          <div 
-            key={task.id}
-            className="glass" style=
-            {{
-              padding: "16px 18px",
-              marginBottom: "12px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderLeft:
-                task.priority === "High"
-                  ? "4px solid #ef4444"
-                  : task.priority === "Medium"
-                    ? "4px solid #f59e0b"
-                    : "4px solid #22c55e",
-            }}
-            >
-            <div>
-              <h4
-                style={{
-                  textDecoration: task.completed ? "line-through" : "none",
-                  marginBottom: "4px",
-                }}
-              >
-                {task.text}
-              </h4>
-
-              <small style={{ opacity: 0.7 }}>
-                {task.category} • Due: {task.dueDate || "No date"}
-              </small>
-            </div>
-            <div
+      {filteredTasks.map((task) => (
+        <div
+          key={task.id}
+          className="glass"
+          style={{
+            padding: "16px 18px",
+            marginBottom: "12px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "12px",
+            flexWrap: "wrap",
+            borderLeft:
+              task.priority === "High"
+                ? "4px solid #ef4444"
+                : task.priority === "Medium"
+                  ? "4px solid #f59e0b"
+                  : "4px solid #22c55e",
+          }}
+        >
+          <div style={{ minWidth: 0, flex: "1 1 200px" }}>
+            <h4
               style={{
-                display: "flex",
-                gap: "8px",
+                textDecoration: task.completed ? "line-through" : "none",
+                marginBottom: "4px",
+                wordBreak: "break-word",
+                opacity: task.completed ? 0.6 : 1,
               }}
             >
+              {task.text}
+            </h4>
+
+            <small style={{ opacity: 0.7 }}>
+              {task.category} • Due: {task.dueDate || "No date"} •{" "}
+              {task.priority} priority
+            </small>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+            }}
+          >
               <button
                 onClick={() => toggleTask(task.id)}
                 style={{

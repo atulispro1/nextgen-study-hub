@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is Data Structure hard?", a: "No, with consistent practice it becomes logical and enjoyable." },
+      { q: "How long to master it?", a: "3–6 months with daily practice." },
+      { q: "Which language is best for DSA?", a: "C++, Java, or Python — choose one and stick to it." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

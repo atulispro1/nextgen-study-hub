@@ -75,9 +75,9 @@ export default function Features() {
           gap: "25px",
         }}
       >
-        {features.map((feature, index) => (
+        {features.map((feature) => (
           <div 
-            key={index}
+            key={feature.title}
             className="glass"
             style={{
               padding: "30px",

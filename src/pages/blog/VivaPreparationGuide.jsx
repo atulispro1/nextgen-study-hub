@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "What if I don’t know the answer?", a: "Politely say you are not sure but try to explain related concept." },
+      { q: "Is fluency in English necessary?", a: "No. Clarity matters more than accent." },
+      { q: "How to reduce viva fear?", a: "Practice speaking answers daily and do mock viva." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

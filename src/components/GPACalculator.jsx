@@ -6,6 +6,7 @@ export default function GPACalculator() {
     { credits: "", grade: "" },
   ]);
   const [gpa, setGpa] = useState(null);
+  const [error, setError] = useState("");
 
   const gradePoints = {
     O: 10,
@@ -19,12 +20,26 @@ export default function GPACalculator() {
   // ✅ Add Subject
   const addSubject = () => {
     setSubjects([...subjects, { credits: "", grade: "" }]);
+    setGpa(null);
+    setError("");
+  };
+
+  // ✅ Remove a subject row
+  const removeSubject = (index) => {
+    if (subjects.length === 1) {
+      setSubjects([{ credits: "", grade: "" }]);
+      setGpa(null);
+      return;
+    }
+    setSubjects(subjects.filter((_, i) => i !== index));
+    setGpa(null);
   };
 
   // ✅ Calculate GPA
   const calculateGPA = () => {
     let totalCredits = 0;
     let totalPoints = 0;
+    let filled = 0;
 
     subjects.forEach((sub) => {
       const credit = parseFloat(sub.credits);
@@ -33,11 +48,16 @@ export default function GPACalculator() {
       if (!isNaN(credit) && point !== undefined) {
         totalCredits += credit;
         totalPoints += credit * point;
+        filled++;
       }
     });
 
-    if (totalCredits === 0) return;
+    if (filled === 0) {
+      setError("Enter at least one credits value and select a grade.");
+      return;
+    }
 
+    setError("");
     setGpa((totalPoints / totalCredits).toFixed(2));
   };
 
@@ -45,6 +65,7 @@ export default function GPACalculator() {
   const resetCalculator = () => {
     setSubjects([{ credits: "", grade: "" }]);
     setGpa(null);
+    setError("");
   };
 
   return (
@@ -65,11 +86,8 @@ export default function GPACalculator() {
       {subjects.map((sub, index) => (
         <div
           key={index}
-          style={{
-            display: "flex",
-            gap: "15px",
-            marginBottom: "15px",
-          }}
+          className="tool-row"
+          style={{ marginBottom: "15px" }}
         >
           <input
             type="number"
@@ -97,6 +115,23 @@ export default function GPACalculator() {
               <option key={grade}>{grade}</option>
             ))}
           </select>
+
+          <button
+            onClick={() => removeSubject(index)}
+            aria-label="Remove subject"
+            style={{
+              border: "none",
+              background: "rgba(239,68,68,0.12)",
+              color: "#ef4444",
+              borderRadius: "8px",
+              padding: "0 12px",
+              cursor: "pointer",
+              fontWeight: "700",
+              fontSize: "15px",
+            }}
+          >
+            ✕
+          </button>
         </div>
       ))}
 
@@ -133,9 +168,25 @@ export default function GPACalculator() {
         </button>
       </div>
 
-      {gpa && (
-        <h3
+      {error && (
+        <p
+          className="fade-in"
+          style={{
+            marginTop: "18px",
+            textAlign: "center",
+            color: "#ef4444",
+            fontWeight: "600",
+            background: "rgba(239,68,68,0.10)",
+            padding: "10px 14px",
+            borderRadius: "10px",
+          }}
+        >
+          {error}
+        </p>
+      )}
 
+      {gpa !== null && (
+        <h3
           style={{
             marginTop: "30px",
             textAlign: "center",
@@ -144,6 +195,22 @@ export default function GPACalculator() {
           }}
         >
           Your GPA: {gpa}
+          <span
+            style={{
+              display: "block",
+              fontSize: "14px",
+              marginTop: "6px",
+              color: "var(--muted)",
+            }}
+          >
+            {parseFloat(gpa) >= 9
+              ? "🏆 Outstanding!"
+              : parseFloat(gpa) >= 7
+                ? "💪 Great performance!"
+                : parseFloat(gpa) >= 5
+                  ? "👍 Good — keep improving."
+                  : "📚 Keep working hard — you can improve."}
+          </span>
         </h3>
       )}
     </div>

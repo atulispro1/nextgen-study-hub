@@ -70,9 +70,9 @@ export default function PlatformActions() {
           gap: "25px",
         }}
       >
-        {actions.map((item, index) => (
+        {actions.map((item) => (
           <div 
-            key={index}
+            key={item.title}
             className="glass"
             style={{
               padding: "25px",

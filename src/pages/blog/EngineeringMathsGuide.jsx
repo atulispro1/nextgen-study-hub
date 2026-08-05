@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is engineering mathematics difficult?", a: "It may seem difficult initially, but regular practice makes it much easier." },
+      { q: "How many hours should I study mathematics?", a: "1–2 hours of focused daily practice is usually enough." },
+      { q: "Are previous year papers important?", a: "Yes, they help understand exam patterns and frequently asked questions." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

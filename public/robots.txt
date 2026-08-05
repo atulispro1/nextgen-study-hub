@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 
+# Keep crawlers off admin and utility paths
+Disallow: /admin
+Disallow: /404
+
 Sitemap: https://www.atulsharmas.in/sitemap.xml
-Host: https://www.atulsharmas.in

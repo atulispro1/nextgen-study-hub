@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,13 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is Python enough to get a job?", a: "Yes, but you must combine it with projects, DSA knowledge, and problem-solving practice." },
+      { q: "Should I learn C before Python?", a: "Not necessary. You can start with Python and later learn C for deeper understanding." },
+      { q: "How long does it take to learn a language?", a: "Basics: 1–2 months Intermediate: 3–6 months Mastery: Continuous learning" },
+      { q: "Can I learn two languages together?", a: "Not recommended for beginners. Master one first." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

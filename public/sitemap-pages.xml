@@ -59,7 +59,18 @@
     </url>
 
     <url>
-        <loc>https://www.atulsharmas.in/semester/3</loc>
+        <loc>https://www.atulsharmas.in/semester/3/branch</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+
+    <url>
+        <loc>https://www.atulsharmas.in/semester/3/branch/cs</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+
+    <url>
+        <loc>https://www.atulsharmas.in/semester/3/branch/me</loc>
+        <changefreq>monthly</changefreq>
     </url>
 
     <url>
@@ -103,6 +114,20 @@
     </url>
     <url>
         <loc>https://www.atulsharmas.in/courses-after-12th-arts</loc>
+    </url>
+
+    <url>
+        <loc>https://www.atulsharmas.in/last-minute-resources</loc>
+        <changefreq>weekly</changefreq>
+    </url>
+
+    <url>
+        <loc>https://www.atulsharmas.in/articles</loc>
+        <changefreq>daily</changefreq>
+    </url>
+
+    <url>
+        <loc>https://www.atulsharmas.in/contact-faculty</loc>
     </url>
 
 </urlset>

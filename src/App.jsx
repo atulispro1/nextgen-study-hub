@@ -1,15 +1,24 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { Suspense, lazy } from "react";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import { PomodoroProvider } from "./context/PomodoroContext";
+import { PageSkeleton } from "./components/Skeleton";
 
 /* ===== LAZY LOAD PAGES ===== */
 
 const Home = lazy(() => import("./pages/Home"));
 const SemesterPage = lazy(() => import("./pages/SemesterPage"));
+const BranchSelection = lazy(() => import("./pages/BranchSelection"));
+const SubjectSelection = lazy(() => import("./pages/SubjectSelection"));
 const ContactFaculty = lazy(() => import("./pages/ContactFaculty"));
 const AdminAuth = lazy(() => import("./pages/AdminAuth"));
 const StudentTools = lazy(() => import("./pages/StudentTools"));
@@ -23,7 +32,6 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Jobs = lazy(() => import("./pages/Jobs"));
 const NotesSEO = lazy(() => import("./pages/NotesSEO"));
 const LastMinuteResources = lazy(() => import("./pages/LastMinuteResources"));
-import Loader from "./components/Loader";
 
 /* ===== COURSE PAGES ===== */
 
@@ -44,22 +52,38 @@ const ArticlePost = lazy(() => import("./pages/ArticlePost"));
 
 /* ================================= */
 
-function App() {
-  return (
-    <PomodoroProvider>
-      <Router>
-        <ScrollToTop />
-        <Navbar />
+function AppShell() {
+  const location = useLocation();
 
-        {/* MAIN LANDMARK FOR ACCESSIBILITY */}
-        <main style={{ paddingTop: "108px" }}>
-          {/* SUSPENSE LOADER */}
-          <Suspense fallback={<Loader />}>
+  return (
+    <>
+      <ScrollToTop />
+      <Navbar />
+
+      {/* MAIN LANDMARK FOR ACCESSIBILITY */}
+      <main className="app-main">
+        {/* SUSPENSE SKELETON while the lazy chunk loads. The keyed wrapper
+            replays the .page-enter transition on every route change. */}
+        <Suspense fallback={<PageSkeleton />}>
+          <div key={location.pathname} className="page-enter">
             <Routes>
               {/* Home */}
               <Route path="/" element={<Home />} />
 
               {/* Semester */}
+              <Route
+                path="/semester/:id/branch/:branchSlug/:category/:subject"
+                element={<SemesterPage />}
+              />
+              <Route
+                path="/semester/:id/branch/:branchSlug/:category"
+                element={<SubjectSelection />}
+              />
+              <Route
+                path="/semester/:id/branch/:branchSlug"
+                element={<SemesterPage />}
+              />
+              <Route path="/semester/:id/branch" element={<BranchSelection />} />
               <Route path="/semester/:id" element={<SemesterPage />} />
               <Route
                 path="/last-minute-resources"
@@ -127,17 +151,30 @@ function App() {
                 element={<CoursesAfter12thArts />}
               />
 
-              {/* SEO pages */}
+              {/* SEO pages — catch-all for single-segment slugs. NotesSEO
+                  itself redirects unknown slugs to /404. In React Router v6
+                  the static routes above always outrank this dynamic route,
+                  so real pages (/404, /blog, ...) can never be shadowed. */}
               <Route path="/:slug" element={<NotesSEO />} />
 
-              {/* 404 */}
+              {/* 404 — final fallback. Keep last so nothing can shadow it. */}
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </Suspense>
-        </main>
+          </div>
+        </Suspense>
+      </main>
 
-        <Footer />
+      <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <PomodoroProvider>
+      <Router>
+        <AppShell />
       </Router>
     </PomodoroProvider>
   );

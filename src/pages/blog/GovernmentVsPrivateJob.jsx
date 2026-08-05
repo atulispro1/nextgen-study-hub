@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is government job more respected?", a: "Traditionally yes, but private sector also earns respect today." },
+      { q: "Which job has higher salary potential?", a: "Private sector has higher growth potential." },
+      { q: "Can I switch from private to government?", a: "Yes, by clearing competitive exams." },
+    ]}>
 
       {/* INTRODUCTION */}
       <div className="blog-section">

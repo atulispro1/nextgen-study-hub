@@ -2,6 +2,10 @@ import { Helmet } from "react-helmet-async";
 
 const SITE_URL = "https://www.atulsharmas.in";
 const SITE_NAME = "NextGen Study Hub";
+// NOTE: The Organization (#organization) and WebSite (#website) entities are
+// emitted statically in index.html with these exact @id values; the page
+// schema below references them by @id to avoid duplicate entity nodes. If the
+// base HTML ever stops being served (e.g. SSR removal), update both sides.
 const DEFAULT_IMAGE = `${SITE_URL}/preview.png`;
 
 function cleanSnippet(value) {
@@ -25,6 +29,7 @@ export default function SEO({
   breadcrumbs = [{ name: "Home", url: SITE_URL }],
   schemaType = "WebPage",
   noindex = false,
+  extraSchema = [],
 }) {
   const normalizedUrl = url || SITE_URL;
   const cleanTitle = cleanSnippet(title);
@@ -42,26 +47,28 @@ export default function SEO({
     url: `${SITE_URL}/about`,
   };
 
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: SITE_NAME,
-    url: SITE_URL,
-    logo: `${SITE_URL}/favicon.png`,
-    founder: personSchema,
-    sameAs: [SITE_URL],
-  };
-
+  // The Organization / EducationalOrganization entity is emitted once by
+  // index.html with @id "#organization". This page schema references it by
+  // id, so Google never sees duplicate Organization nodes.
+  // SearchAction targets the in-page GlobalSearch experience. React is a SPA,
+  // so the crawler cannot execute the live dropdown — point the structured
+  // search at the notes library search filter, which is the closest static
+  // landing for a search query.
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
     url: SITE_URL,
     description: cleanDescription,
-    publisher: organizationSchema,
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    inLanguage: "en-IN",
     potentialAction: {
       "@type": "SearchAction",
-      target: `${SITE_URL}/notes-library?search={search_term_string}`,
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/notes-library?search={search_term_string}`,
+      },
       "query-input": "required name=search_term_string",
     },
   };
@@ -73,16 +80,18 @@ export default function SEO({
     name: normalizedTitle,
     description: cleanDescription,
     url: normalizedUrl,
-    image,
+    image: {
+      "@type": "ImageObject",
+      url: image,
+      width: 1200,
+      height: 630,
+    },
     author: personSchema,
-    publisher: organizationSchema,
+    publisher: { "@id": `${SITE_URL}/#organization` },
     dateModified: modifiedTime,
     ...(publishedTime ? { datePublished: publishedTime } : {}),
-    isPartOf: {
-      "@type": "WebSite",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    inLanguage: "en-IN",
   };
 
   const breadcrumbSchema = {
@@ -95,6 +104,10 @@ export default function SEO({
       item: item.url,
     })),
   };
+
+  // Extra schema is merged into one JSON-LD block; the block is deduplicated
+  // so @context never repeats when extraSchema already includes it.
+  const mergedBlocks = [websiteSchema, pageSchema, breadcrumbSchema, ...extraSchema];
 
   return (
     <Helmet>
@@ -129,6 +142,9 @@ export default function SEO({
       <meta property="og:description" content={cleanDescription} />
       <meta property="og:url" content={normalizedUrl} />
       <meta property="og:image" content={image} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={cleanTitle} />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="en_IN" />
       {publishedTime && (
@@ -143,15 +159,11 @@ export default function SEO({
       <meta name="twitter:description" content={cleanDescription} />
       <meta name="twitter:image" content={image} />
 
-      <script type="application/ld+json">
-        {JSON.stringify(websiteSchema)}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify(pageSchema)}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify(breadcrumbSchema)}
-      </script>
+      {mergedBlocks.map((schema, i) => (
+        <script key={`schema-${i}`} type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      ))}
 
     </Helmet>
   );

@@ -7,16 +7,18 @@ export default function SearchFilterBar({
   setSortOption,
 }) {
   return (
-    <div className="fade-in"
-
+    <div
+      className="glass no-lift fade-in"
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "15px",
+        gap: "14px",
         marginBottom: "30px",
         alignItems: "center",
+        padding: "18px 20px",
+        borderRadius: "18px",
       }}
-      >
+    >
     
       {/* Search */}
       <input
@@ -25,9 +27,7 @@ export default function SearchFilterBar({
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         style={{
-          padding: "10px 15px",
-          borderRadius: "8px",
-          border: "1px solid rgba(0,0,0,0.1)",
+          padding: "12px 14px",
           flex: "1",
           minWidth: "200px",
         }}
@@ -38,8 +38,7 @@ export default function SearchFilterBar({
         value={categoryFilter}
         onChange={(e) => setCategoryFilter(e.target.value)}
         style={{
-          padding: "10px",
-          borderRadius: "8px",
+          padding: "12px 14px",
         }}
       >
         <option value="All">All Categories</option>
@@ -53,8 +52,7 @@ export default function SearchFilterBar({
         value={sortOption}
         onChange={(e) => setSortOption(e.target.value)}
         style={{
-          padding: "10px",
-          borderRadius: "8px",
+          padding: "12px 14px",
         }}
       >
         <option value="newest">Newest</option>

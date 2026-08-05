@@ -8,13 +8,11 @@ export default function BlogLayout({
   readTime,
   image,
   children,
-  related = [],
+  faq = [],
 }) {
   const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
   const { slug } = useParams();
-
-  const currentBlog = allBlogs.find((blog) => blog.slug === slug);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -155,131 +153,25 @@ export default function BlogLayout({
           })}
         </script>
 
-        {/* FAQ Schema */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
+        {/* FAQ Schema — only when the post actually defines FAQ questions
+            (faq prop). Each entry must match the visible FAQ section on the
+            page, per Google's structured-data guidelines. */}
+        {faq.length > 0 && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: faq.map((item) => ({
                 "@type": "Question",
-                name: "How can I score 8+ CGPA in diploma engineering?",
+                name: item.q,
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Students can score above 8 CGPA by studying consistently, focusing on core subjects, solving previous year question papers, revising weekly and improving answer presentation in exams.",
+                  text: item.a,
                 },
-              },
-
-              {
-                "@type": "Question",
-                name: "How many hours should a student study daily?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Most students can achieve strong academic results by studying 2 to 4 focused hours daily using techniques like active recall, spaced repetition and structured revision.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "What are the best study techniques for engineering students?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Effective study techniques include active recall, solving previous year papers, making short revision notes, using diagrams for theory subjects and practicing numerical problems regularly.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "How can students prepare for semester exams quickly?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Students can prepare for semester exams by prioritizing high weightage topics, solving previous year question papers, revising formulas and focusing on important concepts instead of memorizing everything.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "What are the best programming languages for beginners?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Popular beginner programming languages include C, C++, Python and JavaScript. These languages help students understand programming logic and build strong coding fundamentals.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "How can diploma students get internships?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Diploma students can get internships by building small projects, learning programming skills, improving communication skills, creating a strong resume and applying on platforms like LinkedIn and job portals.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "What are the best productivity techniques for students?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Students can improve productivity by using the Pomodoro technique, creating a daily study schedule, avoiding distractions, tracking progress and taking short breaks during study sessions.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "How can students avoid procrastination while studying?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Students can avoid procrastination by setting small study goals, removing distractions, studying in short focused sessions and creating a consistent study routine.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "What are the best career options after diploma in computer science?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "After diploma in computer science students can pursue careers in software development, web development, data analysis, IT support, cybersecurity or continue higher studies like BTech or BCA.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "How can students improve their programming skills?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Students can improve programming skills by practicing coding daily, solving problems on coding platforms, building projects and learning data structures and algorithms.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "What are the best websites for coding practice?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Popular coding practice platforms include LeetCode, HackerRank, CodeChef, GeeksforGeeks and CodeStudio. These platforms help students improve problem solving skills.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "How can students improve focus while studying?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Students can improve focus by studying in a quiet environment, using the Pomodoro technique, keeping their phone away and studying in short concentrated sessions.",
-                },
-              },
-
-              {
-                "@type": "Question",
-                name: "What is the best study routine for students?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "A balanced study routine includes daily revision, solving practice questions, learning new topics and maintaining consistent study hours every day.",
-                },
-              },
-            ],
-          })}
-        </script>
+              })),
+            })}
+          </script>
+        )}
       </Helmet>
 
       <div className="section">
@@ -411,9 +303,9 @@ export default function BlogLayout({
             </p>
           </div>
           <div className="grid">
-            {seoPages.map((page, index) => (
+            {seoPages.map((page) => (
               <div
-                key={index}
+                key={page.slug}
                 className="glass"
                 style={{ padding: "25px", textAlign: "center" }}
               >

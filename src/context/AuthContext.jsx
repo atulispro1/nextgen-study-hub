@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useCallback } from "react";
 import { supabase } from "../supabase";
 import { getOwnerEmail, getTrustedRole } from "../utils/security";
 
@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
   const [profileMissing, setProfileMissing] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const ensureProfileRole = async (currentUser, fallbackRole) => {
+  const ensureProfileRole = useCallback(async (currentUser, fallbackRole) => {
     if (!currentUser || !fallbackRole) {
       return false;
     }
@@ -31,9 +31,9 @@ export function AuthProvider({ children }) {
     }
 
     return true;
-  };
+  }, []);
 
-  const resolveRole = async (currentUser) => {
+  const resolveRole = useCallback(async (currentUser) => {
     if (!currentUser) {
       setRole(null);
       setProfileReady(false);
@@ -76,13 +76,16 @@ export function AuthProvider({ children }) {
     setProfileReady(Boolean(fallbackRole));
     setProfileMissing(true);
     return fallbackRole;
-  };
+  }, [ensureProfileRole]);
 
-  const resolveRoleInBackground = (currentUser) => {
-    resolveRole(currentUser).catch((error) => {
-      console.error("Role resolution failed:", error);
-    });
-  };
+  const resolveRoleInBackground = useCallback(
+    (currentUser) => {
+      resolveRole(currentUser).catch((error) => {
+        console.error("Role resolution failed:", error);
+      });
+    },
+    [resolveRole],
+  );
 
   useEffect(() => {
     const getSession = async () => {
@@ -106,7 +109,7 @@ export function AuthProvider({ children }) {
     );
 
     return () => listener.subscription.unsubscribe();
-  }, []);
+  }, [resolveRoleInBackground]);
 
   const clearLocalAuthState = () => {
     setUser(null);
@@ -158,12 +161,27 @@ export function AuthProvider({ children }) {
     const ownerSession = currentSession.session;
 
     // Create new faculty account
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
 
     if (error) return error;
+
+    // Give the new account its faculty role immediately instead of relying
+    // only on the background bootstrap (which needs app_metadata.role or the
+    // VITE_FACULTY_EMAILS allow-list to produce a role).
+    const newUserId = data?.user?.id;
+
+    if (newUserId) {
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .upsert({ id: newUserId, email, role: "faculty" });
+
+      if (profileError) {
+        console.error("Faculty profile upsert failed:", profileError);
+      }
+    }
 
     // Restore owner session immediately
     if (ownerSession) {
@@ -174,8 +192,10 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    clearLocalAuthState();
-
+    // Sign out FIRST (invalidates the session), then purge local state — if
+    // we cleared storage before signOut, a failing signOut could leave the
+    // UI and storage out of sync. The timeout keeps logout from hanging when
+    // the network is slow or unavailable.
     const signOutPromise = supabase.auth.signOut({ scope: "local" });
     const timeoutPromise = new Promise((resolve) =>
       setTimeout(() => resolve({ error: null }), 1500),
@@ -183,11 +203,14 @@ export function AuthProvider({ children }) {
     const result = await Promise.race([signOutPromise, timeoutPromise]);
     const error = result?.error || null;
 
+    // Always purge local auth state, even if signOut itself failed, so the
+    // user is never stuck "logged in" with broken storage.
+    clearLocalAuthState();
+
     if (error) {
       console.error("Logout failed:", error);
     }
 
-    clearLocalAuthState();
     return error;
   };
 
@@ -210,4 +233,5 @@ export function AuthProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

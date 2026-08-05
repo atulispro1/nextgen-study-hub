@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
+import { isBranchSemester } from "../data/semesterBranches";
 
 export default function SemesterSection() {
   const navigate = useNavigate();
@@ -18,17 +19,17 @@ export default function SemesterSection() {
 
   const semesterCardTheme = {
     border: isLightTheme
-      ? "1px solid rgba(31,59,115,0.16)"
-      : "1px solid rgba(45,212,191,0.34)",
+      ? "1px solid rgba(99,102,241,0.18)"
+      : "1px solid rgba(129,140,248,0.34)",
     background: isLightTheme
-      ? "linear-gradient(145deg, rgba(255,250,244,0.96), rgba(236,253,245,0.78), rgba(239,246,255,0.72))"
-      : "linear-gradient(145deg, rgba(45,212,191,0.15), rgba(14,165,233,0.14), rgba(59,130,246,0.10))",
+      ? "linear-gradient(145deg, rgba(255,255,255,0.96), rgba(245,243,255,0.78), rgba(239,246,255,0.72))"
+      : "linear-gradient(145deg, rgba(139,92,246,0.15), rgba(99,102,241,0.14), rgba(59,130,246,0.10))",
     boxShadow: isLightTheme
       ? "0 14px 32px rgba(15,23,42,0.08)"
-      : "0 18px 44px rgba(14,165,233,0.18), 0 0 24px rgba(45,212,191,0.12)",
-    title: isLightTheme ? "#18344a" : "#ccfbf1",
-    meta: isLightTheme ? "#1f3b73" : "#99f6e4",
-    accent: isLightTheme ? "#0f766e" : "#67e8f9",
+      : "0 18px 44px rgba(99,102,241,0.20), 0 0 24px rgba(139,92,246,0.12)",
+    title: isLightTheme ? "#0f172a" : "#e0e7ff",
+    meta: isLightTheme ? "#4f46e5" : "#c4b5fd",
+    accent: isLightTheme ? "#6d28d9" : "#a5b4fc",
   };
 
   return (
@@ -39,8 +40,8 @@ export default function SemesterSection() {
             fontSize: "36px",
             marginBottom: "15px",
             background: isLightTheme
-              ? "linear-gradient(90deg, #1f3b73, #0f766e, #2c7a7b)"
-              : "linear-gradient(90deg, #d5f5ff, #8be9ff, #99f6e4)",
+              ? "linear-gradient(90deg, #4f46e5, #7c3aed, #8b5cf6)"
+              : "linear-gradient(90deg, #a5b4fc, #c4b5fd, #ddd6fe)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             textShadow: isLightTheme
@@ -146,7 +147,13 @@ export default function SemesterSection() {
         {semesters.map((sem) => (
           <div
             key={sem.id}
-            onClick={() => navigate(`/semester/${sem.id}`)}
+            onClick={() =>
+              navigate(
+                isBranchSemester(sem.id)
+                  ? `/semester/${sem.id}/branch`
+                  : `/semester/${sem.id}`,
+              )
+            }
             className="glass"
             style={{
               padding: "40px",
@@ -166,7 +173,7 @@ export default function SemesterSection() {
                 borderRadius: "999px",
                 background:
                   isLightTheme
-                    ? "radial-gradient(circle, rgba(14,116,144,0.08), transparent 72%)"
+                    ? "radial-gradient(circle, rgba(99,102,241,0.10), transparent 72%)"
                     : "radial-gradient(circle, rgba(255,255,255,0.22), transparent 72%)",
                 filter: "blur(3px)",
               }}
@@ -177,14 +184,14 @@ export default function SemesterSection() {
                 position: "absolute",
                 top: "16px",
                 right: "16px",
-                background: "rgba(103,232,249,0.16)",
+                background: "rgba(99,102,241,0.14)",
                 color: semesterCardTheme.accent,
                 padding: "6px 12px",
                 fontSize: "11px",
                 fontWeight: "800",
                 letterSpacing: "0.08em",
                 borderRadius: "999px",
-                boxShadow: "0 0 16px rgba(103,232,249,0.18)",
+                boxShadow: "0 0 16px rgba(99,102,241,0.18)",
                 textTransform: "uppercase",
               }}
             >
@@ -198,7 +205,7 @@ export default function SemesterSection() {
                 color: semesterCardTheme.title,
                 textShadow: isLightTheme
                   ? "none"
-                  : "0 0 18px rgba(45,212,191,0.18)",
+                  : "0 0 18px rgba(99,102,241,0.20)",
               }}
             >
               Semester {sem.id}

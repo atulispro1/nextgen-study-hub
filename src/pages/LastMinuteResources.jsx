@@ -1,5 +1,5 @@
-import { Helmet } from "react-helmet-async";
 import { useContext, useEffect, useMemo, useState } from "react";
+import SEO from "../components/SEO";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Check, Download, FileText, Sparkles } from "lucide-react";
 import Swal from "sweetalert2";
@@ -11,11 +11,20 @@ import { supabase } from "../supabase";
 import { isAdminRole, openSafeExternalUrl } from "../utils/security";
 import { confirmDelete } from "../utils/deleteConfirm";
 import { getProgress, toggleUnitProgress } from "../utils/progressUtils";
+import {
+  BRANCHES,
+  getBranchBySlug,
+  isBranchSemester,
+  getBranchSubjectNames,
+  getAllBranchSubjectNames,
+  DEFAULT_SUBJECTS_BY_SEMESTER,
+} from "../data/semesterBranches";
 
 const categoryCards = [
   {
     id: "Important MCQs",
     title: "Important MCQs",
+    icon: "🧠",
     description:
       "Rapid-fire objective questions for quick practice before the exam.",
     tag: "Fast Practice",
@@ -29,6 +38,7 @@ const categoryCards = [
   {
     id: "Quick Revision Notes",
     title: "Quick Revision Notes",
+    icon: "⚡",
     description:
       "Short, score-focused revision PDFs to revise faster on exam days.",
     tag: "Quick Revision",
@@ -42,6 +52,7 @@ const categoryCards = [
   {
     id: "Most Important Questions",
     title: "Most Important Questions",
+    icon: "🎯",
     description:
       "High-priority long questions and repeated exam patterns to focus on.",
     tag: "Exam Priority",
@@ -55,6 +66,7 @@ const categoryCards = [
   {
     id: "Question Banks",
     title: "Question Banks",
+    icon: "🗂️",
     description:
       "Collected question bank PDFs for deeper practice and broader exam coverage.",
     tag: "Practice Vault",
@@ -68,6 +80,7 @@ const categoryCards = [
   {
     id: "More Coming Soon",
     title: "More Coming Soon",
+    icon: "🚧",
     description:
       "One-night prep kits, repeated topics, mini cheat sheets, and more are on the way.",
     tag: "Soon",
@@ -124,31 +137,20 @@ const lightCategoryColors = {
   },
 };
 
+const semesterCards = [
+  { id: 1, icon: "🌱", desc: "Programming Fundamentals & Basics" },
+  { id: 2, icon: "🧩", desc: "Core Computer Science Concepts" },
+  { id: 3, icon: "🔀", desc: "Branch-wise subjects (pick your branch)" },
+  { id: 4, icon: "🌐", desc: "Operating Systems & Networks" },
+  { id: 5, icon: "🚀", desc: "Advanced Subjects & Projects" },
+  { id: 6, icon: "🎓", desc: "Final Year Specialization" },
+];
+
 const defaultSubjectsBySemester = {
-  1: [
-    "Applied Chemistry (DCH-101)",
-    "Engineering Mechanics (DME-201)",
-    "Basic Electrical Engineering (DEE-201)",
-    "Applied Mathematics (DMA-201)",
-    "Essential Language & Communication (DGS-201)",
-    "Environmental Science (DCE-201)",
-  ],
-  2: [
-    "Programming in C",
-    "Digital Electronics",
-    "Applied Mathematics II",
-    "Workshop Practice",
-    "Engineering Drawing",
-    "Computer Fundamentals",
-  ],
-  3: [
-    "Data Structures",
-    "Database Management System",
-    "Object Oriented Programming",
-    "Computer Organization",
-    "Discrete Mathematics",
-    "Web Technology Basics",
-  ],
+  1: DEFAULT_SUBJECTS_BY_SEMESTER[1],
+  2: DEFAULT_SUBJECTS_BY_SEMESTER[2],
+  // Semester 3 uses the branch-flow subjects (single source of truth).
+  3: getAllBranchSubjectNames("3"),
   4: [
     "Operating System",
     "Computer Networks",
@@ -175,6 +177,13 @@ const defaultSubjectsBySemester = {
   ],
 };
 
+// Shared data fetch: returns the resolved rows (or an empty array on error),
+// so the query stays in one place for both the mount effect and refresh calls.
+const fetchAllMaterials = async () => {
+  const { data, error } = await supabase.from("materials").select("*");
+  return { data: data || [], error };
+};
+
 export default function LastMinuteResources() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -187,29 +196,72 @@ export default function LastMinuteResources() {
     : null;
 
   const [selectedSemester, setSelectedSemester] = useState(initialSemester);
+  const [selectedBranch, setSelectedBranch] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [materials, setMaterials] = useState([]);
   const isDark = theme === "dark";
 
   const isAdmin = profileReady && isAdminRole(role);
-  const resourceKey = selectedSemester && selectedCategory && selectedSubject
-    ? `last-minute-${selectedSemester}-${selectedCategory}-${selectedSubject}`
-    : "last-minute";
+
+  // Semester 3 is branch-based: students pick a branch before categories.
+  const isSem3BranchFlow = isBranchSemester(selectedSemester);
+  const needsBranch = isSem3BranchFlow && !selectedBranch;
+  const activeBranch = selectedBranch
+    ? getBranchBySlug(selectedBranch)
+    : null;
+
+  const resourceKey =
+    selectedSemester && selectedCategory && selectedSubject
+      ? `last-minute-${selectedSemester}${isSem3BranchFlow && selectedBranch ? `-${selectedBranch}` : ""}-${selectedCategory}-${selectedSubject}`
+      : "last-minute";
 
   const fetchMaterials = async () => {
-    const { data, error } = await supabase.from("materials").select("*");
+    const { data, error } = await fetchAllMaterials();
     if (!error) {
-      setMaterials(data || []);
+      setMaterials(data);
     }
   };
 
   useEffect(() => {
-    fetchMaterials();
+    // Fetch on mount. setMaterials is only invoked after the Supabase
+    // promise resolves (asynchronously), so no setState runs synchronously
+    // inside this effect — satisfying react-hooks/set-state-in-effect.
+    let ignore = false;
+    fetchAllMaterials().then(({ data, error }) => {
+      if (!ignore && !error) {
+        setMaterials(data);
+      }
+    });
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const subjectOptions = useMemo(() => {
     if (!selectedSemester) return [];
+
+    // Branch semesters: subjects come from the selected branch's list.
+    if (isSem3BranchFlow) {
+      const branchSubjects =
+        getBranchSubjectNames(selectedSemester, selectedBranch || "cs") || [];
+
+      const semesterSubjects = materials
+        .filter(
+          (item) =>
+            item.semester === selectedSemester &&
+            branchSubjects.includes(item.subject),
+        )
+        .map((item) => item.subject)
+        .filter(Boolean);
+
+      const uniqueSubjects = [...new Set(semesterSubjects)];
+      if (uniqueSubjects.length > 0) {
+        return uniqueSubjects.sort((a, b) => a.localeCompare(b));
+      }
+
+      return branchSubjects;
+    }
 
     const semesterSubjects = materials
       .filter((item) => item.semester === selectedSemester)
@@ -222,7 +274,7 @@ export default function LastMinuteResources() {
     }
 
     return defaultSubjectsBySemester[Number(selectedSemester)] || [];
-  }, [materials, selectedSemester]);
+  }, [materials, selectedSemester, isSem3BranchFlow, selectedBranch]);
 
   const selectedResources = useMemo(
     () =>
@@ -244,6 +296,7 @@ export default function LastMinuteResources() {
 
   const breadcrumb = [
     selectedSemester ? `Semester ${selectedSemester}` : null,
+    isSem3BranchFlow && activeBranch ? activeBranch.name : null,
     selectedCategory,
     selectedSubject,
   ].filter(Boolean);
@@ -259,6 +312,11 @@ export default function LastMinuteResources() {
       return;
     }
 
+    if (selectedBranch) {
+      setSelectedBranch(null);
+      return;
+    }
+
     if (selectedSemester && !semesterParam) {
       setSelectedSemester(null);
       return;
@@ -269,13 +327,17 @@ export default function LastMinuteResources() {
 
   return (
     <>
-      <Helmet>
-        <title>Last Minute Exam Resources | NextGen Study Hub</title>
-        <meta
-          name="description"
-          content="Important MCQs, quick revision notes, and most important questions for exam-time preparation on NextGen Study Hub."
-        />
-      </Helmet>
+      <SEO
+        title="Last Minute Exam Resources – MCQs, Revision Notes & Question Banks"
+        description="Exam-time resources for diploma and polytechnic students: important MCQs, quick revision notes, most important questions and question banks organized by semester, branch and subject."
+        keywords="last minute exam preparation, important MCQs for diploma, quick revision notes, question bank diploma, exam resources polytechnic"
+        url="https://www.atulsharmas.in/last-minute-resources"
+        schemaType="CollectionPage"
+        breadcrumbs={[
+          { name: "Home", url: "https://www.atulsharmas.in" },
+          { name: "Last Minute Exam Resources", url: "https://www.atulsharmas.in/last-minute-resources" },
+        ]}
+      />
 
       <section className="section" style={{ paddingTop: "18px", paddingBottom: "70px" }}>
         <button
@@ -283,7 +345,7 @@ export default function LastMinuteResources() {
           style={{ marginBottom: "28px" }}
           onClick={handleBack}
         >
-          {selectedSubject || selectedCategory || (selectedSemester && !semesterParam)
+          {selectedSubject || selectedCategory || selectedBranch || (selectedSemester && !semesterParam)
             ? "<- Back"
             : semesterParam
               ? "<- Back to Semester"
@@ -292,6 +354,7 @@ export default function LastMinuteResources() {
 
         <LastMinuteHero
           selectedSemester={selectedSemester}
+          selectedBranchName={activeBranch?.name || null}
           selectedCategory={selectedCategory}
           selectedSubject={selectedSubject}
           breadcrumb={breadcrumb}
@@ -307,16 +370,23 @@ export default function LastMinuteResources() {
             />
 
             <div className="grid" style={{ gap: "24px" }}>
-              {[1, 2, 3, 4, 5, 6].map((sem) => (
+              {semesterCards.map((sem) => (
                 <button
-                  key={sem}
+                  key={sem.id}
                   type="button"
                   className="glass"
-                  onClick={() => setSelectedSemester(String(sem))}
+                  onClick={() => {
+                    setSelectedBranch(null);
+                    setSelectedCategory(null);
+                    setSelectedSubject(null);
+                    setSelectedSemester(String(sem.id));
+                  }}
                   style={{
-                    padding: "28px",
+                    padding: "30px",
                     textAlign: "left",
                     cursor: "pointer",
+                    position: "relative",
+                    overflow: "hidden",
                     border: "1px solid rgba(99,102,241,0.18)",
                     background: isDark
                       ? "linear-gradient(145deg, rgba(99,102,241,0.12), rgba(14,165,233,0.08))"
@@ -325,21 +395,66 @@ export default function LastMinuteResources() {
                       ? "0 12px 30px rgba(30,41,59,0.12)"
                       : "0 12px 28px rgba(15,23,42,0.07)",
                     color: isDark ? "#e5eefb" : "#1f2937",
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.zIndex = "2";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                    e.currentTarget.style.zIndex = "1";
                   }}
                 >
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: "absolute",
+                      inset: "-30% auto auto 60%",
+                      width: "150px",
+                      height: "150px",
+                      borderRadius: "999px",
+                      background:
+                        isDark
+                          ? "radial-gradient(circle, rgba(99,102,241,0.22), transparent 72%)"
+                          : "radial-gradient(circle, rgba(99,102,241,0.10), transparent 72%)",
+                      filter: "blur(4px)",
+                    }}
+                  />
+
+                  <div
+                    style={{
+                      width: "54px",
+                      height: "54px",
+                      borderRadius: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "26px",
+                      marginBottom: "16px",
+                      background: isDark
+                        ? "rgba(255,255,255,0.08)"
+                        : "rgba(255,255,255,0.75)",
+                      boxShadow: isDark
+                        ? "inset 0 1px 0 rgba(255,255,255,0.08)"
+                        : "inset 0 1px 0 rgba(255,255,255,0.9), 0 8px 18px rgba(15,23,42,0.06)",
+                    }}
+                  >
+                    {sem.icon}
+                  </div>
+
                   <strong
                     style={{
                       display: "block",
                       fontSize: "22px",
                       marginBottom: "10px",
-                      color: isDark ? "#dbeafe" : "#1f3b73",
+                      color: isDark ? "#a5b4fc" : "#4f46e5",
                     }}
                   >
-                    Semester {sem}
+                    Semester {sem.id}
                   </strong>
                   <span style={{ opacity: 0.82, lineHeight: "1.7" }}>
-                    Open last-minute exam PDFs, important MCQs, and quick revision
-                    material for Semester {sem}.
+                    {sem.desc}.
                   </span>
                 </button>
               ))}
@@ -347,7 +462,124 @@ export default function LastMinuteResources() {
           </div>
         )}
 
-        {selectedSemester && !selectedCategory && (
+        {needsBranch && (
+          <div style={{ marginTop: "36px" }}>
+            <SectionTitle
+              title={`Semester ${selectedSemester} – Choose Your Branch`}
+              description="From Semester 3 onwards, every branch studies its own subjects. Pick your branch to see the correct last-minute exam resources."
+              isDark={isDark}
+            />
+
+            <div className="grid" style={{ gap: "24px" }}>
+              {BRANCHES.map((branch) => (
+                <button
+                  key={branch.slug}
+                  type="button"
+                  className="glass"
+                  onClick={() => setSelectedBranch(branch.slug)}
+                  style={{
+                    padding: "30px",
+                    textAlign: "left",
+                    cursor: "pointer",
+                    position: "relative",
+                    overflow: "hidden",
+                    border: `1px solid ${branch.border}`,
+                    background: isDark
+                      ? `linear-gradient(145deg, ${branch.accent}26, rgba(15,23,42,0.3))`
+                      : `linear-gradient(145deg, ${branch.accent}1f, rgba(255,250,244,0.9))`,
+                    boxShadow: `0 18px 42px ${branch.glow}`,
+                    color: isDark ? "#edf2f7" : "#1f2937",
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-5px)";
+                    e.currentTarget.style.zIndex = "2";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                    e.currentTarget.style.zIndex = "1";
+                  }}
+                >
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "16px",
+                      right: "16px",
+                      background: "rgba(255,255,255,0.10)",
+                      color: branch.accent,
+                      padding: "6px 12px",
+                      fontSize: "11px",
+                      fontWeight: "800",
+                      letterSpacing: "0.08em",
+                      borderRadius: "999px",
+                      boxShadow: `0 0 16px ${branch.glow}`,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {branch.shortName}
+                  </span>
+
+                  <div
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      borderRadius: "18px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "28px",
+                      marginBottom: "18px",
+                      background: isDark
+                        ? "rgba(255,255,255,0.08)"
+                        : "rgba(255,255,255,0.72)",
+                      boxShadow: isDark
+                        ? "inset 0 1px 0 rgba(255,255,255,0.08)"
+                        : "inset 0 1px 0 rgba(255,255,255,0.9), 0 8px 18px rgba(15,23,42,0.06)",
+                    }}
+                  >
+                    {branch.icon}
+                  </div>
+
+                  <h3
+                    style={{
+                      fontWeight: "800",
+                      fontSize: "22px",
+                      marginBottom: "12px",
+                      color: branch.accent,
+                      textShadow: isDark
+                        ? `0 0 18px ${branch.glow}`
+                        : "none",
+                    }}
+                  >
+                    {branch.name}
+                  </h3>
+
+                  <p
+                    style={{
+                      lineHeight: "1.75",
+                      opacity: "0.86",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {branch.tagline}
+                  </p>
+
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      fontWeight: "700",
+                      color: branch.accent,
+                    }}
+                  >
+                    Open branch resources →
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {selectedSemester && !needsBranch && !selectedCategory && (
           <div style={{ marginTop: "36px" }}>
             <SectionTitle
               title={`Last Minute Resource Sections for Semester ${selectedSemester}`}
@@ -378,13 +610,39 @@ export default function LastMinuteResources() {
                       cursor: card.disabled ? "not-allowed" : "pointer",
                       position: "relative",
                       overflow: "hidden",
-                      opacity: card.disabled ? 0.86 : 1,
+                      opacity: card.disabled ? 0.8 : 1,
                       border: `1px solid ${colors.border}`,
                       background: colors.bg,
                       boxShadow: `0 18px 44px ${colors.glow}`,
                       color: isDark ? "#edf2f7" : "#1f2937",
+                      transition: "all 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (card.disabled) return;
+                      e.currentTarget.style.transform = "translateY(-5px)";
+                      e.currentTarget.style.zIndex = "2";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                      e.currentTarget.style.zIndex = "1";
                     }}
                   >
+                    <div
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        inset: "-30% auto auto 62%",
+                        width: "160px",
+                        height: "160px",
+                        borderRadius: "999px",
+                        background:
+                          isDark
+                            ? "radial-gradient(circle, rgba(255,255,255,0.12), transparent 72%)"
+                            : "radial-gradient(circle, rgba(255,255,255,0.5), transparent 72%)",
+                        filter: "blur(4px)",
+                      }}
+                    />
+
                     <span
                       style={{
                         position: "absolute",
@@ -402,6 +660,27 @@ export default function LastMinuteResources() {
                     >
                       {card.tag}
                     </span>
+
+                    <div
+                      style={{
+                        width: "56px",
+                        height: "56px",
+                        borderRadius: "18px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "28px",
+                        marginBottom: "18px",
+                        background: isDark
+                          ? "rgba(255,255,255,0.08)"
+                          : "rgba(255,255,255,0.72)",
+                        boxShadow: isDark
+                          ? "inset 0 1px 0 rgba(255,255,255,0.08)"
+                          : "inset 0 1px 0 rgba(255,255,255,0.9), 0 8px 18px rgba(15,23,42,0.06)",
+                      }}
+                    >
+                      {card.icon}
+                    </div>
 
                     <h3
                       style={{
@@ -425,7 +704,7 @@ export default function LastMinuteResources() {
                     </p>
 
                     <div style={{ color: colors.title, fontWeight: "700" }}>
-                      {card.disabled ? "More sections on the way" : "Open this section"}
+                      {card.disabled ? "More sections on the way" : "Open this section →"}
                     </div>
                   </button>
                 );
@@ -434,52 +713,95 @@ export default function LastMinuteResources() {
           </div>
         )}
 
-        {selectedSemester && selectedCategory && !selectedSubject && (
+        {selectedSemester && !needsBranch && selectedCategory && !selectedSubject && (
           <div style={{ marginTop: "36px" }}>
             <SectionTitle
               title={`Choose a Subject for ${selectedCategory}`}
-              description="Once you choose a subject, students will see the uploaded PDFs for that exact exam section."
+              description={
+                isSem3BranchFlow && activeBranch
+                  ? `Semester ${selectedSemester} • ${activeBranch.name}. Pick a subject to open its last-minute exam PDFs.`
+                  : "Once you choose a subject, students will see the uploaded PDFs for that exact exam section."
+              }
               isDark={isDark}
             />
 
             <div className="grid" style={{ gap: "22px" }}>
-              {subjectOptions.map((subject) => (
-                <button
-                  key={subject}
-                  type="button"
-                  className="glass"
-                  onClick={() => setSelectedSubject(subject)}
-                  style={{
-                    padding: "26px",
-                    textAlign: "left",
-                    cursor: "pointer",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    background: isDark
-                      ? "linear-gradient(145deg, rgba(15,23,42,0.16), rgba(99,102,241,0.08))"
-                      : "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(245,243,255,0.72))",
-                    boxShadow: isDark
-                      ? "0 14px 34px rgba(15,23,42,0.18)"
-                      : "0 12px 28px rgba(15,23,42,0.07)",
-                    color: isDark ? "#f8fafc" : "#1f2937",
-                  }}
-                >
-                  <strong
+              {subjectOptions.map((subject) => {
+                const codeMatch = subject.match(/\(([^)]+)\)\s*$/);
+                const subjectCode = codeMatch ? codeMatch[1] : null;
+                const subjectName = codeMatch
+                  ? subject.slice(0, codeMatch.index).trim()
+                  : subject;
+
+                return (
+                  <button
+                    key={subject}
+                    type="button"
+                    className="glass"
+                    onClick={() => setSelectedSubject(subject)}
                     style={{
-                      display: "block",
-                      fontSize: "20px",
-                      lineHeight: "1.5",
-                      color: isDark ? "#f8fafc" : "#1e293b",
+                      padding: "26px",
+                      textAlign: "left",
+                      cursor: "pointer",
+                      position: "relative",
+                      overflow: "hidden",
+                      border: "1px solid rgba(99,102,241,0.18)",
+                      background: isDark
+                        ? "linear-gradient(145deg, rgba(15,23,42,0.16), rgba(99,102,241,0.08))"
+                        : "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(245,243,255,0.72))",
+                      boxShadow: isDark
+                        ? "0 14px 34px rgba(15,23,42,0.18)"
+                        : "0 12px 28px rgba(15,23,42,0.07)",
+                      color: isDark ? "#f8fafc" : "#1f2937",
+                      transition: "all 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-4px)";
+                      e.currentTarget.style.zIndex = "2";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                      e.currentTarget.style.zIndex = "1";
                     }}
                   >
-                    {subject}
-                  </strong>
-                </button>
-              ))}
+                    {subjectCode && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "14px",
+                          right: "14px",
+                          background: "rgba(99,102,241,0.12)",
+                          color: isDark ? "#c7d2fe" : "#4338ca",
+                          padding: "5px 10px",
+                          fontSize: "11px",
+                          fontWeight: "800",
+                          letterSpacing: "0.06em",
+                          borderRadius: "999px",
+                        }}
+                      >
+                        {subjectCode}
+                      </span>
+                    )}
+
+                    <strong
+                      style={{
+                        display: "block",
+                        fontSize: "20px",
+                        lineHeight: "1.5",
+                        color: isDark ? "#f8fafc" : "#1e293b",
+                        paddingRight: subjectCode ? "72px" : "0",
+                      }}
+                    >
+                      {subjectName}
+                    </strong>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
 
-        {selectedSemester && selectedCategory && selectedSubject && (
+        {selectedSemester && !needsBranch && selectedCategory && selectedSubject && (
           <div style={{ marginTop: "36px" }}>
             <SectionTitle
               title={selectedSubject}
@@ -590,8 +912,8 @@ export default function LastMinuteResources() {
                 textAlign: "center",
                 border: "1px solid rgba(255,255,255,0.08)",
                 background: isDark
-                  ? "linear-gradient(145deg, rgba(45,212,191,0.08), rgba(14,165,233,0.06), rgba(15,23,42,0.18))"
-                  : "linear-gradient(145deg, rgba(240,253,250,0.9), rgba(239,246,255,0.72))",
+                  ? "linear-gradient(145deg, rgba(139,92,246,0.10), rgba(99,102,241,0.08), rgba(15,23,42,0.18))"
+                  : "linear-gradient(145deg, rgba(245,243,255,0.9), rgba(239,246,255,0.72))",
                 color: isDark ? "#e5e7eb" : "#334155",
               }}
             >
@@ -599,7 +921,7 @@ export default function LastMinuteResources() {
                 style={{
                   marginBottom: "12px",
                   fontWeight: "800",
-                  color: isDark ? "#ccfbf1" : "#0f766e",
+                  color: isDark ? "#e0e7ff" : "#6d28d9",
                 }}
               >
                 Add only the most score-improving PDFs here
@@ -774,6 +1096,7 @@ export default function LastMinuteResources() {
 
 function LastMinuteHero({
   selectedSemester,
+  selectedBranchName,
   selectedCategory,
   selectedSubject,
   breadcrumb,
@@ -896,7 +1219,8 @@ function LastMinuteHero({
             fontWeight: "700",
           }}
         >
-          You are browsing Semester {selectedSemester}.
+          You are browsing Semester {selectedSemester}
+          {selectedBranchName ? ` • ${selectedBranchName}` : ""}.
         </p>
       )}
 
@@ -1164,10 +1488,10 @@ function LastMinuteContentCard({
             borderRadius: "999px",
             background: item.note_type === "teacher"
               ? "rgba(250,204,21,0.14)"
-              : "rgba(45,212,191,0.14)",
+              : "rgba(139,92,246,0.16)",
             color: item.note_type === "teacher"
               ? isDark ? "#fde68a" : "#b45309"
-              : isDark ? "#99f6e4" : "#0f766e",
+              : isDark ? "#c4b5fd" : "#6d28d9",
             fontSize: "12px",
             fontWeight: "800",
             letterSpacing: "0.06em",
@@ -1231,7 +1555,7 @@ function LastMinuteContentCard({
               color: isCompleted ? "white" : "#111827",
               border: "none",
               padding: "8px 14px",
-              borderRadius: "8px",
+              borderRadius: "999px",
               cursor: "pointer",
               fontSize: "12px",
               fontWeight: "700",
@@ -1243,11 +1567,11 @@ function LastMinuteContentCard({
           <button
             onClick={() => navigate("/contact-faculty", { state: { subject } })}
             style={{
-              background: "#0f766e",
+              background: "#6d28d9",
               color: "white",
               border: "none",
               padding: "8px 14px",
-              borderRadius: "8px",
+              borderRadius: "999px",
               cursor: "pointer",
               fontSize: "12px",
               fontWeight: "700",

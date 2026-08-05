@@ -4,9 +4,25 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { isAdminRole } from "../utils/security";
+import { isBranchSemester } from "../data/semesterBranches";
+
+// Semester ids offered on the platform. Navigation URLs are built with
+// semesterPath() so branch-based semesters (e.g. Semester 3) route through
+// branch selection automatically — no hardcoded "sem === 3" checks anywhere.
+const SEMESTERS = [1, 2, 3, 4, 5, 6];
+
+const semesterPath = (sem) =>
+  isBranchSemester(sem) ? `/semester/${sem}/branch` : `/semester/${sem}`;
+
+// Shared dropdown panel used by every desktop menu (styling lives in
+// index.css — .dropdown-panel / .dropdown-item).
+function DropdownPanel({ children }) {
+  return <div className="dropdown-panel">{children}</div>;
+}
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileVisible, setMobileVisible] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [legalOpen, setLegalOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
@@ -15,6 +31,12 @@ export default function Navbar() {
   const [jobsOpen, setJobsOpen] = useState(false);
   const contentRef = useRef(null);
   const notesRef = useRef(null);
+  const desktopNavRef = useRef(null);
+  const mobileTimerRef = useRef(null);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const goToSection = (sectionId) => {
     setToolsOpen(false);
 
@@ -32,40 +54,32 @@ export default function Navbar() {
         ?.scrollIntoView({ behavior: "smooth" });
     }
   };
-  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  const { toggleTheme } = useContext(ThemeContext);
   const { user, role, logout, profileReady, profileMissing } = useAuth() || {};
+
   const [progressDropdown, setProgressDropdown] = useState(false);
-  const progressRef = useRef(null);
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const isLoggedIn = Boolean(user);
   const isOwner = profileReady && role === "owner";
   const adminEnabled = profileReady && isAdminRole(role);
   const isHome = location.pathname === "/";
+  const isTransparent = isHome && !isScrolled;
 
-  // Safe scroll (only on homepage)
-  const scrollToSection = (id) => {
-    if (location.pathname !== "/") {
-      navigate("/");
-      return;
-    }
-
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
+  // Close every menu when clicking outside the desktop nav
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (progressRef.current && !progressRef.current.contains(e.target)) {
+      if (desktopNavRef.current && !desktopNavRef.current.contains(e.target)) {
+        setJobsOpen(false);
+        setNotesOpen(false);
+        setLegalOpen(false);
+        setContentOpen(false);
+        setContactsOpen(false);
+        setToolsOpen(false);
         setProgressDropdown(false);
+        setDropdownOpen(false);
       }
     };
 
@@ -73,20 +87,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Close dropdown if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
+  // Elevate the navbar once the user scrolls
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
 
@@ -95,24 +96,37 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const dropdownButtonStyle = {
-    width: "100%",
-    padding: "8px",
-    border: "none",
-    borderRadius: "6px",
-    background: "rgba(99,102,241,0.1)",
-    marginBottom: "8px",
-    cursor: "pointer",
-    fontSize: "13px",
-    textAlign: "left",
+  const openMobile = () => {
+    clearTimeout(mobileTimerRef.current);
+    setMobileOpen(true);
+    // Defer a frame so the drawer mounts off-screen first, letting the
+    // slide-in transition actually play (both states in one render would
+    // mount it already open and skip the animation).
+    mobileTimerRef.current = setTimeout(() => setMobileVisible(true), 20);
   };
-  const dropdownItemStyle = {
-    padding: "10px 15px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    transition: "0.2s",
-    marginBottom: "5px",
+
+  // Animate the drawer closed before unmounting it. Any pending open
+  // timer is cancelled so a quick open→close never re-shows the drawer.
+  const closeMobile = () => {
+    clearTimeout(mobileTimerRef.current);
+    setMobileVisible(false);
+    mobileTimerRef.current = setTimeout(() => setMobileOpen(false), 260);
   };
+
+  // Clear any pending drawer timer when the navbar unmounts
+  useEffect(() => () => clearTimeout(mobileTimerRef.current), []);
+
+  // Lock body scroll while the mobile drawer is open.
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+    return undefined;
+  }, [mobileOpen]);
+
   const closeAllDropdowns = () => {
     setJobsOpen(false);
     setNotesOpen(false);
@@ -121,140 +135,53 @@ export default function Navbar() {
     setContactsOpen(false);
     setToolsOpen(false);
     setProgressDropdown(false);
+    setDropdownOpen(false);
+  };
+
+  const toggleDropdown = (isOpen, setter) => {
+    closeAllDropdowns();
+    setter(!isOpen);
   };
 
   return (
     <>
       <nav
-        className="site-navbar"
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          backdropFilter: "blur(16px)",
-          padding: "14px 6%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom:
-            isHome && !isScrolled
-              ? "1px solid transparent"
-              : theme === "dark"
-                ? "1px solid rgba(255,255,255,0.08)"
-                : "1px solid rgba(31,59,115,0.12)",
-          background:
-            isHome && !isScrolled
-              ? "transparent"
-              : theme === "dark"
-                ? "rgba(7, 14, 22, 0.84)"
-                : "rgba(255, 250, 244, 0.86)",
-          boxShadow:
-            isHome && !isScrolled
-              ? "none"
-              : theme === "dark"
-                ? "0 18px 50px rgba(2, 6, 23, 0.32)"
-                : "0 18px 50px rgba(31, 59, 115, 0.08)",
-          width: "100%",
-        }}
+        className={`site-navbar${isTransparent ? " site-navbar--transparent" : ""}`}
       >
         {/* LOGO */}
         <div
           className="navbar-brand"
           onClick={() => navigate("/")}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            cursor: "pointer",
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") navigate("/");
           }}
         >
-          <img
-            src="/logo.png"
-            alt="NextGen Study Hub Logo"
-            loading="lazy"
-            style={{
-              width: "68px",
-              height: "68px",
-              borderRadius: "16px",
-            }}
-          />
+          <img src="/logo.png" alt="NextGen Study Hub Logo" loading="lazy" />
 
-          <span
-            className="navbar-brand-text"
-            style={{
-              color:
-                isHome && !isScrolled
-                  ? "#fffaf4"
-                  : "var(--primary)",
-              fontWeight: "700",
-              fontSize: "18px",
-              textShadow:
-                isHome && !isScrolled
-                  ? "0 2px 18px rgba(0,0,0,0.28)"
-                  : "none",
-            }}
-          >
-            NextGen Study Hub
-          </span>
+          <span className="navbar-brand-text">NextGen Study Hub</span>
         </div>
 
         {/* DESKTOP NAV */}
-
-        <div
-          className="desktop-nav navbar-links"
-          style={{
-            display: "flex",
-            gap: "20px",
-            alignItems: "center",
-            color:
-              isHome && !isScrolled
-                ? "#fffaf4"
-                : theme === "dark"
-                  ? "var(--text-dark)"
-                  : "var(--text-light)",
-            textShadow:
-              isHome && !isScrolled
-                ? "0 2px 18px rgba(0,0,0,0.24)"
-                : "none",
-          }}
-        >
-          <span style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+        <div className="desktop-nav" ref={desktopNavRef}>
+          <span className="nav-link" onClick={() => navigate("/")}>
             Home
           </span>
+
+          {/* JOBS */}
           <div style={{ position: "relative" }}>
             <span
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                const wasOpen = jobsOpen;
-                closeAllDropdowns();
-                setJobsOpen(!wasOpen);
-              }}
+              className="nav-caret"
+              onClick={() => toggleDropdown(jobsOpen, setJobsOpen)}
             >
               Jobs ▾
             </span>
 
             {jobsOpen && (
-              <div
-                className="fade-in"
-                style={{
-                  position: "absolute",
-                  top: "45px",
-                  right: 0,
-                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  minWidth: "220px",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 15px 40px rgba(0,0,0,0.6)"
-                      : "0 15px 40px rgba(0,0,0,0.15)",
-                  zIndex: 9999,
-                }}
-              >
+              <DropdownPanel>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/jobs");
                     closeAllDropdowns();
@@ -262,9 +189,8 @@ export default function Navbar() {
                 >
                   💼 Explore Jobs
                 </div>
-
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/jobs?type=internship");
                     closeAllDropdowns();
@@ -272,9 +198,8 @@ export default function Navbar() {
                 >
                   🎓 Internships
                 </div>
-
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/jobs?type=fresher");
                     closeAllDropdowns();
@@ -282,9 +207,8 @@ export default function Navbar() {
                 >
                   👔 Fresher Jobs
                 </div>
-
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/jobs?type=remote");
                     closeAllDropdowns();
@@ -292,45 +216,23 @@ export default function Navbar() {
                 >
                   💻 Remote Jobs
                 </div>
-              </div>
+              </DropdownPanel>
             )}
           </div>
+
+          {/* NOTES */}
           <div ref={notesRef} style={{ position: "relative" }}>
             <span
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                const wasOpen = notesOpen;
-                closeAllDropdowns();
-                setNotesOpen(!wasOpen);
-              }}
+              className="nav-caret"
+              onClick={() => toggleDropdown(notesOpen, setNotesOpen)}
             >
               Notes ▾
             </span>
 
             {notesOpen && (
-              <div
-                className="fade-in"
-                style={{
-                  position: "absolute",
-                  top: "45px",
-                  right: 0,
-                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  minWidth: "220px",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 15px 40px rgba(0,0,0,0.6)"
-                      : "0 15px 40px rgba(0,0,0,0.15)",
-                  border:
-                    theme === "dark"
-                      ? "1px solid rgba(255,255,255,0.08)"
-                      : "1px solid rgba(0,0,0,0.05)",
-                  zIndex: 9999,
-                }}
-              >
+              <DropdownPanel>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/notes-library");
                     setNotesOpen(false);
@@ -338,110 +240,23 @@ export default function Navbar() {
                 >
                   📚 Notes Library
                 </div>
-              </div>
+              </DropdownPanel>
             )}
           </div>
 
-          {/* LEGAL PAGES */}
-          <div style={{ position: "relative" }}>
-            <span
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                const wasOpen = legalOpen;
-                closeAllDropdowns();
-                setLegalOpen(!wasOpen);
-              }}
-            >
-              Legal ▾
-            </span>
-
-            {legalOpen && (
-              <div
-                className="fade-in"
-                style={{
-                  position: "absolute",
-                  top: "45px",
-                  right: 0,
-                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  minWidth: "220px",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 15px 40px rgba(0,0,0,0.6)"
-                      : "0 15px 40px rgba(0,0,0,0.15)",
-                  zIndex: 9999,
-                }}
-              >
-                <div
-                  style={dropdownItemStyle}
-                  onClick={() => {
-                    navigate("/about");
-                    closeAllDropdowns();
-                  }}
-                >
-                  About
-                </div>
-
-                <div
-                  style={dropdownItemStyle}
-                  onClick={() => {
-                    navigate("/privacy-policy");
-                    closeAllDropdowns();
-                  }}
-                >
-                  Privacy Policy
-                </div>
-
-                <div
-                  style={dropdownItemStyle}
-                  onClick={() => {
-                    navigate("/terms");
-                    closeAllDropdowns();
-                  }}
-                >
-                  Terms & Conditions
-                </div>
-              </div>
-            )}
-          </div>
-
+          {/* CONTENT */}
           <div ref={contentRef} style={{ position: "relative" }}>
             <span
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                const wasOpen = contentOpen;
-                closeAllDropdowns();
-                setContentOpen(!wasOpen);
-              }}
+              className="nav-caret"
+              onClick={() => toggleDropdown(contentOpen, setContentOpen)}
             >
               Content ▾
             </span>
 
             {contentOpen && (
-              <div
-                className="fade-in"
-                style={{
-                  position: "absolute",
-                  top: "45px",
-                  right: 0,
-                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  minWidth: "220px",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 15px 40px rgba(0,0,0,0.6)"
-                      : "0 15px 40px rgba(0,0,0,0.15)",
-                  border:
-                    theme === "dark"
-                      ? "1px solid rgba(255,255,255,0.08)"
-                      : "1px solid rgba(0,0,0,0.05)",
-                  zIndex: 9999,
-                }}
-              >
+              <DropdownPanel>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/blog");
                     closeAllDropdowns();
@@ -450,7 +265,7 @@ export default function Navbar() {
                   📝 Blogs
                 </div>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/articles");
                     closeAllDropdowns();
@@ -458,47 +273,65 @@ export default function Navbar() {
                 >
                   📝 Articles
                 </div>
-              </div>
+              </DropdownPanel>
+            )}
+          </div>
+
+          {/* LEGAL */}
+          <div style={{ position: "relative" }}>
+            <span
+              className="nav-caret"
+              onClick={() => toggleDropdown(legalOpen, setLegalOpen)}
+            >
+              Legal ▾
+            </span>
+
+            {legalOpen && (
+              <DropdownPanel>
+                <div
+                  className="dropdown-item"
+                  onClick={() => {
+                    navigate("/about");
+                    closeAllDropdowns();
+                  }}
+                >
+                  About
+                </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() => {
+                    navigate("/privacy-policy");
+                    closeAllDropdowns();
+                  }}
+                >
+                  Privacy Policy
+                </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() => {
+                    navigate("/terms");
+                    closeAllDropdowns();
+                  }}
+                >
+                  Terms & Conditions
+                </div>
+              </DropdownPanel>
             )}
           </div>
 
           {/* STUDENT TOOLS */}
           <div style={{ position: "relative" }}>
             <span
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                const wasOpen = toolsOpen;
-                closeAllDropdowns();
-                setToolsOpen(!wasOpen);
-              }}
+              className="nav-caret"
+              onClick={() => toggleDropdown(toolsOpen, setToolsOpen)}
             >
               Student Tools ▾
             </span>
 
             {toolsOpen && (
-              <div
-                className="fade-in"
-                style={{
-                  position: "absolute",
-                  top: "45px",
-                  right: 0,
-                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  minWidth: "220px",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 15px 40px rgba(0,0,0,0.6)"
-                      : "0 15px 40px rgba(0,0,0,0.15)",
-                  border:
-                    theme === "dark"
-                      ? "1px solid rgba(255,255,255,0.08)"
-                      : "1px solid rgba(0,0,0,0.05)",
-                  zIndex: 9999,
-                }}
-              >
+              <DropdownPanel>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     goToSection("ai-question");
                     closeAllDropdowns();
@@ -507,7 +340,7 @@ export default function Navbar() {
                   🤖 AI Question Solver
                 </div>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     goToSection("gpa");
                     closeAllDropdowns();
@@ -516,7 +349,7 @@ export default function Navbar() {
                   📊 GPA Calculator
                 </div>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     goToSection("todo");
                     closeAllDropdowns();
@@ -525,7 +358,7 @@ export default function Navbar() {
                   ✅ Todo List
                 </div>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     goToSection("quiz");
                     closeAllDropdowns();
@@ -534,7 +367,7 @@ export default function Navbar() {
                   🎯 AI Quiz Arena
                 </div>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     goToSection("ai");
                     closeAllDropdowns();
@@ -543,7 +376,7 @@ export default function Navbar() {
                   🤖 AI Assistant
                 </div>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     goToSection("timetable");
                     closeAllDropdowns();
@@ -552,7 +385,7 @@ export default function Navbar() {
                   🧠 Time Table Generator
                 </div>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     goToSection("pomodoro");
                     closeAllDropdowns();
@@ -560,102 +393,51 @@ export default function Navbar() {
                 >
                   ⏱️ Pomodoro Timer
                 </div>
-              </div>
+              </DropdownPanel>
             )}
           </div>
 
           {/* PROGRESS */}
-          <div ref={progressRef} style={{ position: "relative" }}>
+          <div style={{ position: "relative" }}>
             <span
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                const wasOpen = progressDropdown;
-                closeAllDropdowns();
-                setProgressDropdown(!wasOpen);
-              }}
+              className="nav-caret"
+              onClick={() => toggleDropdown(progressDropdown, setProgressDropdown)}
             >
               See Progress (Semester) ▾
             </span>
 
             {progressDropdown && (
-              <div
-                className="fade-in"
-                style={{
-                  position: "absolute",
-                  top: "45px",
-                  right: 0,
-                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  minWidth: "220px",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 15px 40px rgba(0,0,0,0.6)"
-                      : "0 15px 40px rgba(0,0,0,0.15)",
-                  border:
-                    theme === "dark"
-                      ? "1px solid rgba(255,255,255,0.08)"
-                      : "1px solid rgba(0,0,0,0.05)",
-                  zIndex: 9999,
-                }}
-              >
-                {[1, 2, 3, 4, 5, 6].map((sem) => (
+              <DropdownPanel>
+                {SEMESTERS.map((sem) => (
                   <div
                     key={sem}
+                    className="dropdown-item"
                     onClick={() => {
-                      navigate(`/semester/${sem}`);
+                      navigate(semesterPath(sem));
                       setProgressDropdown(false);
                       closeAllDropdowns();
-                    }}
-                    style={{
-                      padding: "8px",
-                      cursor: "pointer",
-                      borderRadius: "6px",
                     }}
                   >
                     Semester {sem}
                   </div>
                 ))}
-              </div>
+              </DropdownPanel>
             )}
           </div>
 
+          {/* CONTACTS */}
           <div style={{ position: "relative" }}>
             <span
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                const wasOpen = contactsOpen;
-                closeAllDropdowns();
-                setContactsOpen(!wasOpen);
-              }}
+              className="nav-caret"
+              onClick={() => toggleDropdown(contactsOpen, setContactsOpen)}
             >
               Contacts ▾
             </span>
 
             {contactsOpen && (
-              <div
-                className="fade-in"
-                style={{
-                  position: "absolute",
-                  top: "45px",
-                  right: 0,
-                  background: theme === "dark" ? "#1e1e2f" : "#ffffff",
-                  borderRadius: "12px",
-                  padding: "15px",
-                  minWidth: "220px",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 15px 40px rgba(0,0,0,0.6)"
-                      : "0 15px 40px rgba(0,0,0,0.15)",
-                  border:
-                    theme === "dark"
-                      ? "1px solid rgba(255,255,255,0.08)"
-                      : "1px solid rgba(0,0,0,0.05)",
-                  zIndex: 9999,
-                }}
-              >
+              <DropdownPanel>
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/contact-owner");
                     setContactsOpen(false);
@@ -663,9 +445,8 @@ export default function Navbar() {
                 >
                   📬 Contact Owner
                 </div>
-
                 <div
-                  style={dropdownItemStyle}
+                  className="dropdown-item"
                   onClick={() => {
                     navigate("/contact-faculty");
                     setContactsOpen(false);
@@ -673,66 +454,29 @@ export default function Navbar() {
                 >
                   👨‍🏫 Contact Faculty
                 </div>
-              </div>
+              </DropdownPanel>
             )}
           </div>
 
           {/* ADMIN LOGIN */}
           {!isLoggedIn && (
-            <button
-              onClick={() => navigate("/admin")}
-              style={{
-                padding: "8px 16px",
-                borderRadius: "8px",
-                border: "none",
-                background: "var(--primary)",
-                color: "white",
-                cursor: "pointer",
-                fontWeight: "500",
-              }}
-            >
+            <button className="nav-cta" onClick={() => navigate("/admin")}>
               Admin Login
             </button>
           )}
 
           {/* AVATAR */}
           {isLoggedIn && (
-            <div ref={dropdownRef} style={{ position: "relative" }}>
+            <div style={{ position: "relative" }}>
               <div
+                className="navbar-avatar"
                 onClick={() => setDropdownOpen((prev) => !prev)}
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                  color: "white",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                }}
               >
                 {user?.email?.charAt(0)?.toUpperCase() || "A"}
               </div>
 
               {dropdownOpen && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "45px",
-                    right: 0,
-                    background: theme === "dark" ? "#1e1e2f" : "#ffffff",
-                    borderRadius: "12px",
-                    padding: "15px",
-                    minWidth: "220px",
-                    boxShadow:
-                      theme === "dark"
-                        ? "0 15px 40px rgba(0,0,0,0.6)"
-                        : "0 15px 40px rgba(0,0,0,0.15)",
-                    zIndex: 9999,
-                  }}
-                >
+                <div className="dropdown-panel">
                   <strong>{user?.email}</strong>
                   <p style={{ fontSize: "12px", opacity: 0.7 }}>
                     Role: {role || "pending"}
@@ -742,30 +486,27 @@ export default function Navbar() {
                       Profile role setup is incomplete.
                     </p>
                   )}
-                  <hr style={{ margin: "10px 0", opacity: 0.2 }} />
+                  <hr className="dropdown-divider" />
 
                   {isOwner && (
                     <button
+                      className="dropdown-button"
                       onClick={() => {
                         navigate("/admin?mode=create");
                         setDropdownOpen(false);
                       }}
-                      style={dropdownButtonStyle}
                     >
                       + Create Faculty
                     </button>
                   )}
 
                   <button
+                    className="dropdown-button"
+                    style={{ background: "crimson", color: "white" }}
                     onClick={async () => {
                       await logout();
                       setDropdownOpen(false);
                       navigate("/", { replace: true });
-                    }}
-                    style={{
-                      ...dropdownButtonStyle,
-                      background: "crimson",
-                      color: "white",
                     }}
                   >
                     Logout
@@ -775,139 +516,107 @@ export default function Navbar() {
             </div>
           )}
 
-          <button className="theme-btn" onClick={toggleTheme}>
-            <span className="icon sun">☀️</span>
-            <span className="icon moon">🌙</span>
-
-            <span className="mode-text light-text">Light</span>
-            <span className="mode-text dark-text">Dark</span>
+          <button
+            className="theme-btn"
+            onClick={toggleTheme}
+            aria-label="Toggle light/dark theme"
+          >
+            <span className="theme-btn-knob" aria-hidden="true">
+              <span className="theme-btn-icon sun">☀️</span>
+              <span className="theme-btn-icon moon">🌙</span>
+            </span>
           </button>
         </div>
 
-        {/* HAMBURGER (OUTSIDE desktop-nav) */}
+        {/* HAMBURGER (outside desktop-nav) */}
         <div
           className="mobile-menu-btn"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          style={{ cursor: "pointer" }}
+          onClick={() => (mobileOpen ? closeMobile() : openMobile())}
+          aria-label="Toggle navigation menu"
         >
           {mobileOpen ? <X size={28} /> : <Menu size={28} />}
         </div>
       </nav>
 
-      {/* mobile view */}
-
+      {/* MOBILE DRAWER */}
       {mobileOpen && (
-        <div
-          className="fade-in"
-          style={{
-            position: "fixed",
-            top: 0,
-            right: 0,
-            width: "88%",
-            height: "100vh",
-            background: theme === "dark" ? "#0f172a" : "#ffffff",
-            padding: "22px",
-            zIndex: 2000,
-            display: "flex",
-            flexDirection: "column",
-            gap: "22px",
-            color: theme === "dark" ? "var(--text-dark)" : "var(--text-light)",
-            boxShadow: "-10px 0 40px rgba(0,0,0,0.4)",
-            overflowY: "auto",
-          }}
-        >
-          {/* HEADER */}
+        <>
+          {/* Backdrop — tap to close */}
+          <div
+            className={`mobile-backdrop${mobileVisible ? " mobile-backdrop--show" : ""}`}
+            onClick={closeMobile}
+            aria-hidden="true"
+          />
 
           <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderBottom:
-                theme === "dark"
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(0,0,0,0.08)",
-              paddingBottom: "10px",
-            }}
+            className={`mobile-drawer${mobileVisible ? " mobile-drawer--open" : ""}`}
           >
+          {/* HEADER */}
+          <div className="mobile-header">
             <div>
-              <div style={{ fontWeight: "700", fontSize: "18px" }}>Menu</div>
-              <div style={{ fontSize: "12px", opacity: 0.7 }}>
-                Navigate platform
-              </div>
+              <div className="mobile-header-title">Menu</div>
+              <div className="mobile-header-sub">Navigate platform</div>
             </div>
 
             <X
-              size={28}
-              onClick={() => setMobileOpen(false)}
-              style={{ cursor: "pointer" }}
+              size={26}
+              className="mobile-close"
+              onClick={() => closeMobile()}
             />
           </div>
 
           {/* QUICK NAVIGATION */}
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "10px",
-            }}
-          >
+          <div className="mobile-quick-grid">
             <button
               className="btn-primary btn-small"
               onClick={() => {
                 navigate("/");
-                setMobileOpen(false);
+                closeMobile();
               }}
             >
               🏠 Home
             </button>
-
             <button
               className="btn-primary btn-small"
               onClick={() => {
                 navigate("/notes-library");
-                setMobileOpen(false);
+                closeMobile();
               }}
             >
               📚 Notes
             </button>
-
             <button
               className="btn-primary btn-small"
               onClick={() => {
                 navigate("/jobs");
-                setMobileOpen(false);
+                closeMobile();
               }}
             >
               💼 Jobs
             </button>
-
             <button
               className="btn-primary btn-small"
               onClick={() => {
                 navigate("/blog");
-                setMobileOpen(false);
+                closeMobile();
               }}
             >
               📝 Blog
             </button>
-
             <button
               className="btn-primary btn-small"
               onClick={() => {
                 navigate("/student-tools");
-                setMobileOpen(false);
+                closeMobile();
               }}
             >
               🛠 Tools
             </button>
-
             <button
               className="btn-primary btn-small"
               onClick={() => {
                 navigate("/articles");
-                setMobileOpen(false);
+                closeMobile();
               }}
             >
               📝 Articles
@@ -915,177 +624,137 @@ export default function Navbar() {
           </div>
 
           {/* THEME TOGGLE */}
+          <button
+            className="theme-btn mobile-theme-btn"
+            onClick={toggleTheme}
+            aria-label="Toggle light/dark theme"
+          >
+            <span className="theme-btn-knob" aria-hidden="true">
+              <span className="theme-btn-icon sun">☀️</span>
+              <span className="theme-btn-icon moon">🌙</span>
+            </span>
+          </button>
 
-          <div style={{ marginTop: "10px" }}>
-            <button className="theme-btn mobile-theme-btn" onClick={toggleTheme}>
-              <span className="icon sun">☀️</span>
-              <span className="icon moon">🌙</span>
-
-              <span className="mode-text light-text">Light</span>
-              <span className="mode-text dark-text">Dark</span>
+          {/* JOBS */}
+          <div className="mobile-section">
+            <span className="mobile-section-title">💼 Jobs</span>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/jobs");
+                closeMobile();
+              }}
+            >
+              Explore Jobs
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/jobs?type=internship");
+                closeMobile();
+              }}
+            >
+              Internships
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/jobs?type=fresher");
+                closeMobile();
+              }}
+            >
+              Fresher Jobs
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/jobs?type=remote");
+                closeMobile();
+              }}
+            >
+              Remote Jobs
             </button>
           </div>
 
-          {/* JOB SECTION */}
-
-          <div className="glass" style={{ padding: "16px" }}>
-            <strong>💼 Jobs</strong>
-
-            <div
-              style={{
-                marginTop: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <span
-                onClick={() => {
-                  navigate("/jobs");
-                  setMobileOpen(false);
-                }}
-              >
-                Explore Jobs
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/jobs?type=internship");
-                  setMobileOpen(false);
-                }}
-              >
-                Internships
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/jobs?type=fresher");
-                  setMobileOpen(false);
-                }}
-              >
-                Fresher Jobs
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/jobs?type=remote");
-                  setMobileOpen(false);
-                }}
-              >
-                Remote Jobs
-              </span>
-            </div>
-          </div>
-
           {/* STUDENT TOOLS */}
-
-          <div className="glass" style={{ padding: "16px" }}>
-            <strong>🛠 Student Tools</strong>
-
-            <div
-              style={{
-                marginTop: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
+          <div className="mobile-section">
+            <span className="mobile-section-title">🛠 Student Tools</span>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                goToSection("ai-question");
+                closeMobile();
               }}
             >
-              <span
-                onClick={() => {
-                  goToSection("ai-question");
-                  setMobileOpen(false);
-                }}
-              >
-                🤖 AI Question Solver
-              </span>
-              <span
-                onClick={() => {
-                  goToSection("gpa");
-                  setMobileOpen(false);
-                }}
-              >
-                📊 GPA Calculator
-              </span>
-
-              <span
-                onClick={() => {
-                  goToSection("todo");
-                  setMobileOpen(false);
-                }}
-              >
-                ✅ Todo List
-              </span>
-              <span
-                onClick={() => {
-                  goToSection("ai");
-                  setMobileOpen(false);
-                }}
-              >
-                🤖 AI Assistant
-              </span>
-
-              <span
-                onClick={() => {
-                  goToSection("quiz");
-                  setMobileOpen(false);
-                }}
-              >
-                🎯 AI Quiz Arena
-              </span>
-              <span
-                onClick={() => {
-                  goToSection("timetable");
-                  setMobileOpen(false);
-                }}
-              >
-                🧠 Time Table Generator
-              </span>
-              <span
-                onClick={() => {
-                  goToSection("pomodoro");
-                  setMobileOpen(false);
-                }}
-              >
-                ⏱️ Pomodoro Timer
-              </span>
-
-            </div>
+              🤖 AI Question Solver
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                goToSection("gpa");
+                closeMobile();
+              }}
+            >
+              📊 GPA Calculator
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                goToSection("todo");
+                closeMobile();
+              }}
+            >
+              ✅ Todo List
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                goToSection("ai");
+                closeMobile();
+              }}
+            >
+              🤖 AI Assistant
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                goToSection("quiz");
+                closeMobile();
+              }}
+            >
+              🎯 AI Quiz Arena
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                goToSection("timetable");
+                closeMobile();
+              }}
+            >
+              🧠 Time Table Generator
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                goToSection("pomodoro");
+                closeMobile();
+              }}
+            >
+              ⏱️ Pomodoro Timer
+            </button>
           </div>
 
           {/* SEMESTERS */}
-
-          <div className="glass" style={{ padding: "16px" }}>
-            <strong>📈 Semester Progress</strong>
-
-            <div
-              style={{
-                marginTop: "12px",
-                display: "grid",
-                gridTemplateColumns: "repeat(3,1fr)",
-                gap: "8px",
-              }}
-            >
-              {[1, 2, 3, 4, 5, 6].map((sem) => (
+          <div className="mobile-section">
+            <span className="mobile-section-title">📈 Semester Progress</span>
+            <div className="mobile-sem-grid">
+              {SEMESTERS.map((sem) => (
                 <button
                   key={sem}
-                  style={{
-                    padding: "8px",
-                    borderRadius: "8px",
-                    border:
-                      theme === "dark"
-                        ? "1px solid rgba(255,255,255,0.1)"
-                        : "1px solid rgba(79,70,229,0.12)",
-                    cursor: "pointer",
-                    background:
-                      theme === "dark"
-                        ? "rgba(99,102,241,0.2)"
-                        : "rgba(99,102,241,0.15)",
-                    color: theme === "dark" ? "#f8fafc" : "#1f2937",
-                    fontWeight: "600",
-                  }}
+                  className="mobile-sem-btn"
                   onClick={() => {
-                    navigate(`/semester/${sem}`);
-                    setMobileOpen(false);
+                    navigate(semesterPath(sem));
+                    closeMobile();
                   }}
                 >
                   Sem {sem}
@@ -1095,96 +764,74 @@ export default function Navbar() {
           </div>
 
           {/* CONTACT */}
-
-          <div className="glass" style={{ padding: "16px" }}>
-            <strong>📞 Contact</strong>
-
-            <div
-              style={{
-                marginTop: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
+          <div className="mobile-section">
+            <span className="mobile-section-title">📞 Contact</span>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/contact-owner");
+                closeMobile();
               }}
             >
-              <span
-                onClick={() => {
-                  navigate("/contact-owner");
-                  setMobileOpen(false);
-                }}
-              >
-                Contact Owner
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/contact-faculty");
-                  setMobileOpen(false);
-                }}
-              >
-                Contact Faculty
-              </span>
-            </div>
+              Contact Owner
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/contact-faculty");
+                closeMobile();
+              }}
+            >
+              Contact Faculty
+            </button>
           </div>
 
           {/* LEGAL */}
-
-          <div className="glass" style={{ padding: "16px" }}>
-            <strong>📄 Legal</strong>
-
-            <div
-              style={{
-                marginTop: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
+          <div className="mobile-section">
+            <span className="mobile-section-title">📄 Legal</span>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/about");
+                closeMobile();
               }}
             >
-              <span
-                onClick={() => {
-                  navigate("/about");
-                  setMobileOpen(false);
-                }}
-              >
-                About
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/privacy-policy");
-                  setMobileOpen(false);
-                }}
-              >
-                Privacy Policy
-              </span>
-
-              <span
-                onClick={() => {
-                  navigate("/terms");
-                  setMobileOpen(false);
-                }}
-              >
-                Terms & Conditions
-              </span>
-            </div>
+              About
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/privacy-policy");
+                closeMobile();
+              }}
+            >
+              Privacy Policy
+            </button>
+            <button
+              className="mobile-link"
+              onClick={() => {
+                navigate("/terms");
+                closeMobile();
+              }}
+            >
+              Terms & Conditions
+            </button>
           </div>
 
           {/* ADMIN */}
-
           {!isLoggedIn && (
             <button
               className="btn-primary"
               onClick={() => {
                 navigate("/admin");
-                setMobileOpen(false);
+                closeMobile();
               }}
             >
               Admin Login
             </button>
           )}
-
-
-        </div>
+          </div>
+        </>
       )}
     </>
   );

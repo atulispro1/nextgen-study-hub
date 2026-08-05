@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is LinkedIn useful for students?", a: "Yes, it helps build professional network and career visibility." },
+      { q: "How many connections should I have?", a: "Quality connections matter more than quantity." },
+      { q: "How often should I post?", a: "Posting once or twice a week is enough." },
+    ]}>
 
       {/* INTRODUCTION */}
       <div className="blog-section">

@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Which programming language should beginners start with?", a: "Python or C++ are good choices for beginners." },
+      { q: "How long does it take to learn coding?", a: "With consistent practice, basic skills can develop in 6–12 months." },
+      { q: "Is coding difficult?", a: "Coding becomes easier with regular practice and problem solving." },
+    ]}>
 
       {/* INTRODUCTION */}
       <div className="blog-section">

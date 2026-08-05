@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "How many problems should I solve daily?", a: "At least 2–3 problems consistently." },
+      { q: "Is LeetCode enough for placements?", a: "Yes, if combined with strong fundamentals." },
+      { q: "Is competitive programming necessary?", a: "Not mandatory, but helpful for logic building." },
+    ]}>
 
       {/* INTRODUCTION */}
       <div className="blog-section">

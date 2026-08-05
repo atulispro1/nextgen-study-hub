@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,13 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is 7 days enough?", a: "Yes, if you focus on high-weightage and PYQs." },
+      { q: "Should I skip difficult chapters?", a: "Skip low-weightage topics, not important ones." },
+      { q: "How many hours daily?", a: "7–9 focused hours with structured breaks." },
+      { q: "Are previous year papers important?", a: "Extremely important. They reveal exam patterns." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

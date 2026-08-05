@@ -1,5 +1,5 @@
-import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
+import SEO from "../components/SEO";
 import { useNavigate } from "react-router-dom";
 import generatedArticles from "../data/generatedArticles.json";
 import { urlFor } from "../lib/sanityImage";
@@ -48,9 +48,8 @@ export default function Articles() {
     });
   }, []);
 
-  useEffect(() => {
-    setVisibleCount(6);
-  }, [search, category]);
+  // visibleCount is reset from the input/select handlers below (the old
+  // setState-in-effect was a lint violation).
 
   const isLoading = posts.length === 0;
 
@@ -78,17 +77,17 @@ export default function Articles() {
 
   return (
     <>
-      <Helmet>
-        <title>
-          Student Articles - Study Tips, Exam Preparation and Learning Guides |
-          NextGen Study Hub
-        </title>
-        <meta
-          name="description"
-          content="Explore student articles on study techniques, exam preparation, productivity and learning guides for diploma and engineering students."
-        />
-        <link rel="canonical" href="https://www.atulsharmas.in/articles" />
-      </Helmet>
+      <SEO
+        title="Student Articles – Study Tips, Exam Preparation & Learning Guides"
+        description="Explore student articles on study techniques, exam preparation strategies, productivity tips and learning guides for diploma and engineering students in India."
+        keywords="study tips for students, exam preparation guide, engineering study articles, polytechnic learning guides"
+        url="https://www.atulsharmas.in/articles"
+        schemaType="CollectionPage"
+        breadcrumbs={[
+          { name: "Home", url: "https://www.atulsharmas.in" },
+          { name: "Articles", url: "https://www.atulsharmas.in/articles" },
+        ]}
+      />
 
       <div style={{ padding: "60px 20px", maxWidth: "1200px", margin: "auto" }}>
         <section
@@ -259,6 +258,7 @@ export default function Articles() {
                 onClick={() => {
                   setSearch("");
                   setCategory("All");
+                  setVisibleCount(6);
                 }}
                 style={{
                   padding: "13px 24px",
@@ -446,7 +446,10 @@ export default function Articles() {
             type="text"
             placeholder="Search articles..."
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(event) => {
+              setSearch(event.target.value);
+              setVisibleCount(6);
+            }}
             style={{
               padding: "12px 16px",
               borderRadius: "10px",
@@ -461,7 +464,10 @@ export default function Articles() {
 
           <select
             value={category}
-            onChange={(event) => setCategory(event.target.value)}
+            onChange={(event) => {
+              setCategory(event.target.value);
+              setVisibleCount(6);
+            }}
             style={{
               padding: "12px 16px",
               borderRadius: "10px",

@@ -2,11 +2,23 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import { confirmDelete } from "../utils/deleteConfirm";
+import Swal from "sweetalert2";
 import {
   canSubmitWithCooldown,
+  clampRating,
   isAdminRole,
   normalizeTextInput,
 } from "../utils/security";
+
+// Shared query so the mount effect and refresh calls use one definition.
+const fetchAllComments = async () => {
+  const { data } = await supabase
+    .from("notes_comments")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(100);
+  return data || [];
+};
 
 export default function CommentsSection() {
   const { role, profileReady } = useAuth() || {};
@@ -16,24 +28,42 @@ export default function CommentsSection() {
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [rating, setRating] = useState(5);
+  const [submitting, setSubmitting] = useState(false);
 
-  const userId =
-    localStorage.getItem("commentUser") ||
-    Math.random().toString(36).substring(2);
+  // Tracks comments that currently have a like update in flight so a rapid
+  // double-click cannot like the same comment twice (client-side race).
+  const [likingIds, setLikingIds] = useState(() => new Set());
 
-  localStorage.setItem("commentUser", userId);
+  // Read/write the anonymous commenter id inside a lazy state initializer so
+  // storage access never runs during render (and never crashes the page when
+  // storage is unavailable, e.g. private browsing mode).
+  const [userId] = useState(() => {
+    try {
+      const existing = localStorage.getItem("commentUser");
+      if (existing) return existing;
+
+      const generated = Math.random().toString(36).substring(2);
+      localStorage.setItem("commentUser", generated);
+      return generated;
+    } catch {
+      return Math.random().toString(36).substring(2);
+    }
+  });
 
   const fetchComments = async () => {
-    const { data } = await supabase
-      .from("notes_comments")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    setComments(data || []);
+    setComments(await fetchAllComments());
   };
 
   useEffect(() => {
-    fetchComments();
+    // Fetch on mount. setComments only runs after the promise resolves, so no
+    // setState happens synchronously inside this effect.
+    let ignore = false;
+    fetchAllComments().then((data) => {
+      if (!ignore) setComments(data);
+    });
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const submitComment = async () => {
@@ -42,19 +72,38 @@ export default function CommentsSection() {
 
     if (!safeName || !safeText) return;
     if (!canSubmitWithCooldown("notes_comments_cooldown", 15000)) {
-      alert("Please wait a few seconds before posting again.");
+      Swal.fire({
+        icon: "info",
+        title: "Slow down",
+        text: "Please wait a few seconds before posting again.",
+      });
       return;
     }
+    if (submitting) return; // Prevent double-submit / duplicate comments
 
-    await supabase.from("notes_comments").insert([
+    setSubmitting(true);
+
+    const { error } = await supabase.from("notes_comments").insert([
       {
         name: safeName,
         comment: safeText,
-        rating,
+        rating: clampRating(rating),
         likes: 0,
         liked_by: [],
       },
     ]);
+
+    setSubmitting(false);
+
+    if (error) {
+      console.error("Comment insert failed:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Post failed",
+        text: "Failed to post your comment. Please try again.",
+      });
+      return;
+    }
 
     setName("");
     setText("");
@@ -65,18 +114,32 @@ export default function CommentsSection() {
 
   const likeComment = async (comment) => {
     if (comment.liked_by?.includes(userId)) return;
+    if (likingIds.has(comment.id)) return; // like already in flight
 
     const updatedLikes = (comment.likes || 0) + 1;
-
     const updatedUsers = [...(comment.liked_by || []), userId];
 
-    await supabase
-      .from("notes_comments")
-      .update({
-        likes: updatedLikes,
-        liked_by: updatedUsers,
-      })
-      .eq("id", comment.id);
+    setLikingIds((prev) => new Set(prev).add(comment.id));
+
+    try {
+      const { error } = await supabase
+        .from("notes_comments")
+        .update({
+          likes: updatedLikes,
+          liked_by: updatedUsers,
+        })
+        .eq("id", comment.id);
+
+      if (error) {
+        console.error("Like update failed:", error);
+      }
+    } finally {
+      setLikingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(comment.id);
+        return next;
+      });
+    }
 
     fetchComments();
   };
@@ -169,7 +232,11 @@ export default function CommentsSection() {
         </select>
         <br />
 
-        <button className="btn-primary" onClick={submitComment}>
+        <button
+          className="btn-primary"
+          onClick={submitComment}
+          disabled={submitting}
+        >
           Submit Comment
         </button>
       </div>

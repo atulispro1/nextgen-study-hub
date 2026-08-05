@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is one book enough for SSC preparation?", a: "Yes, if the book covers concepts and practice questions thoroughly." },
+      { q: "Are previous year papers important?", a: "Yes, they help understand exam patterns and important topics." },
+      { q: "How many months are required for SSC preparation?", a: "With consistent study, 4–6 months can be sufficient." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

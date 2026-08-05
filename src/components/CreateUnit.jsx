@@ -1,8 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { supabase } from "../supabase";
 import Swal from "sweetalert2";
-import imageCompression from "browser-image-compression";
-import { sanitizeFileName } from "../utils/security";
+import {
+  buildSafeFileName,
+  validateUploadFile,
+} from "../utils/security";
 
 export default function CreateUnit({
   semester,
@@ -23,7 +25,14 @@ export default function CreateUnit({
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [noteType, setNoteType] = useState("teacher");
-  const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+  const MAX_PDF_SIZE = 20 * 1024 * 1024; // 20MB
+  const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+
+  // Refs to the file inputs so their DOM value can be cleared after a
+  // successful upload — otherwise selecting the same file again fires no
+  // change event and the form cannot be reused without a page refresh.
+  const pdfInputRef = useRef(null);
+  const imageInputRef = useRef(null);
 
   const resolvedNoteTypeOptions = useMemo(
     () =>
@@ -35,19 +44,41 @@ export default function CreateUnit({
   );
 
   const handlePublish = async () => {
+    // Guard against double-clicks while a publish is already in progress.
+    if (loading) return;
+
     if (!unitName || !pdfFile) {
-      alert("Unit name and PDF are required");
+      Swal.fire({
+        icon: "warning",
+        title: "Missing details",
+        text: "Unit name and PDF are required.",
+      });
       return;
     }
+
+    // Lock the button before the duplicate check so two rapid clicks cannot
+    // both pass the check and create duplicate rows.
+    setLoading(true);
+
     // Check if unit name already exists
-    const { data: existingUnit } = await supabase
+    const { data: existingUnit, error: checkError } = await supabase
       .from("materials")
       .select("id")
       .eq("semester", semester)
       .eq("subject", subject)
       .eq("category", category)
       .eq("unit_name", unitName)
-      .single();
+      .maybeSingle();
+
+    if (checkError) {
+      Swal.fire({
+        icon: "error",
+        title: "Check failed",
+        text: checkError.message,
+      });
+      setLoading(false);
+      return;
+    }
 
     if (existingUnit) {
       Swal.fire({
@@ -55,45 +86,45 @@ export default function CreateUnit({
         title: "Unit Already Exists",
         text: "A unit with this name already exists for this subject. Please choose a different unit name.",
       });
+      setLoading(false);
       return;
     }
-    if (pdfFile && pdfFile.size > MAX_FILE_SIZE) {
+    const pdfCheck = validateUploadFile(pdfFile, "pdf", MAX_PDF_SIZE);
+    if (!pdfCheck.ok) {
+      const message =
+        pdfCheck.reason === "file-too-large"
+          ? "This PDF is larger than the allowed upload limit. Please compress the file using an online PDF compressor and upload it again."
+          : "Please upload a valid PDF document (.pdf, max 20MB).";
       Swal.fire({
         icon: "warning",
-        title: "File too large",
-        text: "This PDF is larger than the allowed upload limit. Please compress the file using an online PDF compressor and upload it again.",
+        title:
+          pdfCheck.reason === "file-too-large" ? "File too large" : "Invalid PDF file",
+        text: message,
       });
-      return;
-    }
-    if (pdfFile && pdfFile.type !== "application/pdf") {
-      Swal.fire({
-        icon: "warning",
-        title: "Invalid PDF file",
-        text: "Please upload a valid PDF document.",
-      });
-      return;
-    }
-    if (imageFile && imageFile.size > MAX_FILE_SIZE) {
-      Swal.fire({
-        icon: "warning",
-        title: "Image too large",
-        text: "The selected image is too large. Please compress the image and try again.",
-      });
-      return;
-    }
-    if (imageFile && !imageFile.type.startsWith("image/")) {
-      Swal.fire({
-        icon: "warning",
-        title: "Invalid image file",
-        text: "Please upload a valid image file.",
-      });
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
+    const imageCheck = imageFile
+      ? validateUploadFile(imageFile, "image", MAX_IMAGE_SIZE)
+      : { ok: true };
+    if (!imageCheck.ok) {
+      const message =
+        imageCheck.reason === "file-too-large"
+          ? "The selected image is too large (max 5MB). Please compress the image and try again."
+          : "Please upload a valid image file (.jpg, .png, .webp or .gif).";
+      Swal.fire({
+        icon: "warning",
+        title:
+          imageCheck.reason === "file-too-large" ? "Image too large" : "Invalid image file",
+        text: message,
+      });
+      setLoading(false);
+      return;
+    }
 
     try {
-      const fileName = `${Date.now()}-${sanitizeFileName(pdfFile.name)}`;
+      const fileName = buildSafeFileName(pdfFile, "pdf");
 
       // Upload PDF
       const { error: uploadError } = await supabase.storage
@@ -134,23 +165,27 @@ export default function CreateUnit({
 
       const fileUrl = publicUrlData.publicUrl;
 
-      console.log("Generated URL:", fileUrl);
-
       let imageUrl = null;
 
       if (imageFile) {
-        const imageName = `${Date.now()}-${sanitizeFileName(imageFile.name)}`;
+        const imageName = buildSafeFileName(imageFile, "image");
 
+        // Cover images live in the dedicated "notes-images" bucket (PDFs stay
+        // in "pdfs"). See SUPABASE_NOTES_IMAGES_SETUP.sql at the repo root
+        // for the bucket + storage policies needed on the Supabase side.
         const { error: imageError } = await supabase.storage
-          .from("pdfs")
+          .from("notes-images")
           .upload(imageName, imageFile);
 
         if (!imageError) {
           const { data: imagePublic } = supabase.storage
-            .from("pdfs")
+            .from("notes-images")
             .getPublicUrl(imageName);
 
           imageUrl = imagePublic.publicUrl;
+        } else {
+          // The unit still publishes with its PDF — only the cover is lost.
+          console.error("Cover image upload failed:", imageError);
         }
       }
 
@@ -176,7 +211,11 @@ export default function CreateUnit({
             text: "Your account is logged in, but the database role or RLS policy is not allowing this action.",
           });
         } else {
-          alert("Database insert failed");
+          Swal.fire({
+            icon: "error",
+            title: "Insert failed",
+            text: "Database insert failed. Please try again.",
+          });
         }
         setLoading(false);
         return;
@@ -185,6 +224,16 @@ export default function CreateUnit({
       setUnitName("");
       setPdfFile(null);
       setImageFile(null);
+
+      // Clear the file input DOM values so the same file can be selected and
+      // uploaded again without refreshing the page.
+      if (pdfInputRef.current) {
+        pdfInputRef.current.value = "";
+      }
+      if (imageInputRef.current) {
+        imageInputRef.current.value = "";
+      }
+
       onSuccess();
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -192,31 +241,6 @@ export default function CreateUnit({
 
     setLoading(false);
   };
-  const handleImageUpload = async (file) => {
-    const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1200,
-      useWebWorker: true,
-      fileType: "image/webp",
-    };
-
-    const compressedFile = await imageCompression(file, options);
-
-    return compressedFile;
-  };
-
-  const uploadImage = async (file) => {
-
-  const webpFile = await handleImageUpload(file);
-
-  const fileName = `${Date.now()}.webp`;
-
-  const { data, error } = await supabase.storage
-    .from("notes-images")
-    .upload(fileName, webpFile);
-
-};
-
   return (
     <div
       className="glass"
@@ -255,9 +279,7 @@ export default function CreateUnit({
           style={{
             width: "100%",
             padding: "10px",
-            borderRadius: "8px",
-            border: "1px solid rgba(255,255,255,0.15)",
-            background: "transparent",
+            borderRadius: "10px",
           }}
         >
           {resolvedNoteTypeOptions.map((option) => (
@@ -285,9 +307,7 @@ export default function CreateUnit({
           style={{
             width: "100%",
             padding: "12px",
-            borderRadius: "8px",
-            border: "1px solid rgba(255,255,255,0.15)",
-            background: "transparent",
+            borderRadius: "10px",
           }}
         />
       </div>
@@ -302,6 +322,7 @@ export default function CreateUnit({
         </label>
 
         <input
+          ref={pdfInputRef}
           type="file"
           accept="application/pdf"
           onChange={(e) => setPdfFile(e.target.files[0])}
@@ -327,6 +348,7 @@ export default function CreateUnit({
         </label>
 
         <input
+          ref={imageInputRef}
           type="file"
           accept="image/*"
           onChange={(e) => setImageFile(e.target.files[0])}

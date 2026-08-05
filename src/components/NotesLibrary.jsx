@@ -1,12 +1,26 @@
 import SEO from "./SEO";
 import { Helmet } from "react-helmet-async";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../supabase";
 import { useAuth } from "../context/AuthContext";
 import CommentsSection from "../components/CommentsSection";
 import { confirmDelete } from "../utils/deleteConfirm";
 import { useNavigate } from "react-router-dom";
 import { isAdminRole, openSafeExternalUrl } from "../utils/security";
+import Swal from "sweetalert2";
+import {
+  DEFAULT_SUBJECTS_BY_SEMESTER,
+  getAllBranchSubjectNames,
+} from "../data/semesterBranches";
+
+// Shared query so the mount effect and refresh calls use one definition.
+const fetchAllNotes = async () => {
+  const { data } = await supabase
+    .from("materials")
+    .select("*")
+    .order("created_at", { ascending: false });
+  return data || [];
+};
 
 export default function NotesLibrary() {
   const navigate = useNavigate();
@@ -18,27 +32,46 @@ export default function NotesLibrary() {
 
   const [visibleNotes, setVisibleNotes] = useState(9);
 
-
   const [semester, setSemester] = useState("All");
   const [category, setCategory] = useState("All");
   const [subject, setSubject] = useState("All");
 
-  async function fetchNotes() {
-    const { data } = await supabase
-      .from("materials")
-      .select("*")
-      .order("created_at", { ascending: false });
+  // Filter values the current visibleNotes count belongs to. The count is
+  // reset the moment any filter changes — done during render (React's
+  // recommended pattern) instead of in an effect, so no setState runs inside
+  // an effect body (react-hooks/set-state-in-effect).
+  const [prevFilters, setPrevFilters] = useState({
+    search: "",
+    semester: "All",
+    category: "All",
+    subject: "All",
+  });
 
-    setNotes(data || []);
+  if (
+    prevFilters.search !== search ||
+    prevFilters.semester !== semester ||
+    prevFilters.category !== category ||
+    prevFilters.subject !== subject
+  ) {
+    setPrevFilters({ search, semester, category, subject });
+    setVisibleNotes(9);
+  }
+
+  async function fetchNotes() {
+    setNotes(await fetchAllNotes());
   }
 
   useEffect(() => {
-    fetchNotes();
+    // Fetch on mount. setNotes only runs after the promise resolves, so no
+    // setState happens synchronously inside this effect.
+    let ignore = false;
+    fetchAllNotes().then((data) => {
+      if (!ignore) setNotes(data);
+    });
+    return () => {
+      ignore = true;
+    };
   }, []);
-
-  useEffect(() => {
-    setVisibleNotes(9);
-  }, [search, semester, category, subject]);
 
   const deleteNote = async (id) => {
     confirmDelete(async () => {
@@ -49,13 +82,21 @@ export default function NotesLibrary() {
 
   const handlePreview = (fileUrl) => {
     if (!openSafeExternalUrl(fileUrl)) {
-      alert("This file link is not safe to open.");
+      Swal.fire({
+        icon: "warning",
+        title: "Unsafe link",
+        text: "This file link is not safe to open.",
+      });
     }
   };
 
   const handleDownload = (fileUrl) => {
     if (!openSafeExternalUrl(fileUrl, { download: true })) {
-      alert("This file link is not safe to download.");
+      Swal.fire({
+        icon: "warning",
+        title: "Unsafe link",
+        text: "This file link is not safe to download.",
+      });
     }
   };
 
@@ -87,23 +128,55 @@ export default function NotesLibrary() {
       noteCategory.includes(category.toLowerCase()) ||
       noteType.includes(category.toLowerCase());
 
+    // Match in both directions so a note stored without its subject code
+    // (e.g. "Applied Chemistry") is still found by the full-name option
+    // (e.g. "Applied Chemistry (DCH-101)").
+    const subjectLower = subject.toLowerCase();
+    const noteSubjectLower = (note.subject || "").toLowerCase();
     const subMatch =
       subject === "All" ||
-      note.subject?.toLowerCase().includes(subject.toLowerCase());
+      (noteSubjectLower &&
+        (noteSubjectLower.includes(subjectLower) ||
+          subjectLower.includes(noteSubjectLower)));
 
     return searchMatch && semMatch && catMatch && subMatch;
   });
 
+  // Subject dropdown options stay in sync with the selected semester using
+  // the shared configuration (Semester 3 uses the branch-flow subjects).
+  const subjectOptions = useMemo(() => {
+    const configured = {
+      1: DEFAULT_SUBJECTS_BY_SEMESTER[1],
+      2: DEFAULT_SUBJECTS_BY_SEMESTER[2],
+      // Semester 3 has branch-specific subjects — show them all.
+      3: getAllBranchSubjectNames("3"),
+    };
 
+    const fromMaterials = (sem) =>
+      [...new Set(
+        notes
+          .filter((note) => note.semester === sem)
+          .map((note) => note.subject)
+          .filter(Boolean),
+      )].sort((a, b) => a.localeCompare(b));
 
-  const subjects = ["All", ...new Set(notes.map((n) => n.subject))];
-  <select value={subject} onChange={(e) => setSubject(e.target.value)}>
-    {subjects.map((sub, index) => (
-      <option key={index} value={sub}>
-        {sub}
-      </option>
-    ))}
-  </select>;
+    if (semester !== "All") {
+      return configured[semester] || fromMaterials(semester);
+    }
+
+    // "All Semesters": union of every configured list plus any other subject
+    // found on uploaded materials.
+    const all = new Set([
+      ...DEFAULT_SUBJECTS_BY_SEMESTER[1],
+      ...DEFAULT_SUBJECTS_BY_SEMESTER[2],
+      ...getAllBranchSubjectNames("3"),
+    ]);
+    notes.forEach((note) => {
+      if (note.subject) all.add(note.subject);
+    });
+    return [...all].sort((a, b) => a.localeCompare(b));
+  }, [notes, semester]);
+
   const seoPages = [
     { slug: "dbms-notes", title: "DBMS Notes" },
     { slug: "c-programming-notes", title: "C Programming Notes" },
@@ -324,11 +397,7 @@ semester wise subject notes
               width: "100%",
               padding: "14px 18px",
               borderRadius: "12px",
-              border: "1px solid rgba(99,102,241,0.3)",
-              outline: "none",
               fontSize: "15px",
-              background: "rgba(255,255,255,0.03)",
-              backdropFilter: "blur(10px)",
             }}
           />
         </div>
@@ -342,11 +411,18 @@ semester wise subject notes
             gap: "12px",
             flexWrap: "wrap",
             marginBottom: "50px",
+            width: "100%",
+            maxWidth: "100%",
           }}
         >
           <select
             value={semester}
-            onChange={(e) => setSemester(e.target.value)}
+            onChange={(e) => {
+              setSemester(e.target.value);
+              // Subject lists are semester-specific — reset when the
+              // semester changes so the dropdown never keeps a stale value.
+              setSubject("All");
+            }}
             className="glass notes-library-filter"
             style={{
               padding: "10px 14px",
@@ -396,16 +472,11 @@ semester wise subject notes
             }}
           >
             <option value="All">All Subjects</option>
-            <option value="Applied Chemistry">Applied Chemistry</option>
-            <option value="Engineering Mechanics">Engineering Mechanics</option>
-            <option value="Basic Electrical Engineering">
-              Basic Electrical Engineering
-            </option>
-            <option value="Applied Mathematics">Applied Mathematics</option>
-            <option value="Essential Language & Communication">
-              Essential Language & Communication
-            </option>
-            <option value="Environmental Science">Environmental Science</option>
+            {subjectOptions.map((subjectOption) => (
+              <option key={subjectOption} value={subjectOption}>
+                {subjectOption}
+              </option>
+            ))}
           </select>
         </div>
         <div
@@ -666,9 +737,9 @@ semester wise subject notes
               </p>
             </div>
             <div className="grid">
-              {seoPages.map((page, index) => (
+              {seoPages.map((page) => (
                 <div
-                  key={index}
+                  key={page.slug}
                   className="glass"
                   style={{ padding: "25px", textAlign: "center" }}
                 >

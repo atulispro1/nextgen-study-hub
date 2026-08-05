@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePomodoro } from "../context/PomodoroContext";
-import { useRef } from "react";
 
 
 export default function PomodoroTimer() {
@@ -11,53 +10,98 @@ export default function PomodoroTimer() {
         setIsRunning,
         setTime,
         setMode,
+        breakTime,
+        setBreakTime,
+        focusTime,
     } = usePomodoro();
 
     const audioRef = useRef(null);
 
-    const focusTime = 25 * 60;
-    const [breakTime, setBreakTime] = useState(5 * 60);
+    // Declared before the effects below that call them.
+    // INIT AUDIO (user interaction)
+    function initAudio() {
+        if (!audioRef.current) {
+            const audio = new Audio("/sounds/alarm.mp3"); // 🔥 LOCAL FILE
+            audio.loop = true;
+            audio.volume = 0.4;
+
+            audioRef.current = audio;
+        }
+    }
+
+    // PLAY
+    function startAlarm() {
+        if (audioRef.current) {
+            audioRef.current.currentTime = 0;
+            audioRef.current.play().catch((err) => {
+                console.error("Audio error:", err);
+            });
+        }
+    }
+
+    // STOP
+    function stopAlarm() {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
+    }
 
 
 
-    useEffect(() => {
-        if (!isRunning) return;
+    // NOTE: the countdown interval lives in PomodoroContext. PomodoroTimer
+    // must NOT run its own interval, otherwise time decrements twice per
+    // second and the timer runs at 2x speed.
 
-        const timer = setInterval(() => {
-            setTime((prev) => prev - 1);
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [isRunning]); // ❗ ONLY isRunning
-
+    // Plays the alarm when a session ends. The mode/time switch itself is
+    // handled by PomodoroContext (single source of truth), which uses the
+    // user's customized break duration.
     useEffect(() => {
         if (time > 0) return;
 
         startAlarm();
-
-        if (mode === "focus") {
-            setMode("break");
-            setTime(breakTime);
-        } else {
-            setMode("focus");
-            setTime(focusTime);
-        }
     }, [time]);
 
-    const [alarm, setAlarm] = useState(null);
+    // Throttle localStorage writes: persist immediately when the mode or run
+    // state changes, but at most every 10s for the per-second tick writes.
+    // lastUpdated keeps restores accurate within the throttle window.
+    const lastSavedRef = useRef({ mode: null, isRunning: null, at: 0 });
+
     useEffect(() => {
-        localStorage.setItem(
-            "pomodoro",
-            JSON.stringify({
-                mode,
-                time,
-                isRunning,
-                lastUpdated: Date.now(),
-            })
-        );
+        const prev = lastSavedRef.current;
+        const stateChanged =
+            prev.mode !== mode || prev.isRunning !== isRunning;
+        const shouldSave = stateChanged || Date.now() - prev.at >= 10000;
+
+        if (!shouldSave) return;
+
+        try {
+            localStorage.setItem(
+                "pomodoro",
+                JSON.stringify({
+                    mode,
+                    time,
+                    isRunning,
+                    lastUpdated: Date.now(),
+                })
+            );
+        } catch {
+            // storage unavailable (private mode / quota) — ignore
+        }
+
+        lastSavedRef.current = { mode, isRunning, at: Date.now() };
     }, [mode, time, isRunning]);
+    // Restore the saved session once on mount only — the persisted values are
+    // the source of truth for the initial state. The context setters are
+    // stable (useState), so listing them keeps this running exactly once.
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem("pomodoro"));
+        let saved = null;
+
+        try {
+            saved = JSON.parse(localStorage.getItem("pomodoro"));
+        } catch {
+            saved = null;
+        }
 
         if (saved) {
             const now = Date.now();
@@ -77,36 +121,7 @@ export default function PomodoroTimer() {
             setTime(newTime);
             setIsRunning(saved.isRunning);
         }
-    }, []);
-
-    // INIT AUDIO (user interaction)
-    const initAudio = () => {
-        if (!audioRef.current) {
-            const audio = new Audio("/sounds/alarm.mp3"); // 🔥 LOCAL FILE
-            audio.loop = true;
-            audio.volume = 0.4;
-
-            audioRef.current = audio;
-        }
-    };
-
-    // PLAY
-    const startAlarm = () => {
-        if (audioRef.current) {
-            audioRef.current.currentTime = 0;
-            audioRef.current.play().catch((err) => {
-                console.log("Audio error:", err);
-            });
-        }
-    };
-
-    // STOP
-    const stopAlarm = () => {
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-        }
-    };
+    }, [setMode, setTime, setIsRunning]);
 
     const formatTime = (t) => {
         const m = Math.floor(t / 60);
@@ -117,7 +132,7 @@ export default function PomodoroTimer() {
     const progress =
         mode === "focus"
             ? (time / focusTime) * 100
-            : (time / breakTime) * 100;
+            : (time / Math.max(breakTime, 1)) * 100;
 
     return (
         <div
@@ -151,27 +166,42 @@ export default function PomodoroTimer() {
                     ⚙️ Customize Timer
                 </h4>
 
-                <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "10px",
+                        justifyContent: "center",
+                        flexWrap: "wrap",
+                    }}
+                >
                     <input
                         type="number"
-                        placeholder="Focus (min)"
-                        onChange={(e) => setTime(Number(e.target.value) * 60)}
+                        min="1"
+                        placeholder={`Focus (min) — ${Math.round(focusTime / 60)}`}
+                        onChange={(e) => {
+                            const val = Number(e.target.value);
+                            if (val > 0) setTime(val * 60);
+                        }}
                         style={{
                             padding: "10px",
                             borderRadius: "8px",
-                            width: "120px",
+                            width: "140px",
                             textAlign: "center",
                         }}
                     />
 
                     <input
                         type="number"
-                        placeholder="Break (min)"
-                        onChange={(e) => setBreakTime(Number(e.target.value) * 60)}
+                        min="1"
+                        placeholder={`Break (min) — ${Math.round(breakTime / 60)}`}
+                        onChange={(e) => {
+                            const val = Number(e.target.value);
+                            if (val > 0) setBreakTime(val * 60);
+                        }}
                         style={{
                             padding: "10px",
                             borderRadius: "8px",
-                            width: "120px",
+                            width: "140px",
                             textAlign: "center",
                         }}
                     />
@@ -252,10 +282,6 @@ export default function PomodoroTimer() {
                         initAudio();
                         setIsRunning((prev) => !prev);
 
-                        // 🔥 Unlock audio (browser requirement)
-                        const audio = new Audio();
-                        audio.play().catch(() => { });
-
                         stopAlarm();
                     }}
                     style={{
@@ -284,7 +310,7 @@ export default function PomodoroTimer() {
                     onClick={() => {
                         setIsRunning(false);
                         setMode("focus");
-                        setTime(25 * 60);
+                        setTime(focusTime);
                         stopAlarm(); // 🔥 stop alarm here also
                     }}
                     style={{

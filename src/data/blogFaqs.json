@@ -1,0 +1,581 @@
+{
+  "AppliedChemistryGuide.jsx": [
+    {
+      "q": "Is Applied Chemistry difficult?",
+      "a": "It becomes easy if you understand reactions and practice regularly."
+    },
+    {
+      "q": "How many hours should I study chemistry?",
+      "a": "1–2 focused hours daily are sufficient during exam preparation."
+    },
+    {
+      "q": "Are diagrams important in chemistry exams?",
+      "a": "Yes, diagrams often fetch extra marks and show conceptual clarity."
+    }
+  ],
+  "AvoidProcrastination.jsx": [
+    {
+      "q": "Is procrastination normal?",
+      "a": "Yes. But it must be controlled."
+    },
+    {
+      "q": "How to stay motivated daily?",
+      "a": "Focus on small progress, not big goals."
+    },
+    {
+      "q": "Can I fix procrastination quickly?",
+      "a": "Yes, by starting with micro tasks consistently."
+    }
+  ],
+  "BankingExamPreparation.jsx": [
+    {
+      "q": "Is UPSC very tough?",
+      "a": "It is competitive and lengthy, but with structured preparation, it becomes manageable."
+    },
+    {
+      "q": "How many hours should I study daily?",
+      "a": "6–8 focused hours consistently."
+    },
+    {
+      "q": "Can I prepare without coaching?",
+      "a": "Yes. Many toppers cleared UPSC through self-study."
+    },
+    {
+      "q": "How many attempts are required?",
+      "a": "It varies. Consistency and strategy matter more than attempt count."
+    }
+  ],
+  "BestBooksSSCPreparation.jsx": [
+    {
+      "q": "Is one book enough for SSC preparation?",
+      "a": "Yes, if the book covers concepts and practice questions thoroughly."
+    },
+    {
+      "q": "Are previous year papers important?",
+      "a": "Yes, they help understand exam patterns and important topics."
+    },
+    {
+      "q": "How many months are required for SSC preparation?",
+      "a": "With consistent study, 4–6 months can be sufficient."
+    }
+  ],
+  "BestProgrammingLanguage.jsx": [
+    {
+      "q": "Is Python enough to get a job?",
+      "a": "Yes, but you must combine it with projects, DSA knowledge, and problem-solving practice."
+    },
+    {
+      "q": "Should I learn C before Python?",
+      "a": "Not necessary. You can start with Python and later learn C for deeper understanding."
+    },
+    {
+      "q": "How long does it take to learn a language?",
+      "a": "Basics: 1–2 months Intermediate: 3–6 months Mastery: Continuous learning"
+    },
+    {
+      "q": "Can I learn two languages together?",
+      "a": "Not recommended for beginners. Master one first."
+    }
+  ],
+  "BuildLinkedIn.jsx": [
+    {
+      "q": "Is LinkedIn useful for students?",
+      "a": "Yes, it helps build professional network and career visibility."
+    },
+    {
+      "q": "How many connections should I have?",
+      "a": "Quality connections matter more than quantity."
+    },
+    {
+      "q": "How often should I post?",
+      "a": "Posting once or twice a week is enough."
+    }
+  ],
+  "CodingPracticePlatforms.jsx": [
+    {
+      "q": "How many problems should I solve daily?",
+      "a": "At least 2–3 problems consistently."
+    },
+    {
+      "q": "Is LeetCode enough for placements?",
+      "a": "Yes, if combined with strong fundamentals."
+    },
+    {
+      "q": "Is competitive programming necessary?",
+      "a": "Not mandatory, but helpful for logic building."
+    }
+  ],
+  "CodingRoadmap2026.jsx": [
+    {
+      "q": "Which programming language should beginners start with?",
+      "a": "Python or C++ are good choices for beginners."
+    },
+    {
+      "q": "How long does it take to learn coding?",
+      "a": "With consistent practice, basic skills can develop in 6–12 months."
+    },
+    {
+      "q": "Is coding difficult?",
+      "a": "Coding becomes easier with regular practice and problem solving."
+    }
+  ],
+  "CommunicationSkillsEngineers.jsx": [
+    {
+      "q": "Is English mandatory for engineers?",
+      "a": "For multinational companies, yes. For others, clarity matters more than fluency."
+    },
+    {
+      "q": "How long to improve communication?",
+      "a": "2–3 months of daily practice shows noticeable results."
+    },
+    {
+      "q": "Can introverts improve communication?",
+      "a": "Yes. Communication is a skill, not personality trait."
+    }
+  ],
+  "CrackSSCCGL.jsx": [
+    {
+      "q": "Is SSC CGL tough?",
+      "a": "It is competitive, not conceptually tough. Speed and practice make the difference."
+    },
+    {
+      "q": "Can I crack SSC CGL without coaching?",
+      "a": "Yes. With proper PYQs, mock tests, and discipline, self-study is enough."
+    },
+    {
+      "q": "How many hours daily required?",
+      "a": "2–4 focused hours consistently for 1–1.5 years."
+    },
+    {
+      "q": "Is graduation mandatory?",
+      "a": "Yes. Final year students can also apply."
+    }
+  ],
+  "DailyStudyRoutine.jsx": [],
+  "DataStructureGuide.jsx": [
+    {
+      "q": "Is Data Structure hard?",
+      "a": "No, with consistent practice it becomes logical and enjoyable."
+    },
+    {
+      "q": "How long to master it?",
+      "a": "3–6 months with daily practice."
+    },
+    {
+      "q": "Which language is best for DSA?",
+      "a": "C++, Java, or Python — choose one and stick to it."
+    }
+  ],
+  "DBMSBeginnersGuide.jsx": [
+    {
+      "q": "Is DBMS important for software developers?",
+      "a": "Yes, database knowledge is essential for backend development."
+    },
+    {
+      "q": "Is SQL difficult to learn?",
+      "a": "No, SQL is one of the easiest programming languages to learn."
+    },
+    {
+      "q": "Do companies ask DBMS questions in interviews?",
+      "a": "Yes, DBMS is a core subject asked in many technical interviews."
+    }
+  ],
+  "DigitalMarketingCareerGuide.jsx": [
+    {
+      "q": "Is digital marketing good career in 2026?",
+      "a": "Yes, demand is increasing rapidly."
+    },
+    {
+      "q": "Do I need coding for digital marketing?",
+      "a": "No, but basic understanding helps."
+    },
+    {
+      "q": "Can I earn while studying?",
+      "a": "Yes, through freelancing and internships."
+    }
+  ],
+  "EngineeringMathsGuide.jsx": [
+    {
+      "q": "Is engineering mathematics difficult?",
+      "a": "It may seem difficult initially, but regular practice makes it much easier."
+    },
+    {
+      "q": "How many hours should I study mathematics?",
+      "a": "1–2 hours of focused daily practice is usually enough."
+    },
+    {
+      "q": "Are previous year papers important?",
+      "a": "Yes, they help understand exam patterns and frequently asked questions."
+    }
+  ],
+  "ExamStressManagement.jsx": [
+    {
+      "q": "Is exam stress normal?",
+      "a": "Yes, moderate stress improves performance."
+    },
+    {
+      "q": "How to calm down quickly?",
+      "a": "Deep breathing for 2–3 minutes helps immediately."
+    },
+    {
+      "q": "Does stress reduce marks?",
+      "a": "Excessive stress can affect concentration and memory."
+    }
+  ],
+  "GKPreparationGuide.jsx": [
+    {
+      "q": "How many months required to master GK?",
+      "a": "6–8 months of consistent study is enough."
+    },
+    {
+      "q": "Is newspaper necessary?",
+      "a": "Helpful, but monthly PDFs are sufficient for most exams."
+    },
+    {
+      "q": "How to remember GK for long time?",
+      "a": "Regular revision + solving MCQs is key."
+    }
+  ],
+  "GovernmentJobsAfterDiploma.jsx": [
+    {
+      "q": "Can diploma holders apply for UPSC?",
+      "a": "No, graduation is required for UPSC Civil Services."
+    },
+    {
+      "q": "Is government job better than private job?",
+      "a": "It depends on your goals. Government offers stability, private offers growth speed."
+    },
+    {
+      "q": "How long should I prepare?",
+      "a": "Minimum 6–12 months of consistent preparation."
+    }
+  ],
+  "GovernmentJobSalaryList.jsx": [
+    {
+      "q": "Which government job has the highest salary?",
+      "a": "Civil services like IAS and IPS offer some of the highest salaries."
+    },
+    {
+      "q": "Are government salaries increasing?",
+      "a": "Yes, salaries increase through pay commissions and promotions."
+    },
+    {
+      "q": "Do government jobs include allowances?",
+      "a": "Yes, allowances like HRA and TA significantly increase total salary."
+    }
+  ],
+  "GovernmentVsPrivateJob.jsx": [
+    {
+      "q": "Is government job more respected?",
+      "a": "Traditionally yes, but private sector also earns respect today."
+    },
+    {
+      "q": "Which job has higher salary potential?",
+      "a": "Private sector has higher growth potential."
+    },
+    {
+      "q": "Can I switch from private to government?",
+      "a": "Yes, by clearing competitive exams."
+    }
+  ],
+  "HTMLCSSJavaScript.jsx": [
+    {
+      "q": "Is HTML enough to get a job?",
+      "a": "No. You need CSS and JavaScript as well for frontend roles."
+    },
+    {
+      "q": "Is JavaScript difficult?",
+      "a": "It may feel challenging initially, but practice makes it easier."
+    },
+    {
+      "q": "Can I learn all three in 3 months?",
+      "a": "Yes, with consistent daily practice."
+    },
+    {
+      "q": "Do I need frameworks like React?",
+      "a": "After mastering basics, frameworks become easier to learn."
+    }
+  ],
+  "ImproveEnglishSpeaking.jsx": [
+    {
+      "q": "How long does it take to improve English speaking?",
+      "a": "With daily practice, noticeable improvement can happen within 2–3 months."
+    },
+    {
+      "q": "Is grammar necessary for speaking?",
+      "a": "Basic grammar helps, but confidence and practice matter more."
+    },
+    {
+      "q": "Can I improve English without coaching?",
+      "a": "Yes, self-practice and online resources can be very effective."
+    }
+  ],
+  "InternshipSecondYear.jsx": [
+    {
+      "q": "Is internship necessary in diploma?",
+      "a": "Yes. It improves practical exposure and placement chances."
+    },
+    {
+      "q": "Can I get paid internship in 2nd year?",
+      "a": "Yes, if your skills are strong and projects are impressive."
+    },
+    {
+      "q": "What if I don’t get internship?",
+      "a": "Continue building projects and keep applying consistently."
+    },
+    {
+      "q": "Should I work for free?",
+      "a": "If it provides real learning and experience, short-term unpaid internships can be beneficial."
+    }
+  ],
+  "InterviewQuestionsFreshers.jsx": [
+    {
+      "q": "How long should answers be?",
+      "a": "Clear and concise (1–2 minutes per answer)."
+    },
+    {
+      "q": "Is English fluency necessary?",
+      "a": "Clarity matters more than accent."
+    },
+    {
+      "q": "How to reduce interview fear?",
+      "a": "Practice mock interviews regularly."
+    }
+  ],
+  "LearnCPPFast.jsx": [
+    {
+      "q": "Is C++ difficult for beginners?",
+      "a": "No, if learned step-by-step."
+    },
+    {
+      "q": "How long to become confident?",
+      "a": "2–3 months of consistent practice."
+    },
+    {
+      "q": "Is C++ good for placements?",
+      "a": "Yes, especially for product-based companies."
+    }
+  ],
+  "OperatingSystemBasics.jsx": [
+    {
+      "q": "Is Operating System important for placements?",
+      "a": "Yes, OS is a core subject frequently asked in technical interviews."
+    },
+    {
+      "q": "Which OS is most popular?",
+      "a": "Windows for personal computers and Linux for servers."
+    },
+    {
+      "q": "Is OS difficult to learn?",
+      "a": "It becomes easy when concepts are understood with examples."
+    }
+  ],
+  "PassBacklogSubject.jsx": [
+    {
+      "q": "Can I clear backlog in one attempt?",
+      "a": "Yes, with structured preparation and smart revision."
+    },
+    {
+      "q": "How many hours should I study daily?",
+      "a": "3–5 focused hours consistently."
+    },
+    {
+      "q": "Is backlog harmful for career?",
+      "a": "Not permanently. Clear it quickly and focus forward."
+    }
+  ],
+  "PrepareSemester7Days.jsx": [
+    {
+      "q": "Is 7 days enough?",
+      "a": "Yes, if you focus on high-weightage and PYQs."
+    },
+    {
+      "q": "Should I skip difficult chapters?",
+      "a": "Skip low-weightage topics, not important ones."
+    },
+    {
+      "q": "How many hours daily?",
+      "a": "7–9 focused hours with structured breaks."
+    },
+    {
+      "q": "Are previous year papers important?",
+      "a": "Extremely important. They reveal exam patterns."
+    }
+  ],
+  "PrepareStatePSC.jsx": [
+    {
+      "q": "Is State PSC easier than UPSC?",
+      "a": "Competition is lower but syllabus depth is similar."
+    },
+    {
+      "q": "How many attempts are allowed?",
+      "a": "Depends on state rules and age limits."
+    },
+    {
+      "q": "Can diploma students apply?",
+      "a": "Generally graduation is required."
+    }
+  ],
+  "ProjectIdeasDiploma.jsx": [
+    {
+      "q": "Should I choose AI project in diploma?",
+      "a": "If you understand basics and have guidance, yes."
+    },
+    {
+      "q": "Can I build project alone?",
+      "a": "Yes, but teamwork improves learning experience."
+    },
+    {
+      "q": "Is simple project enough for good marks?",
+      "a": "Yes, if explanation and implementation are strong."
+    }
+  ],
+  "RailwayExamGuide.jsx": [
+    {
+      "q": "Is Railway exam tough?",
+      "a": "It is moderate in difficulty but highly competitive. Consistent practice makes it manageable."
+    },
+    {
+      "q": "How many hours should I study daily?",
+      "a": "3–5 focused hours daily for 6 months."
+    },
+    {
+      "q": "Are previous year papers important?",
+      "a": "Extremely important. Railway exams follow repeated patterns."
+    },
+    {
+      "q": "Can beginners crack it in first attempt?",
+      "a": "Yes, with structured preparation and serious mock practice."
+    }
+  ],
+  "RailwayNTPCGuide.jsx": [
+    {
+      "q": "Is Railway NTPC tough?",
+      "a": "Moderate level, but competition is high."
+    },
+    {
+      "q": "How many hours should I study?",
+      "a": "4–6 focused hours daily are sufficient."
+    },
+    {
+      "q": "Is coaching necessary?",
+      "a": "No, self-study + mock tests can be enough."
+    }
+  ],
+  "ResumeDiplomaStudents.jsx": [
+    {
+      "q": "Is HTML enough to get a job?",
+      "a": "No. You need CSS and JavaScript as well for frontend roles."
+    },
+    {
+      "q": "Is JavaScript difficult?",
+      "a": "It may feel challenging initially, but practice makes it easier."
+    },
+    {
+      "q": "Can I learn all three in 3 months?",
+      "a": "Yes, with consistent daily practice."
+    },
+    {
+      "q": "Do I need frameworks like React?",
+      "a": "After mastering basics, frameworks become easier to learn."
+    }
+  ],
+  "ScoreCGPA.jsx": [
+    {
+      "q": "Is 8+ CGPA difficult?",
+      "a": "No. Structured planning makes it achievable."
+    },
+    {
+      "q": "How many hours daily?",
+      "a": "2–4 focused hours daily are enough."
+    },
+    {
+      "q": "Can average students score high?",
+      "a": "Yes. Strategy matters more than intelligence."
+    }
+  ],
+  "SelfStudyStrategy.jsx": [
+    {
+      "q": "Is coaching necessary to crack exams?",
+      "a": "No, many students succeed through self-study."
+    },
+    {
+      "q": "How many hours should I study?",
+      "a": "4–6 focused hours are enough if consistent."
+    },
+    {
+      "q": "How to stay motivated?",
+      "a": "Set small goals and track daily progress."
+    }
+  ],
+  "SSCCHSLGuide.jsx": [
+    {
+      "q": "Is SSC CHSL tough?",
+      "a": "Moderate level, but competition is high."
+    },
+    {
+      "q": "How many hours should I study?",
+      "a": "4–6 focused hours daily are enough."
+    },
+    {
+      "q": "Is coaching necessary?",
+      "a": "No, self-study with mock tests is sufficient."
+    }
+  ],
+  "StudyTimeManagement.jsx": [
+    {
+      "q": "How many hours should engineering students study daily?",
+      "a": "3–5 focused hours are sufficient."
+    },
+    {
+      "q": "Is multitasking effective?",
+      "a": "No. Focus on one task at a time."
+    },
+    {
+      "q": "How to stay consistent?",
+      "a": "Follow routine daily and track progress weekly."
+    }
+  ],
+  "TopCareerOptionsAfterDiploma.jsx": [
+    {
+      "q": "Can diploma students get high salary?",
+      "a": "Yes, if they develop strong technical skills."
+    },
+    {
+      "q": "Is B.Tech compulsory after diploma?",
+      "a": "No. Skill-based growth can also lead to success."
+    }
+  ],
+  "UPSCBeginnersGuide.jsx": [
+    {
+      "q": "Is UPSC very tough?",
+      "a": "It is competitive and lengthy, but with structured preparation, it becomes manageable."
+    },
+    {
+      "q": "How many hours should I study daily?",
+      "a": "6–8 focused hours consistently."
+    },
+    {
+      "q": "Can I prepare without coaching?",
+      "a": "Yes. Many toppers cleared UPSC through self-study."
+    },
+    {
+      "q": "How many attempts are required?",
+      "a": "It varies. Consistency and strategy matter more than attempt count."
+    }
+  ],
+  "VivaPreparationGuide.jsx": [
+    {
+      "q": "What if I don’t know the answer?",
+      "a": "Politely say you are not sure but try to explain related concept."
+    },
+    {
+      "q": "Is fluency in English necessary?",
+      "a": "No. Clarity matters more than accent."
+    },
+    {
+      "q": "How to reduce viva fear?",
+      "a": "Practice speaking answers daily and do mock viva."
+    }
+  ]
+}

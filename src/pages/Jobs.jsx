@@ -24,21 +24,9 @@ export default function Jobs() {
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [visibleJobs, setVisibleJobs] = useState(6);
   const isAdmin = profileReady && isAdminRole(role);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearchQuery(search);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [search]);
 
   /* FETCH JOBS FROM SUPABASE */
 
-  useEffect(() => {
-    fetchJobs();
-  }, []);
   const fetchJobs = async () => {
     const { data, error } = await supabase
       .from("jobs")
@@ -46,11 +34,37 @@ export default function Jobs() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.log(error);
+      console.error(error);
     } else {
       setJobs(data);
     }
   };
+
+  // Load once on mount. setState runs in the promise callback (async), never
+  // synchronously in the effect body; `cancelled` guards against setting
+  // state after unmount. NOTE: this mirrors fetchJobs() below (the refresh
+  // twin used by deleteJob / UploadJobCard) — keep both queries in sync.
+  useEffect(() => {
+    let cancelled = false;
+
+    supabase
+      .from("jobs")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (cancelled) return;
+
+        if (error) {
+          console.error(error);
+        } else {
+          setJobs(data);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const toggleBookmark = (id) => {
     if (bookmarks.includes(id)) {
@@ -90,15 +104,6 @@ export default function Jobs() {
       }
     }
   };
-
-  /* RESET PAGE WHEN SEARCH OR FILTER CHANGES */
-
-
-  useEffect(() => {
-    setVisibleJobs(6);
-  }, [search, jobType, sortBy, showBookmarks]);
-
-
 
   /* FILTER JOBS */
 
@@ -253,7 +258,10 @@ academic productivity tools platform
                 type="text"
                 placeholder="🔍 Search jobs, companies or skills..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setVisibleJobs(6);
+                }}
                 style={{
                   width: "100%",
                   padding: "14px 16px",
@@ -271,7 +279,10 @@ academic productivity tools platform
 
             <select
               value={jobType}
-              onChange={(e) => setJobType(e.target.value)}
+              onChange={(e) => {
+                setJobType(e.target.value);
+                setVisibleJobs(6);
+              }}
               className="job-filter"
             >
               <option value="all">All Jobs</option>
@@ -285,7 +296,10 @@ academic productivity tools platform
 
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={(e) => {
+                setSortBy(e.target.value);
+                setVisibleJobs(6);
+              }}
               className="job-filter"
             >
               <option value="latest">Sort: Latest</option>
@@ -303,7 +317,10 @@ academic productivity tools platform
                 fontWeight: "600",
                 boxShadow: "0 8px 20px rgba(99,102,241,0.3)",
               }}
-              onClick={() => setShowBookmarks(!showBookmarks)}
+              onClick={() => {
+                setShowBookmarks(!showBookmarks);
+                setVisibleJobs(6);
+              }}
             >
               ⭐ My Bookmarks
             </button>

@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Can diploma holders apply for UPSC?", a: "No, graduation is required for UPSC Civil Services." },
+      { q: "Is government job better than private job?", a: "It depends on your goals. Government offers stability, private offers growth speed." },
+      { q: "How long should I prepare?", a: "Minimum 6–12 months of consistent preparation." },
+    ]}>
 
       {/* INTRODUCTION */}
       <div className="blog-section">

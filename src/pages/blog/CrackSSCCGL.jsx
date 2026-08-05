@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,13 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is SSC CGL tough?", a: "It is competitive, not conceptually tough. Speed and practice make the difference." },
+      { q: "Can I crack SSC CGL without coaching?", a: "Yes. With proper PYQs, mock tests, and discipline, self-study is enough." },
+      { q: "How many hours daily required?", a: "2–4 focused hours consistently for 1–1.5 years." },
+      { q: "Is graduation mandatory?", a: "Yes. Final year students can also apply." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

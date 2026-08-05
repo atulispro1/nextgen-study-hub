@@ -89,9 +89,13 @@ export default function ArticlePost() {
 
   const [post, setPost] = useState(null);
   const [related, setRelated] = useState([]);
+  const [loadedSlug, setLoadedSlug] = useState(null);
   const visibleCount = 0;
   const setVisibleCount = () => {};
-  const [loading, setLoading] = useState(true);
+
+  // Derived: true until the article for the current slug has loaded (the old
+  // synchronous setLoading(true) in the effect violated set-state-in-effect).
+  const loading = loadedSlug !== slug;
 
   const cardStyle = {
     display: "block",
@@ -116,9 +120,11 @@ export default function ArticlePost() {
       category->{title}
     }`;
 
-    setLoading(true);
+    let ignore = false;
 
     client.fetch(query).then((data) => {
+      if (ignore) return;
+
       const current = data.find((p) => p.slug?.current === slug) || null;
 
       setPost(current);
@@ -139,8 +145,12 @@ export default function ArticlePost() {
         .slice(0, 4);
 
       setRelated(others);
-      setLoading(false);
+      setLoadedSlug(slug);
     });
+
+    return () => {
+      ignore = true;
+    };
   }, [slug]);
 
   if (loading) {
@@ -616,9 +626,9 @@ diploma study tips
 
           {/* GRID */}
           <div className="grid">
-            {seoPages.slice(0, visibleCount).map((page, index) => (
+            {seoPages.slice(0, visibleCount).map((page) => (
               <div
-                key={index}
+                key={page.slug}
                 className="glass"
                 style={{ padding: "25px", textAlign: "center" }}
               >

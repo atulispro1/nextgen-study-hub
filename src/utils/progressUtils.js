@@ -1,10 +1,19 @@
+const getStoredProgress = () => {
+  try {
+    return JSON.parse(localStorage.getItem("progress")) || {};
+  } catch {
+    // Corrupted or unreadable stored progress must never crash the app.
+    return {};
+  }
+};
+
 export const getProgress = (subject) => {
-  const data = JSON.parse(localStorage.getItem("progress")) || {};
+  const data = getStoredProgress();
   return data[subject] || {};
 };
 
 export const toggleUnitProgress = (subject, unitId) => {
-  const data = JSON.parse(localStorage.getItem("progress")) || {};
+  const data = getStoredProgress();
 
   if (!data[subject]) {
     data[subject] = {};

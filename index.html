@@ -5,13 +5,15 @@
 <head>
   <!-- Basic Meta -->
   <link rel="icon" href="/favicon.png" sizes="48x48" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/favicon.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="canonical" href="https://www.atulsharmas.in/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#4f46e5" />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="format-detection" content="telephone=no" />
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3952416023525027"
     crossorigin="anonymous"></script>
@@ -63,6 +65,9 @@ exam preparation tips
   <meta property="og:url" content="https://www.atulsharmas.in/" />
   <meta property="og:locale" content="en_IN" />
   <meta property="og:image" content="https://www.atulsharmas.in/preview.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="NextGen Study Hub – diploma notes, study materials and student tools" />
 
   <!-- Twitter Card -->
 
@@ -84,18 +89,53 @@ exam preparation tips
     gtag("config", "G-XRNB3H9TVN");
   </script>
 
-  <!-- Structured Data (Schema.org) -->
+  <!-- Structured Data (Schema.org) — Organization + WebSite with SearchAction -->
+
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": ["Organization", "EducationalOrganization"],
+        "@id": "https://www.atulsharmas.in/#organization",
+        "name": "NextGen Study Hub",
+        "url": "https://www.atulsharmas.in",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.atulsharmas.in/favicon.png",
+          "width": 48,
+          "height": 48
+        },
+        "founder": {
+          "@type": "Person",
+          "name": "Atul Sharma",
+          "url": "https://www.atulsharmas.in/about"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "url": "https://www.atulsharmas.in/contact-owner",
+          "availableLanguage": ["English", "Hindi"]
+        },
+        "sameAs": ["https://www.atulsharmas.in"]
+      }
+    </script>
 
   <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
+        "@id": "https://www.atulsharmas.in/#website",
         "name": "NextGen Study Hub",
         "url": "https://www.atulsharmas.in",
         "description": "NextGen Study Hub provides diploma engineering study materials, notes, tools and internships.",
-        "author": {
-          "@type": "Person",
-          "name": "Atul Sharma"
+        "publisher": { "@id": "https://www.atulsharmas.in/#organization" },
+        "inLanguage": "en-IN",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.atulsharmas.in/notes-library?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
         }
       }
     </script>

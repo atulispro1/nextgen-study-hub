@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { canSubmitWithCooldown, normalizeTextInput } from "../utils/security";
+import {
+  canSubmitWithCooldown,
+  friendlyAiError,
+  normalizeTextInput,
+} from "../utils/security";
+import { fetchWithTimeout } from "../utils/fetchWithTimeout";
+import MarkdownText from "./MarkdownText";
 
 export default function AIAssistant() {
   const [subject, setSubject] = useState("Applied Chemistry");
@@ -31,8 +37,8 @@ export default function AIAssistant() {
     setResponse("");
 
     try {
-      const res = await fetch(
-        "https://lryyihefzqpjiedtrdeg.supabase.co/functions/v1/ai-assistant",
+      const res = await fetchWithTimeout(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-assistant`,
         {
           method: "POST",
           headers: {
@@ -42,11 +48,16 @@ export default function AIAssistant() {
         },
       );
 
+      if (!res.ok) {
+        setResponse(await friendlyAiError(res));
+        return;
+      }
+
       const data = await res.json();
       setResponse(data.output || "No response generated.");
     } catch (err) {
       console.error(err);
-      setResponse("Error generating content.");
+      setResponse("Error generating content. Please try again.");
     }
 
     setLoading(false);
@@ -82,8 +93,8 @@ export default function AIAssistant() {
           onChange={(e) => setSubject(e.target.value)}
           style={{ padding: "10px", borderRadius: "8px" }}
         >
-          {subjects.map((sub, index) => (
-            <option key={index} value={sub}>
+          {subjects.map((sub) => (
+            <option key={sub} value={sub}>
               {sub}
             </option>
           ))}
@@ -137,11 +148,10 @@ export default function AIAssistant() {
             padding: "20px",
             background: "rgba(99,102,241,0.05)",
             borderRadius: "10px",
-            whiteSpace: "pre-wrap",
           }}
         >
 
-          {response}
+          <MarkdownText text={response} />
         </div>
       )}
     </div>

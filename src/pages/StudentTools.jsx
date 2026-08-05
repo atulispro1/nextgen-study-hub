@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import SEO from "../components/SEO";
-import { Calculator, Briefcase, Bell, FileText } from "lucide-react";
 import GPACalculator from "../components/GPACalculator";
 import AIAssistant from "../components/AIAssistant";
 import AdvancedTodo from "../components/AdvancedTodo";
@@ -13,28 +12,6 @@ import AIQuestionSolver from "../components/AIQuestionSolver";
 
 export default function StudentTools() {
   const navigate = useNavigate();
-  const tools = [
-    {
-      icon: <Calculator size={28} />,
-      title: "GPA Calculator",
-      desc: "Calculate semester GPA instantly with smart grading system.",
-    },
-    {
-      icon: <Briefcase size={28} />,
-      title: "Internship Section",
-      desc: "Latest internship opportunities & career updates.",
-    },
-    {
-      icon: <Bell size={28} />,
-      title: "Notifications",
-      desc: "Important academic announcements & updates.",
-    },
-    {
-      icon: <FileText size={28} />,
-      title: "Assignment Helper",
-      desc: "Quick resources and solved assignment guidance.",
-    },
-  ];
 
   const seoPages = [
     { slug: "dbms-notes", title: "DBMS Notes" },
@@ -167,7 +144,7 @@ student education tools
               fontSize: "clamp(2.2rem,5vw,3rem)",
               fontWeight: "900",
               marginBottom: "20px",
-              background: "linear-gradient(135deg,#6366f1,#8b5cf6,#22c55e)",
+              background: "linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               lineHeight: "1.2",
@@ -313,10 +290,9 @@ student education tools
           }}
         />
         <div
-          className="glass"
+          className="glass tool-panel"
           style={{
             marginTop: "70px",
-            padding: "45px",
             borderRadius: "22px",
             textAlign: "center",
           }}
@@ -387,9 +363,9 @@ student education tools
         </div>
 
         <div className="grid">
-          {seoPages.map((page, index) => (
+          {seoPages.map((page) => (
             <div
-              key={index}
+              key={page.slug}
               className="glass"
               style={{ padding: "25px", textAlign: "center" }}
             >
@@ -411,9 +387,8 @@ student education tools
           ))}
         </div>
         <div
-          className="glass"
+          className="glass tool-panel"
           style={{
-            padding: "60px",
             marginTop: "120px",
             textAlign: "center",
             maxWidth: "900px",
@@ -454,18 +429,8 @@ student education tools
           </p>
 
           <button
+            className="btn-primary"
             onClick={() => navigate("/contact-owner")}
-            style={{
-              padding: "14px 40px",
-              borderRadius: "30px",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "15px",
-              fontWeight: "600",
-              color: "white",
-              background: "linear-gradient(90deg,#6366f1,#8b5cf6)",
-              boxShadow: "0 10px 25px rgba(99,102,241,0.3)",
-            }}
           >
             💬 Send Your Suggestion
           </button>

@@ -7,27 +7,14 @@ import generatedArticles from "../data/generatedArticles.json";
 import { client } from "../lib/sanityClient";
 import { urlFor } from "../lib/sanityImage";
 import { ThemeContext } from "../context/ThemeContext";
+import Skeleton, { SkeletonGrid } from "../components/Skeleton";
+import Reveal from "../components/Reveal";
 
 const TextTicker = lazy(() => import("../components/TextTicker"));
 const SemesterSection = lazy(() => import("../components/SemesterSection"));
 const Features = lazy(() => import("../components/Features"));
 const PremiumSection = lazy(() => import("../components/PremiumSection"));
 const Testimonials = lazy(() => import("../components/Testimonials"));
-
-const heroHighlights = [
-  {
-    title: "Semester-wise Notes",
-    description: "Structured study material for diploma and engineering students.",
-  },
-  {
-    title: "Student Tools",
-    description: "Useful calculators, planners, and AI-powered helpers in one place.",
-  },
-  {
-    title: "Career Guidance",
-    description: "Internships, articles, and roadmaps that keep students moving forward.",
-  },
-];
 
 const heroQuickLinks = [
   {
@@ -217,19 +204,34 @@ export default function Home() {
         category->{title}
       }`;
 
-    client.fetch(query).then((data) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setPosts(data);
-      }
-    });
+    let ignore = false;
+
+    client
+      .fetch(query)
+      .then((data) => {
+        if (ignore) return;
+        if (Array.isArray(data) && data.length > 0) {
+          setPosts(data);
+        }
+      })
+      .catch((error) => {
+        // Keep showing the generated fallback articles; just surface the failure.
+        if (!ignore) {
+          console.error("Failed to load articles from Sanity:", error);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const dividerStyle = {
     height: "1px",
     background: isDark
-      ? "linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.18), transparent)"
-      : "linear-gradient(90deg, transparent, rgba(31, 59, 115, 0.18), transparent)",
-    margin: "72px 0",
+      ? "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.20), transparent)"
+      : "linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.16), transparent)",
+    margin: "clamp(48px, 7vw, 72px) 0",
   };
 
   return (
@@ -440,40 +442,25 @@ education platform for engineering students
         </section>
 
         <div className="home-ticker-wrap">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Skeleton height={56} radius={14} />}>
             <TextTicker />
           </Suspense>
         </div>
 
         <div style={dividerStyle} />
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <SemesterSection />
-        </Suspense>
+        <Reveal>
+          <Suspense fallback={<SkeletonGrid count={3} lines={3} />}>
+            <SemesterSection />
+          </Suspense>
+        </Reveal>
 
         <div style={dividerStyle} />
 
         {latestArticles.length > 0 && (
           <>
-            <section
-              className="home-surface latest-section-panel"
-              style={{
-                position: "relative",
-                padding: "clamp(32px,5vw,56px)",
-                borderRadius: "28px",
-                margin: "70px 0",
-                overflow: "hidden",
-                background: isDark
-                  ? "linear-gradient(145deg, rgba(10,22,36,0.95), rgba(17,24,39,0.92))"
-                  : "linear-gradient(145deg, rgba(255,252,248,0.96), rgba(247,242,236,0.98))",
-                border: isDark
-                  ? "1px solid rgba(255,255,255,0.08)"
-                  : "1px solid rgba(31,59,115,0.10)",
-                boxShadow: isDark
-                  ? "0 28px 80px rgba(2,6,23,0.34)"
-                  : "0 24px 70px rgba(31,59,115,0.10)",
-              }}
-            >
+            <Reveal>
+              <section className="home-surface latest-section-panel">
               <div
                 style={{
                   position: "absolute",
@@ -482,7 +469,7 @@ education platform for engineering students
                   height: "260px",
                   borderRadius: "999px",
                   background:
-                    "radial-gradient(circle, rgba(44, 122, 123, 0.20), transparent 70%)",
+                    "radial-gradient(circle, rgba(139, 92, 246, 0.16), transparent 70%)",
                   filter: "blur(18px)",
                   pointerEvents: "none",
                 }}
@@ -495,7 +482,7 @@ education platform for engineering students
                   height: "260px",
                   borderRadius: "999px",
                   background:
-                    "radial-gradient(circle, rgba(201, 123, 75, 0.20), transparent 70%)",
+                    "radial-gradient(circle, rgba(79, 70, 229, 0.14), transparent 70%)",
                   filter: "blur(22px)",
                   pointerEvents: "none",
                 }}
@@ -522,8 +509,8 @@ education platform for engineering students
                       borderRadius: "999px",
                       background: isDark
                         ? "rgba(255,255,255,0.08)"
-                        : "rgba(31,59,115,0.07)",
-                      color: isDark ? "#dbeafe" : "#1f3b73",
+                        : "rgba(99,102,241,0.10)",
+                      color: isDark ? "#a5b4fc" : "#4f46e5",
                       fontSize: "13px",
                       fontWeight: "700",
                       letterSpacing: "0.04em",
@@ -538,7 +525,7 @@ education platform for engineering students
                       fontSize: "clamp(2rem,4vw,2.8rem)",
                       fontWeight: "900",
                       marginBottom: "14px",
-                      color: isDark ? "#f8fafc" : "#18212b",
+                      color: isDark ? "#f8fafc" : "#0f172a",
                     }}
                   >
                     Latest Published Articles
@@ -580,14 +567,14 @@ education platform for engineering students
                     }
                     style={{
                       background: isDark
-                        ? "linear-gradient(180deg, rgba(31,59,115,0.24), rgba(10,22,36,0.94))"
-                        : "linear-gradient(180deg, rgba(31,59,115,0.10), rgba(255,255,255,0.98))",
+                        ? "linear-gradient(180deg, rgba(79,70,229,0.28), rgba(10,22,36,0.94))"
+                        : "linear-gradient(180deg, rgba(99,102,241,0.08), #ffffff)",
                       border: isDark
                         ? "1px solid rgba(255,255,255,0.10)"
-                        : "1px solid rgba(15,23,42,0.08)",
+                        : "1px solid rgba(79,70,229,0.12)",
                       boxShadow: isDark
                         ? "0 22px 50px rgba(2,6,23,0.32)"
-                        : "0 18px 40px rgba(15,23,42,0.08)",
+                        : "0 18px 40px rgba(79,70,229,0.08)",
                     }}
                   >
                     {featuredArticle.mainImage && (
@@ -608,8 +595,8 @@ education platform for engineering students
                           style={{
                             background: isDark
                               ? "rgba(255,255,255,0.10)"
-                              : "rgba(31,59,115,0.10)",
-                            color: isDark ? "#dbeafe" : "#1f3b73",
+                              : "rgba(99,102,241,0.10)",
+                            color: isDark ? "#a5b4fc" : "#4f46e5",
                           }}
                         >
                           Featured Article
@@ -656,7 +643,7 @@ education platform for engineering students
                         >
                           {featuredArticle.category?.title || "Student Article"}
                         </span>
-                        <span style={{ color: isDark ? "#dbeafe" : "#1f3b73" }}>
+                        <span style={{ color: isDark ? "#a5b4fc" : "#4f46e5" }}>
                           Read More {"->"}
                         </span>
                       </div>
@@ -673,11 +660,11 @@ education platform for engineering students
                       }
                       style={{
                         background: isDark
-                          ? "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(10,22,36,0.92))"
-                          : "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98))",
+                          ? "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(10,22,36,0.92))"
+                          : "linear-gradient(180deg, #ffffff, #f6f7fb)",
                         border: isDark
                           ? "1px solid rgba(255,255,255,0.10)"
-                          : "1px solid rgba(15,23,42,0.08)",
+                          : "1px solid rgba(79,70,229,0.10)",
                       }}
                     >
                       {secondaryArticle.mainImage && (
@@ -696,9 +683,9 @@ education platform for engineering students
                           className="latest-rank-pill"
                           style={{
                             background: isDark
-                              ? "rgba(44,122,123,0.16)"
-                              : "rgba(44,122,123,0.10)",
-                            color: isDark ? "#99f6e4" : "#115e59",
+                              ? "rgba(139,92,246,0.20)"
+                              : "rgba(139,92,246,0.10)",
+                            color: isDark ? "#c4b5fd" : "#6d28d9",
                           }}
                         >
                           #2 Latest
@@ -734,7 +721,7 @@ education platform for engineering students
                               ).toLocaleDateString("en-IN")
                               : "Latest"}
                           </span>
-                          <span style={{ color: isDark ? "#dbeafe" : "#1f3b73" }}>
+                          <span style={{ color: isDark ? "#a5b4fc" : "#4f46e5" }}>
                             Read {"->"}
                           </span>
                         </div>
@@ -750,11 +737,11 @@ education platform for engineering students
                         onClick={() => navigate(`/articles/${post.slug.current}`)}
                         style={{
                           background: isDark
-                            ? "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(10,22,36,0.88))"
-                            : "linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98))",
+                            ? "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(10,22,36,0.88))"
+                            : "linear-gradient(135deg, #ffffff, #f6f7fb)",
                           border: isDark
                             ? "1px solid rgba(255,255,255,0.09)"
-                            : "1px solid rgba(15,23,42,0.07)",
+                            : "1px solid rgba(79,70,229,0.10)"
                         }}
                       >
                         {post.mainImage && (
@@ -767,7 +754,7 @@ education platform for engineering students
 
                         <div className="latest-compact-content">
                           <div className="latest-compact-meta">
-                            <strong style={{ color: isDark ? "#dbeafe" : "#1f3b73" }}>
+                            <strong style={{ color: isDark ? "#a5b4fc" : "#4f46e5" }}>
                               #{index + 3} Latest
                             </strong>
                             <span
@@ -800,7 +787,7 @@ education platform for engineering students
                                 ? new Date(post.publishedAt).toLocaleDateString("en-IN")
                                 : "Latest"}
                             </span>
-                            <span style={{ color: isDark ? "#dbeafe" : "#1f3b73" }}>
+                            <span style={{ color: isDark ? "#a5b4fc" : "#4f46e5" }}>
                               Read {"->"}
                             </span>
                           </div>
@@ -810,17 +797,21 @@ education platform for engineering students
                   </div>
                 </div>
               </div>
-            </section>
+              </section>
+            </Reveal>
             <div style={dividerStyle} />
           </>
         )}
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <SmartFooterSection />
-        </Suspense>
+        <Reveal>
+          <Suspense fallback={<SkeletonGrid count={3} lines={2} />}>
+            <SmartFooterSection />
+          </Suspense>
+        </Reveal>
 
         <div style={dividerStyle} />
 
+        <Reveal>
         <div className="home-section-block" style={{ marginTop: "60px" }}>
           <SurfaceIntro
             title="Explore Courses by Stream"
@@ -849,18 +840,17 @@ education platform for engineering students
             ))}
           </div>
         </div>
+        </Reveal>
 
         <div style={dividerStyle} />
 
+        <Reveal>
         <section
           className="glass home-surface"
           style={{
-            padding: "clamp(50px,7vw,90px)",
-            borderRadius: "26px",
-            margin: "90px 0",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: "50px",
+            gap: "44px",
             alignItems: "center",
           }}
         >
@@ -917,24 +907,20 @@ education platform for engineering students
 
           <DetailList title="What the Platform Offers" items={platformOffers} />
         </section>
+        </Reveal>
 
         <div style={dividerStyle} />
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <Features />
-        </Suspense>
+        <Reveal>
+          <Suspense fallback={<SkeletonGrid count={4} lines={2} />}>
+            <Features />
+          </Suspense>
+        </Reveal>
 
         <div style={dividerStyle} />
 
-        <section
-          className="glass home-surface"
-          style={{
-            padding: "clamp(40px,6vw,70px)",
-            borderRadius: "24px",
-            margin: "90px 0",
-            textAlign: "center",
-          }}
-        >
+        <Reveal>
+        <section className="glass home-surface" style={{ textAlign: "center" }}>
           <SurfaceIntro
             title="Engineering Notes Library"
             description="Explore a comprehensive collection of diploma engineering study notes designed to help students understand complex subjects more easily. The Notes Library contains organized semester-wise materials, key concepts, and exam-focused resources to support effective learning and quick revision."
@@ -968,25 +954,21 @@ education platform for engineering students
             Explore Notes Library
           </button>
         </section>
+        </Reveal>
 
         <div style={dividerStyle} />
 
+        <Reveal>
         <SurfaceIntro
           title="Student Productivity Tools - GPA Calculator, AI Assistant & Study Planner"
           align="center"
         />
+        </Reveal>
 
         <div style={dividerStyle} />
 
-        <section
-          className="glass home-surface"
-          style={{
-            padding: "clamp(50px,7vw,90px)",
-            borderRadius: "26px",
-            margin: "90px 0",
-            textAlign: "center",
-          }}
-        >
+        <Reveal>
+        <section className="glass home-surface" style={{ textAlign: "center" }}>
           <SurfaceIntro
             title="Powerful Features of NextGen Study Hub"
             description="NextGen Study Hub combines multiple learning tools and academic resources into one platform. The goal is to help students organize their study materials, track their progress and improve learning efficiency without switching between different websites or tools."
@@ -1022,18 +1004,17 @@ education platform for engineering students
             Explore Student Tools
           </button>
         </section>
+        </Reveal>
 
         <div style={dividerStyle} />
 
+        <Reveal>
         <section
           className="glass home-surface"
           style={{
-            padding: "clamp(50px,7vw,90px)",
-            borderRadius: "26px",
-            margin: "90px 0",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: "50px",
+            gap: "44px",
             alignItems: "center",
           }}
         >
@@ -1083,18 +1064,17 @@ education platform for engineering students
 
           <DetailList title="Available Study Resources" items={studyResources} />
         </section>
+        </Reveal>
 
         <div style={dividerStyle} />
 
+        <Reveal>
         <section
           className="glass home-surface"
           style={{
-            padding: "clamp(50px,7vw,90px)",
-            borderRadius: "26px",
-            margin: "90px 0",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-            gap: "50px",
+            gap: "44px",
             alignItems: "center",
           }}
         >
@@ -1152,17 +1132,23 @@ education platform for engineering students
             </button>
           </div>
         </section>
+        </Reveal>
 
         <div style={dividerStyle} />
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <PremiumSection />
-        </Suspense>
+        <Reveal>
+          <Suspense fallback={<SkeletonGrid count={3} lines={2} />}>
+            <PremiumSection />
+          </Suspense>
+        </Reveal>
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <Testimonials />
-        </Suspense>
+        <Reveal>
+          <Suspense fallback={<SkeletonGrid count={3} lines={3} />}>
+            <Testimonials />
+          </Suspense>
+        </Reveal>
 
+        <Reveal>
         <section className="home-seo-links">
           <h2>Student Learning Resources and Study Materials</h2>
 
@@ -1208,6 +1194,7 @@ education platform for engineering students
             ))}
           </div>
         </section>
+        </Reveal>
       </div>
     </>
   );

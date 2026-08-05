@@ -1,7 +1,5 @@
-import { Helmet } from "react-helmet-async";
 import { useState } from "react";
-import { normalizeTextInput, openSafeExternalUrl } from "../utils/security";
-
+import SEO from "../components/SEO";
 
 export default function ContactOwner() {
   const whatsappNumber = "917060160754"; // 🔁 Replace with your real number
@@ -53,44 +51,17 @@ ${form.message}
 
   return (
     <>
-      <Helmet>
-        <title>
-          Contact NextGen Study Hub – Support, Feedback & Suggestions
-        </title>
-
-        <meta
-          name="description"
-          content="Contact NextGen Study Hub for feedback, suggestions, support or collaboration. Share your ideas, report issues or help improve the platform for engineering and diploma students."
-        />
-
-        <meta
-          name="keywords"
-          content="
-contact nextgen study hub,
-contact student study platform,
-nextgen study hub contact,
-student platform support,
-education platform contact,
-student website support,
-engineering student support contact,
-contact study hub owner,
-website feedback form,
-student platform feedback,
-education website support,
-student academic platform contact,
-technical support nextgen study hub,
-report issue study platform,
-student website contact form,
-contact education platform,
-student website help,
-engineering learning platform contact,
-study hub support page,
-student platform help center
-"
-        />
-
-        <link rel="canonical" href="https://www.atulsharmas.in/contact-owner" />
-      </Helmet>
+      <SEO
+        title="Contact NextGen Study Hub – Support, Feedback & Suggestions"
+        description="Contact NextGen Study Hub for feedback, suggestions, support or collaboration. Share your ideas, report issues or help improve the platform for engineering and diploma students."
+        keywords="contact nextgen study hub, student platform support, education platform contact, website feedback form"
+        url="https://www.atulsharmas.in/contact-owner"
+        schemaType="ContactPage"
+        breadcrumbs={[
+          { name: "Home", url: "https://www.atulsharmas.in" },
+          { name: "Contact Owner", url: "https://www.atulsharmas.in/contact-owner" },
+        ]}
+      />
 
       <div className="section">
         <section

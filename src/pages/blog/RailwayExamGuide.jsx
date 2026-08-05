@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,13 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is Railway exam tough?", a: "It is moderate in difficulty but highly competitive. Consistent practice makes it manageable." },
+      { q: "How many hours should I study daily?", a: "3–5 focused hours daily for 6 months." },
+      { q: "Are previous year papers important?", a: "Extremely important. Railway exams follow repeated patterns." },
+      { q: "Can beginners crack it in first attempt?", a: "Yes, with structured preparation and serious mock practice." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

@@ -2,8 +2,8 @@ import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function AdminAuth() {
   const { login, createFaculty, user, role, profileReady, profileMissing, loading } =
@@ -14,13 +14,16 @@ export default function AdminAuth() {
   const wantsCreateMode =
     new URLSearchParams(location.search).get("mode") === "create";
 
-  const [isSignup, setIsSignup] = useState(false);
+  // Derived directly from the URL + owner role — no separate state, so the
+  // toggle never drifts out of sync with the address bar.
+  const isSignup = Boolean(wantsCreateMode && isOwner);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    setIsSignup(Boolean(wantsCreateMode && isOwner));
-  }, [isOwner, wantsCreateMode]);
+  const toggleSignupMode = () => {
+    navigate(isSignup ? "/admin" : "/admin?mode=create");
+  };
 
   useEffect(() => {
     if (!loading && user && !(wantsCreateMode && isOwner)) {
@@ -35,9 +38,17 @@ export default function AdminAuth() {
       const error = await createFaculty(email, password);
 
       if (error) {
-        alert(error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Creation failed",
+          text: error.message || "Could not create the faculty account.",
+        });
       } else {
-        alert("Faculty account created successfully!");
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Faculty account created successfully!",
+        });
         setEmail("");
         setPassword("");
         navigate("/"); // redirect to home
@@ -46,7 +57,11 @@ export default function AdminAuth() {
       const { error } = await login(email, password);
 
       if (error) {
-        alert(error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Login failed",
+          text: error.message || "Invalid email or password.",
+        });
       } else {
         navigate("/", { replace: true });
       }
@@ -145,7 +160,7 @@ admin authentication system
 
           {isOwner && (
             <p
-              onClick={() => setIsSignup(!isSignup)}
+              onClick={toggleSignupMode}
               style={{
                 marginTop: "18px",
                 textAlign: "center",

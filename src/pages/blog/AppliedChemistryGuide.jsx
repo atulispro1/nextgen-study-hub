@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is Applied Chemistry difficult?", a: "It becomes easy if you understand reactions and practice regularly." },
+      { q: "How many hours should I study chemistry?", a: "1–2 focused hours daily are sufficient during exam preparation." },
+      { q: "Are diagrams important in chemistry exams?", a: "Yes, diagrams often fetch extra marks and show conceptual clarity." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

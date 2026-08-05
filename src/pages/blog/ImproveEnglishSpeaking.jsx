@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "How long does it take to improve English speaking?", a: "With daily practice, noticeable improvement can happen within 2–3 months." },
+      { q: "Is grammar necessary for speaking?", a: "Basic grammar helps, but confidence and practice matter more." },
+      { q: "Can I improve English without coaching?", a: "Yes, self-practice and online resources can be very effective." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

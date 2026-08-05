@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { canSubmitWithCooldown, normalizeTextInput } from "../utils/security";
+import {
+  canSubmitWithCooldown,
+  friendlyAiError,
+  normalizeTextInput,
+} from "../utils/security";
+import { fetchWithTimeout } from "../utils/fetchWithTimeout";
+import MarkdownText from "./MarkdownText";
 
 export default function AIQuestionSolver() {
   const [subject, setSubject] = useState("Mathematics");
@@ -31,8 +37,8 @@ export default function AIQuestionSolver() {
     setAnswer("");
 
     try {
-      const res = await fetch(
-        "https://lryyihefzqpjiedtrdeg.supabase.co/functions/v1/ai-assistant",
+      const res = await fetchWithTimeout(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-assistant`,
         {
           method: "POST",
           headers: {
@@ -46,11 +52,16 @@ export default function AIQuestionSolver() {
         }
       );
 
+      if (!res.ok) {
+        setAnswer(await friendlyAiError(res));
+        return;
+      }
+
       const data = await res.json();
       setAnswer(data.output || "No answer generated.");
     } catch (err) {
       console.error(err);
-      setAnswer("Error generating answer.");
+      setAnswer("Error generating answer. Please try again.");
     }
 
     setLoading(false);
@@ -66,8 +77,8 @@ export default function AIQuestionSolver() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "https://lryyihefzqpjiedtrdeg.supabase.co/functions/v1/ai-assistant",
+      const res = await fetchWithTimeout(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-assistant`,
         {
           method: "POST",
           headers: {
@@ -80,6 +91,11 @@ export default function AIQuestionSolver() {
           }),
         }
       );
+
+      if (!res.ok) {
+        setAnswer(await friendlyAiError(res));
+        return;
+      }
 
       const data = await res.json();
       setAnswer(data.output || answer);
@@ -166,13 +182,19 @@ export default function AIQuestionSolver() {
             padding: "20px",
             borderRadius: "10px",
             background: "rgba(99,102,241,0.05)",
-            whiteSpace: "pre-wrap",
           }}
         >
-          {answer}
+          <MarkdownText text={answer} />
 
           {/* ACTION BUTTONS */}
-          <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+          <div
+            style={{
+              marginTop: "20px",
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+            }}
+          >
             <button
               className="btn-primary btn-small"
               onClick={simplifyAnswer}
@@ -181,7 +203,7 @@ export default function AIQuestionSolver() {
             </button>
 
             <button
-              className="btn-small"
+              className="btn-secondary-outline btn-small"
               onClick={() => navigator.clipboard.writeText(answer)}
             >
               Copy

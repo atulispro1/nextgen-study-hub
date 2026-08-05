@@ -1,7 +1,12 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import { Heart, ThumbsUp, ThumbsDown, Star } from "lucide-react";
-import { canSubmitWithCooldown, normalizeTextInput } from "../utils/security";
+import {
+  canSubmitWithCooldown,
+  clampRating,
+  normalizeTextInput,
+} from "../utils/security";
+import Swal from "sweetalert2";
 
 
 export default function UnitFeedback({ unitId, isAdmin }) {
@@ -17,17 +22,7 @@ export default function UnitFeedback({ unitId, isAdmin }) {
     avgStars: 0,
   });
 
-  const fetchFeedback = async () => {
-    const { data } = await supabase
-      .from("unit_feedback")
-      .select("*")
-      .eq("subject_id", unitId)
-      .order("created_at", { ascending: false });
-
-    const all = data || [];
-    setFeedbacks(all);
-
-    // Calculate stats
+  const computeStats = useCallback((all) => {
     const likes = all.filter((f) => f.rating_type === "like").length;
     const hearts = all.filter((f) => f.rating_type === "heart").length;
     const unlikes = all.filter((f) => f.rating_type === "unlike").length;
@@ -39,17 +34,45 @@ export default function UnitFeedback({ unitId, isAdmin }) {
         ? (starValues.reduce((a, b) => a + b, 0) / starValues.length).toFixed(1)
         : 0;
 
-    setStats({ likes, hearts, unlikes, avgStars });
-  };
+    return { likes, hearts, unlikes, avgStars };
+  }, []);
 
-  useEffect(() => {
-    fetchFeedback();
+  const applyFeedback = useCallback(
+    (all) => {
+      setFeedbacks(all);
+      setStats(computeStats(all));
+    },
+    [computeStats],
+  );
+
+  const getFeedback = useCallback(async () => {
+    const { data } = await supabase
+      .from("unit_feedback")
+      .select("*")
+      .eq("subject_id", unitId)
+      .order("created_at", { ascending: false });
+
+    return data || [];
   }, [unitId]);
+
+  // Fetch on mount / when the unit changes. setState runs inside .then so it
+  // never triggers react-hooks/set-state-in-effect.
+  useEffect(() => {
+    let ignore = false;
+
+    getFeedback().then((all) => {
+      if (!ignore) applyFeedback(all);
+    });
+
+    return () => {
+      ignore = true;
+    };
+  }, [getFeedback, applyFeedback]);
 
   const handleDeleteComment = async (commentId) => {
     await supabase.from("unit_feedback").delete().eq("id", commentId);
 
-    fetchFeedback();
+    applyFeedback(await getFeedback());
   };
 
   const handleSubmit = async (e) => {
@@ -59,11 +82,19 @@ export default function UnitFeedback({ unitId, isAdmin }) {
     const safeComment = normalizeTextInput(comment, 500);
 
     if (!safeName || !safeComment) {
-      alert("Please fill all fields");
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete form",
+        text: "Please fill all fields.",
+      });
       return;
     }
     if (!canSubmitWithCooldown(`unit_feedback_${unitId}`, 15000)) {
-      alert("Please wait a few seconds before posting again.");
+      Swal.fire({
+        icon: "info",
+        title: "Slow down",
+        text: "Please wait a few seconds before posting again.",
+      });
       return;
     }
 
@@ -73,7 +104,7 @@ export default function UnitFeedback({ unitId, isAdmin }) {
         name: safeName,
         comment: safeComment,
         rating_type: ratingType,
-        star_rating: starRating,
+        star_rating: clampRating(starRating, 0, 5),
       },
     ]);
 
@@ -82,7 +113,7 @@ export default function UnitFeedback({ unitId, isAdmin }) {
     setRatingType(null);
     setStarRating(0);
 
-    fetchFeedback();
+    applyFeedback(await getFeedback());
   };
 
   return (

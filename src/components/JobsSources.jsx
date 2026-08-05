@@ -37,7 +37,7 @@ export default function JobsSources() {
           {[...platforms, ...platforms].map((platform, index) => (
 
             <span
-              key={index}
+              key={`${platform}-${index}`}
               style={{
                 display: "inline-block",
                 marginRight: "60px",

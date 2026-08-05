@@ -1,7 +1,8 @@
-import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import SEO from "../components/SEO";
 import { useLocation } from "react-router-dom";
 import { normalizeTextInput, openSafeExternalUrl } from "../utils/security";
+import Swal from "sweetalert2";
 
 export default function ContactFaculty() {
   const location = useLocation();
@@ -15,16 +16,14 @@ export default function ContactFaculty() {
     "Environmental Science (DCE-201)": "914444444444",
   };
 
-  const [selectedSubject, setSelectedSubject] = useState(null);
+  // Auto-select the subject passed via navigation state (e.g. from a semester
+  // page). Read once in the initializer — the old setState-in-effect was a
+  // lint violation and re-firing on every location change was unnecessary.
+  const [selectedSubject, setSelectedSubject] = useState(
+    () => location.state?.subject || null,
+  );
   const [studentName, setStudentName] = useState("");
   const [message, setMessage] = useState("");
-
-  // SAFE subject auto-select
-  useEffect(() => {
-    if (location?.state?.subject) {
-      setSelectedSubject(location.state.subject);
-    }
-  }, [location]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,14 +32,22 @@ export default function ContactFaculty() {
     const safeMessage = normalizeTextInput(message, 500);
 
     if (!safeStudentName || !safeMessage || !selectedSubject) {
-      alert("Please fill all fields");
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete form",
+        text: "Please fill all fields.",
+      });
       return;
     }
 
     const number = facultyContacts[selectedSubject];
 
     if (!number) {
-      alert("Faculty number not found");
+      Swal.fire({
+        icon: "warning",
+        title: "Number not found",
+        text: "Faculty number not found for this subject.",
+      });
       return;
     }
 
@@ -61,52 +68,17 @@ ${safeMessage}`,
 
   return (
     <>
-      <Helmet>
-        <title>
-          Contact Faculty – Academic Help & Student Guidance | NextGen Study Hub
-        </title>
-
-        <meta
-          name="description"
-          content="Contact faculty members for academic help, subject guidance and study support. Connect with teachers and mentors for diploma and engineering studies through NextGen Study Hub."
-        />
-
-        <meta
-          name="keywords"
-          content="
-contact faculty,
-faculty contact for students,
-student academic guidance,
-engineering faculty contact,
-diploma faculty contact,
-teacher contact for students,
-academic support for engineering students,
-student faculty communication,
-engineering subject help,
-diploma study guidance,
-academic mentor contact,
-student teacher communication,
-engineering academic support,
-student academic help platform,
-faculty guidance for students,
-education mentor contact,
-engineering teacher contact,
-academic assistance for students,
-student support faculty contact,
-engineering education support,
-diploma academic support,
-faculty help for engineering students,
-academic counseling for students,
-teacher support platform,
-student academic mentoring
-"
-        />
-
-        <link
-          rel="canonical"
-          href="https://www.atulsharmas.in/contact-faculty"
-        />
-      </Helmet>
+      <SEO
+        title="Contact Faculty – Academic Help & Student Guidance"
+        description="Contact faculty members for academic help, subject guidance and study support. Connect with teachers and mentors for diploma and engineering studies through NextGen Study Hub."
+        keywords="contact faculty, student academic guidance, engineering faculty contact, academic mentor contact"
+        url="https://www.atulsharmas.in/contact-faculty"
+        schemaType="ContactPage"
+        breadcrumbs={[
+          { name: "Home", url: "https://www.atulsharmas.in" },
+          { name: "Contact Faculty", url: "https://www.atulsharmas.in/contact-faculty" },
+        ]}
+      />
 
       <div className="section">
         <section

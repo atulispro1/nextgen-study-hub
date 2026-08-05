@@ -1,6 +1,6 @@
 import SEO from "../components/SEO";
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { allBlogs } from "../data/allBlogs";
@@ -23,10 +23,8 @@ export default function Blog() {
   const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(6);
 
-  useEffect(() => {
-    setVisibleCount(6);
-  }, [selectedCategory, search]);
-
+  // visibleCount is reset from the search/category handlers below (the old
+  // setState-in-effect was a lint violation).
 
   const filteredBlogs = allBlogs
     .filter((blog) =>
@@ -152,7 +150,10 @@ education learning resources
             type="text"
             placeholder="Search blog..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setVisibleCount(6);
+            }}
             style={{
               padding: "12px 18px",
               borderRadius: "10px",
@@ -163,14 +164,17 @@ education learning resources
 
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(e) => {
+              setSelectedCategory(e.target.value);
+              setVisibleCount(6);
+            }}
             style={{
               padding: "12px 18px",
               borderRadius: "10px",
             }}
           >
-            {categories.map((cat, index) => (
-              <option key={index}>{cat}</option>
+            {categories.map((cat) => (
+              <option key={cat}>{cat}</option>
             ))}
           </select>
         </div>

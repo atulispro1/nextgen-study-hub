@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,12 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is Operating System important for placements?", a: "Yes, OS is a core subject frequently asked in technical interviews." },
+      { q: "Which OS is most popular?", a: "Windows for personal computers and Linux for servers." },
+      { q: "Is OS difficult to learn?", a: "It becomes easy when concepts are understood with examples." },
+    ]}>
 
       {/* INTRODUCTION */}
       <div className="blog-section">

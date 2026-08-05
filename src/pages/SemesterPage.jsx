@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase";
 import CreateUnit from "../components/CreateUnit";
@@ -13,19 +13,33 @@ import { confirmDelete } from "../utils/deleteConfirm";
 import Swal from "sweetalert2";
 import { isAdminRole, openSafeExternalUrl } from "../utils/security";
 import { ThemeContext } from "../context/ThemeContext";
+import {
+  getBranchBySlug,
+  getBranchSubjectNames,
+  isBranchSemester,
+  DEFAULT_SUBJECTS_BY_SEMESTER,
+} from "../data/semesterBranches";
 
 export default function SemesterPage() {
-  const { id } = useParams();
+  const {
+    id,
+    branchSlug,
+    category: categoryParam,
+    subject: subjectParam,
+  } = useParams();
   const navigate = useNavigate();
   const { role, profileReady, profileMissing, user } = useAuth();
   const { theme } = useContext(ThemeContext);
   const isLightTheme = theme === "light";
 
+  const isBranchFlow = Boolean(branchSlug);
+  const branch = isBranchFlow ? getBranchBySlug(branchSlug) : null;
+
   const isAdmin = profileReady && isAdminRole(role);
 
   const [semesterProgress, setSemesterProgress] = useState(0);
-  const [activeCategory, setActiveCategory] = useState(null);
-  const [activeSubject, setActiveSubject] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(categoryParam || null);
+  const [activeSubject, setActiveSubject] = useState(subjectParam || null);
   const [materials, setMaterials] = useState([]);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -129,14 +143,36 @@ export default function SemesterPage() {
     },
   };
 
-  const subjects = [
-    "Applied Chemistry (DCH-101)",
-    "Engineering Mechanics (DME-201)",
-    "Basic Electrical Engineering (DEE-201)",
-    "Applied Mathematics (DMA-201)",
-    "Essential Language & Communication (DGS-201)",
-    "Environmental Science (DCE-201)",
-  ];
+  // Non-branch flow intentionally uses the shared S1 list for ALL non-branch
+  // semesters (1, 2, 4, 5, 6) — this preserves the legacy behavior that used a
+  // single defaultSubjects list everywhere. Do NOT switch to `[id]` here.
+  const subjects = useMemo(
+    () =>
+      isBranchFlow
+        ? getBranchSubjectNames(id, branchSlug)
+        : DEFAULT_SUBJECTS_BY_SEMESTER[1],
+    [id, isBranchFlow, branchSlug],
+  );
+
+  // Branch flow: redirect branch-based semesters (e.g. Semester 3) to branch selection
+  useEffect(() => {
+    if (isBranchSemester(id) && !branchSlug) {
+      navigate(`/semester/${id}/branch`, { replace: true });
+      return;
+    }
+
+    // Guard against invalid branch slugs in the URL
+    if (isBranchFlow && !branch) {
+      navigate(`/semester/${id}/branch`, { replace: true });
+    }
+  }, [id, branchSlug, isBranchFlow, branch, navigate]);
+
+  // Branch flow: drive active category/subject from the URL
+  useEffect(() => {
+    if (!isBranchFlow) return;
+    setActiveCategory(categoryParam || null);
+    setActiveSubject(subjectParam || null);
+  }, [isBranchFlow, categoryParam, subjectParam]);
 
   // Fetch materials
   const fetchData = async () => {
@@ -156,7 +192,8 @@ export default function SemesterPage() {
     const allRelevantUnits = materials.filter(
       (item) =>
         item.semester === id &&
-        ["Notes", "Assignments", "Practicals"].includes(item.category),
+        ["Notes", "Assignments", "Practicals"].includes(item.category) &&
+        (!isBranchFlow || subjects.includes(item.subject)),
     );
 
     const total = allRelevantUnits.length;
@@ -180,7 +217,7 @@ export default function SemesterPage() {
 
     const percent = Math.round((completedCount / total) * 100);
     setSemesterProgress(percent);
-  }, [materials, id]);
+  }, [materials, id, subjects, isBranchFlow]);
 
   return (
     <>
@@ -229,7 +266,14 @@ semester wise subject notes
 "
         />
 
-        <link rel="canonical" href={`https://www.atulsharmas.in/semester/${id}`} />
+        <link
+          rel="canonical"
+          href={
+            isBranchFlow
+              ? `https://www.atulsharmas.in/semester/${id}/branch/${branchSlug}${categoryParam ? `/${encodeURIComponent(categoryParam)}` : ""}${subjectParam ? `/${encodeURIComponent(subjectParam)}` : ""}`
+              : `https://www.atulsharmas.in/semester/${id}`
+          }
+        />
       </Helmet>
 
       <section
@@ -245,7 +289,7 @@ semester wise subject notes
             fontSize: "clamp(2.2rem,5vw,3rem)",
             fontWeight: "900",
             marginBottom: "20px",
-            background: "linear-gradient(135deg,#6366f1,#8b5cf6,#22c55e)",
+            background: "linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}
@@ -272,13 +316,18 @@ semester wise subject notes
         <button
           className="btn-primary"
           style={{ marginBottom: "30px" }}
-          onClick={() => navigate("/")}
+          onClick={() =>
+            isBranchFlow
+              ? navigate(`/semester/${id}/branch`)
+              : navigate("/")
+          }
         >
-          ← Back to Home
+          {isBranchFlow ? "← Back to Branch Selection" : "← Back to Home"}
         </button>
 
         <h1 style={{ marginBottom: "40px" }}>
-          Semester {id} – Computer Science
+          Semester {id} –
+          {isBranchFlow && branch ? branch.name : "Computer Science"}
         </h1>
 
         {/* SEMESTER OVERALL PROGRESS */}
@@ -289,7 +338,9 @@ semester wise subject notes
             style={{
               height: "14px",
               width: "100%",
-              background: "rgba(255,255,255,0.1)",
+              background: isLightTheme
+                ? "rgba(15,23,42,0.10)"
+                : "rgba(255,255,255,0.12)",
               borderRadius: "20px",
               overflow: "hidden",
             }}
@@ -328,7 +379,7 @@ semester wise subject notes
                   ? "linear-gradient(145deg, rgba(255,255,255,0.84), rgba(226,232,240,0.62))"
                   : "linear-gradient(145deg, rgba(99,102,241,0.10), rgba(14,165,233,0.06), rgba(15,23,42,0.08))",
               border: isLightTheme
-                ? "1px solid rgba(31,59,115,0.14)"
+                ? "1px solid rgba(99,102,241,0.16)"
                 : "1px solid rgba(255,255,255,0.08)",
             }}
           >
@@ -452,6 +503,13 @@ semester wise subject notes
       onClick={() => {
         if (isLastMinuteCard) {
           navigate(`/last-minute-resources?semester=${id}`);
+          return;
+        }
+
+        if (isBranchFlow) {
+          navigate(
+            `/semester/${id}/branch/${branchSlug}/${encodeURIComponent(cat)}`,
+          );
           return;
         }
 
@@ -786,7 +844,17 @@ semester wise subject notes
             <button
               className="btn-primary"
               style={{ marginBottom: "20px" }}
-              onClick={() => setActiveSubject(null)}
+              onClick={() => {
+                if (isBranchFlow) {
+                  navigate(
+                    `/semester/${id}/branch/${branchSlug}/${encodeURIComponent(
+                      activeCategory,
+                    )}`,
+                  );
+                } else {
+                  setActiveSubject(null);
+                }
+              }}
             >
               ← Back to Subjects
             </button>
@@ -1238,7 +1306,7 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
         overflow: "hidden",
         border: isCompleted
           ? "2px solid #22c55e"
-          : "1px solid rgba(255,255,255,0.1)",
+          : "1px solid rgba(99,102,241,0.16)",
         transition: "all 0.3s ease",
       }}
     >
@@ -1316,8 +1384,8 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
               background: isCompleted ? "#22c55e" : "#facc15",
               color: isCompleted ? "white" : "black",
               border: "none",
-              padding: "6px 12px",
-              borderRadius: "6px",
+              padding: "8px 14px",
+              borderRadius: "999px",
               cursor: "pointer",
               fontSize: "12px",
             }}
@@ -1332,7 +1400,7 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
               color: "white",
               border: "none",
               padding: "8px 14px",
-              borderRadius: "6px",
+              borderRadius: "999px",
               cursor: "pointer",
             }}
           >
@@ -1347,7 +1415,7 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
                 color: "white",
                 border: "none",
                 padding: "8px 14px",
-                borderRadius: "6px",
+                borderRadius: "999px",
                 cursor: "pointer",
               }}
             >

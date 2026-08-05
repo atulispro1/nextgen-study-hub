@@ -120,9 +120,9 @@ export default function JobCard({
           >
             {[job.tag1, job.tag2, job.tag3, job.tag4, job.tag5, job.tag6]
               .filter(Boolean)
-              .map((tag, index) => (
+              .map((tag, i) => (
                 <span
-                  key={index}
+                  key={`${tag}-${i}`}
                   style={{
                     background: "rgba(99,102,241,0.1)",
                     color: "#6366f1",

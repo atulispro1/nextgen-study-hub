@@ -2,7 +2,7 @@ import BlogLayout from "../../components/BlogLayout";
 import { allBlogs } from "../../data/allBlogs";
 import { useParams } from "react-router-dom";
 
-export default function BlogPage({ children }) {
+export default function BlogPage() {
   const { slug } = useParams();
 
   const blog = allBlogs.find((b) => b.slug === slug);
@@ -13,7 +13,13 @@ export default function BlogPage({ children }) {
       title={blog?.title}
       readTime="14 min read"
       image={blog?.image}
-    >
+    
+      faq={[
+      { q: "Is HTML enough to get a job?", a: "No. You need CSS and JavaScript as well for frontend roles." },
+      { q: "Is JavaScript difficult?", a: "It may feel challenging initially, but practice makes it easier." },
+      { q: "Can I learn all three in 3 months?", a: "Yes, with consistent daily practice." },
+      { q: "Do I need frameworks like React?", a: "After mastering basics, frameworks become easier to learn." },
+    ]}>
       {/* INTRODUCTION */}
       <div className="blog-section">
         <h2>Introduction</h2>

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { supabase } from "../supabase";
 import {
+  buildSafeFileName,
   isSafeExternalUrl,
   normalizeTextInput,
-  sanitizeFileName,
+  validateUploadFile,
 } from "../utils/security";
+import Swal from "sweetalert2";
 
 export default function UploadJobCard({ refreshJobs }) {
   const [form, setForm] = useState({
@@ -23,14 +25,22 @@ export default function UploadJobCard({ refreshJobs }) {
     tag6: "",
   });
 
+  const logoInputRef = useRef(null);
+  const [submitting, setSubmitting] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submitting) return; // Prevent double-click duplicate job posts
     if (!isSafeExternalUrl(form.apply_link)) {
-      alert("Please enter a valid application link.");
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid link",
+        text: "Please enter a valid application link.",
+      });
       return;
     }
 
@@ -42,45 +52,74 @@ export default function UploadJobCard({ refreshJobs }) {
       apply_link: form.apply_link.trim(),
     };
 
-    const { error } = await supabase.from("jobs").insert([sanitizedForm]);
+    setSubmitting(true);
 
-    if (!error) {
-      alert("Job uploaded successfully");
-      refreshJobs();
-      setForm({
-        title: "",
-        company: "",
-        location: "",
-        type: "",
-        badge: "",
-        logo: "",
-        apply_link: "",
-        tag1: "",
-        tag2: "",
-        tag3: "",
-        tag4: "",
-        tag5: "",
-        tag6: "",
-      });
-    } else {
-      if (error.message?.toLowerCase().includes("row-level security")) {
-        alert(
-          "Job upload is blocked by Supabase permissions. Your profiles role or RLS policy still needs setup.",
-        );
+    try {
+      const { error } = await supabase.from("jobs").insert([sanitizedForm]);
+
+      if (!error) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Job uploaded successfully!",
+        });
+        refreshJobs();
+        // Clear the logo file input so the same image can be chosen again
+        // without a page refresh.
+        if (logoInputRef.current) {
+          logoInputRef.current.value = "";
+        }
+        setForm({
+          title: "",
+          company: "",
+          location: "",
+          type: "",
+          badge: "",
+          logo: "",
+          apply_link: "",
+          tag1: "",
+          tag2: "",
+          tag3: "",
+          tag4: "",
+          tag5: "",
+          tag6: "",
+        });
+      } else {
+        if (error.message?.toLowerCase().includes("row-level security")) {
+          Swal.fire({
+            icon: "error",
+            title: "Upload blocked",
+            text: "Job upload is blocked by Supabase permissions. Your profiles role or RLS policy still needs setup.",
+          });
+        }
+        console.error(error);
       }
-      console.log(error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleLogoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      console.log("Invalid image type");
+
+    // Strict validation: MIME type AND extension must both be a safe image.
+    const check = validateUploadFile(file, "image", 2 * 1024 * 1024);
+    if (!check.ok) {
+      const message =
+        check.reason === "file-too-large"
+          ? "Logo image must be smaller than 2MB."
+          : "Please upload a valid image file (.jpg, .png, .webp or .gif).";
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid file",
+        text: message,
+      });
+      e.target.value = "";
       return;
     }
 
-    const fileName = `${Date.now()}-${sanitizeFileName(file.name)}`;
+    const fileName = buildSafeFileName(file, "image");
 
     const { error } = await supabase.storage
       .from("company-logos")
@@ -88,11 +127,13 @@ export default function UploadJobCard({ refreshJobs }) {
 
     if (error) {
       if (error.message?.toLowerCase().includes("row-level security")) {
-        alert(
-          "Logo upload is blocked by Supabase permissions. Your profiles role or storage policy still needs setup.",
-        );
+        Swal.fire({
+          icon: "error",
+          title: "Upload blocked",
+          text: "Logo upload is blocked by Supabase permissions. Your profiles role or storage policy still needs setup.",
+        });
       }
-      console.log("Upload error:", error);
+      console.error("Upload error:", error);
       return;
     }
 
@@ -193,9 +234,7 @@ export default function UploadJobCard({ refreshJobs }) {
           style={{
             padding: "15px",
             borderRadius: "14px",
-            border: "1px solid rgba(0,0,0,0.08)",
             fontSize: "14px",
-            background: "rgba(255,255,255,0.9)",
             transition: "0.2s",
           }}
         />
@@ -209,9 +248,7 @@ export default function UploadJobCard({ refreshJobs }) {
           style={{
             padding: "15px",
             borderRadius: "14px",
-            border: "1px solid rgba(0,0,0,0.08)",
             fontSize: "14px",
-            background: "rgba(255,255,255,0.9)",
           }}
         />
 
@@ -224,20 +261,18 @@ export default function UploadJobCard({ refreshJobs }) {
           style={{
             padding: "15px",
             borderRadius: "14px",
-            border: "1px solid rgba(0,0,0,0.08)",
             fontSize: "14px",
-            background: "rgba(255,255,255,0.9)",
           }}
         />
 
         <input
+          ref={logoInputRef}
           type="file"
           accept="image/*"
           onChange={handleLogoUpload}
           style={{
             padding: "14px",
             borderRadius: "12px",
-            border: "1px solid rgba(0,0,0,0.08)",
           }}
         />
         {form.logo && (
@@ -264,9 +299,7 @@ export default function UploadJobCard({ refreshJobs }) {
           style={{
             padding: "15px",
             borderRadius: "14px",
-            border: "1px solid rgba(0,0,0,0.08)",
             fontSize: "14px",
-            background: "rgba(255,255,255,0.9)",
           }}
         />
 
@@ -280,10 +313,8 @@ export default function UploadJobCard({ refreshJobs }) {
           style={{
             padding: "15px",
             borderRadius: "14px",
-            border: "1px solid rgba(0,0,0,0.08)",
             fontSize: "14px",
             cursor: "pointer",
-            background: "rgba(255,255,255,0.9)",
           }}
         >
           <option value="">Job Type *</option>
@@ -302,10 +333,8 @@ export default function UploadJobCard({ refreshJobs }) {
           style={{
             padding: "15px",
             borderRadius: "14px",
-            border: "1px solid rgba(0,0,0,0.08)",
             fontSize: "14px",
             cursor: "pointer",
-            background: "rgba(255,255,255,0.9)",
           }}
         >
           <option value="">Badge (optional)</option>
@@ -343,17 +372,15 @@ export default function UploadJobCard({ refreshJobs }) {
                 style={{
                   padding: "14px",
                   borderRadius: "14px",
-                  border: "1px solid rgba(0,0,0,0.08)",
                   fontSize: "14px",
-                  background: "rgba(255,255,255,0.9)",
                   cursor: "pointer",
                 }}
               >
                 <option value="">
                   {num <= 3 ? `Tag ${num} *` : `Tag ${num} (optional)`}
                 </option>
-                {tagOptions.map((tag, index) => (
-                  <option key={index} value={tag}>
+                {tagOptions.map((tag) => (
+                  <option key={tag} value={tag}>
                     {tag}
                   </option>
                 ))}
@@ -381,8 +408,9 @@ export default function UploadJobCard({ refreshJobs }) {
               boxShadow: "0 10px 30px rgba(99,102,241,0.35)",
             }}
             type="submit"
+            disabled={submitting}
           >
-            🚀 Upload Job
+            {submitting ? "Uploading..." : "🚀 Upload Job"}
           </button>
         </div>
       </form>
