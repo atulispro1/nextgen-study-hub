@@ -266,46 +266,37 @@ export default function LastMinuteResources() {
   const subjectOptions = useMemo(() => {
     if (!selectedSemester) return [];
 
-    // Branch semesters: subjects come from the selected branch's list.
+    // Branch semesters (e.g. Semester 3): ALWAYS show the full branch subject
+    // list (single source of truth). Subjects must never be hidden just because
+    // no exam resource has been uploaded for them yet — same behaviour as the
+    // SemesterPage subject grid.
     if (isSem3BranchFlow) {
-      const branchSubjects =
-        getBranchSubjectNames(selectedSemester, selectedBranch || "cs") || [];
-
-      const semesterSubjects = materials
-        .filter(
-          (item) =>
-            item.semester === selectedSemester &&
-            branchSubjects.includes(item.subject),
-        )
-        .map((item) => item.subject)
-        .filter(Boolean);
-
-      const uniqueSubjects = [...new Set(semesterSubjects)];
-      if (uniqueSubjects.length > 0) {
-        return uniqueSubjects.sort((a, b) => a.localeCompare(b));
-      }
-
-      return branchSubjects;
+      return (
+        getBranchSubjectNames(selectedSemester, selectedBranch || "cs") || []
+      );
     }
 
-    const semesterSubjects = materials
-      .filter((item) => item.semester === selectedSemester)
-      .map((item) => item.subject)
-      .filter(Boolean);
+    // Non-branch semesters: default subject list + any extra subjects found in
+    // the database, so uploaded content always stays reachable even when a
+    // subject name is not part of the default list.
+    const defaultSubjects =
+      defaultSubjectsBySemester[Number(selectedSemester)] || [];
 
-    const uniqueSubjects = [...new Set(semesterSubjects)];
-    if (uniqueSubjects.length > 0) {
-      return uniqueSubjects.sort((a, b) => a.localeCompare(b));
-    }
+    const dbSubjects = materials
+      .filter(
+        (item) =>
+          String(item.semester) === String(selectedSemester) && item.subject,
+      )
+      .map((item) => item.subject);
 
-    return defaultSubjectsBySemester[Number(selectedSemester)] || [];
+    return [...new Set([...defaultSubjects, ...dbSubjects])];
   }, [materials, selectedSemester, isSem3BranchFlow, selectedBranch]);
 
   const selectedResources = useMemo(
     () =>
       materials.filter(
         (item) =>
-          item.semester === selectedSemester &&
+          String(item.semester) === String(selectedSemester) &&
           item.category === selectedCategory &&
           item.subject === selectedSubject,
       ),
@@ -758,6 +749,43 @@ export default function LastMinuteResources() {
                   ? subject.slice(0, codeMatch.index).trim()
                   : subject;
 
+                // Category theming — same cards as the SemesterPage subject grid.
+                const activeCard =
+                  categoryCards.find((c) => c.id === selectedCategory) ||
+                  categoryCards[0];
+                const cardColors = isDark
+                  ? {
+                      ...activeCard.colors,
+                      tagBg: activeCard.colors.title,
+                      tagText: "#0f172a",
+                    }
+                  : lightCategoryColors[selectedCategory] ||
+                    lightCategoryColors["Question Banks"];
+
+                // Per-subject revision progress scoped to this branch /
+                // semester / category / subject.
+                const subjectUnits = materials.filter(
+                  (item) =>
+                    String(item.semester) === String(selectedSemester) &&
+                    item.category === selectedCategory &&
+                    item.subject === subject,
+                );
+                const subjectScopeKey = buildScopeKey({
+                  branch: branchKey,
+                  semester: selectedSemester,
+                  category: selectedCategory,
+                  subject,
+                });
+                const subjectLegacyKey = `last-minute-${selectedSemester}${isSem3BranchFlow && selectedBranch ? `-${selectedBranch}` : ""}-${selectedCategory}-${subject}`;
+                const subjectDone = countCompleted(subjectUnits, {
+                  scopeKey: subjectScopeKey,
+                  legacyKey: subjectLegacyKey,
+                });
+                const subjectPercent =
+                  subjectUnits.length > 0
+                    ? Math.round((subjectDone / subjectUnits.length) * 100)
+                    : 0;
+
                 return (
                   <button
                     key={subject}
@@ -765,19 +793,15 @@ export default function LastMinuteResources() {
                     className="glass"
                     onClick={() => setSelectedSubject(subject)}
                     style={{
-                      padding: "26px",
+                      padding: "28px",
                       textAlign: "left",
                       cursor: "pointer",
                       position: "relative",
                       overflow: "hidden",
-                      border: "1px solid rgba(99,102,241,0.18)",
-                      background: isDark
-                        ? "linear-gradient(145deg, rgba(15,23,42,0.16), rgba(99,102,241,0.08))"
-                        : "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(245,243,255,0.72))",
-                      boxShadow: isDark
-                        ? "0 14px 34px rgba(15,23,42,0.18)"
-                        : "0 12px 28px rgba(15,23,42,0.07)",
-                      color: isDark ? "#f8fafc" : "#1f2937",
+                      border: `1px solid ${cardColors.border}`,
+                      background: cardColors.bg,
+                      boxShadow: `0 18px 42px ${cardColors.glow}`,
+                      color: isDark ? "#edf2f7" : "#1f2937",
                       transition: "all 0.3s ease",
                     }}
                     onMouseEnter={(e) => {
@@ -789,14 +813,53 @@ export default function LastMinuteResources() {
                       e.currentTarget.style.zIndex = "1";
                     }}
                   >
+                    <div
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        inset: "-32% auto auto 68%",
+                        width: "150px",
+                        height: "150px",
+                        borderRadius: "999px",
+                        background: isDark
+                          ? "radial-gradient(circle, rgba(255,255,255,0.18), transparent 72%)"
+                          : "radial-gradient(circle, rgba(255,255,255,0.5), transparent 72%)",
+                        filter: "blur(4px)",
+                      }}
+                    />
+
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        padding: "8px 14px",
+                        borderRadius: "999px",
+                        background: isDark
+                          ? "rgba(255,255,255,0.08)"
+                          : "rgba(255,255,255,0.72)",
+                        color: cardColors.title,
+                        fontSize: "12px",
+                        fontWeight: "800",
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase",
+                        marginBottom: "18px",
+                      }}
+                    >
+                      <span style={{ fontSize: "18px" }}>
+                        {activeCard.icon}
+                      </span>
+                      {activeCard.tag}
+                    </div>
+
                     {subjectCode && (
                       <span
                         style={{
                           position: "absolute",
                           top: "14px",
                           right: "14px",
-                          background: "rgba(99,102,241,0.12)",
-                          color: isDark ? "#c7d2fe" : "#4338ca",
+                          background: "rgba(255,255,255,0.10)",
+                          color: cardColors.title,
                           padding: "5px 10px",
                           fontSize: "11px",
                           fontWeight: "800",
@@ -808,17 +871,79 @@ export default function LastMinuteResources() {
                       </span>
                     )}
 
-                    <strong
+                    <h3
                       style={{
-                        display: "block",
-                        fontSize: "20px",
-                        lineHeight: "1.5",
-                        color: isDark ? "#f8fafc" : "#1e293b",
+                        fontWeight: "800",
+                        fontSize: "22px",
+                        color: cardColors.title,
+                        lineHeight: "1.55",
+                        marginBottom: "14px",
                         paddingRight: subjectCode ? "72px" : "0",
                       }}
                     >
                       {subjectName}
-                    </strong>
+                    </h3>
+
+                    <p
+                      style={{
+                        opacity: isDark ? 0.82 : 0.94,
+                        lineHeight: "1.75",
+                        maxWidth: "330px",
+                        marginBottom: "18px",
+                        color: isDark
+                          ? "rgba(255,255,255,0.82)"
+                          : "#334155",
+                      }}
+                    >
+                      Open {selectedCategory.toLowerCase()} resources for this
+                      subject and continue straight to the uploaded exam PDFs.
+                    </p>
+
+                    {subjectUnits.length > 0 && (
+                      <div style={{ marginTop: "18px" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            fontSize: "12px",
+                            fontWeight: "800",
+                            marginBottom: "6px",
+                            color: cardColors.title,
+                            opacity: 0.92,
+                          }}
+                        >
+                          <span>
+                            ✅ {subjectDone}/{subjectUnits.length} revised
+                          </span>
+                          <span>{subjectPercent}%</span>
+                        </div>
+                        <div
+                          style={{
+                            height: "8px",
+                            width: "100%",
+                            borderRadius: "999px",
+                            background: isDark
+                              ? "rgba(255,255,255,0.12)"
+                              : "rgba(15,23,42,0.10)",
+                            overflow: "hidden",
+                          }}
+                        >
+                          <div
+                            style={{
+                              height: "100%",
+                              width: `${subjectPercent}%`,
+                              background:
+                                subjectPercent === 100
+                                  ? "linear-gradient(90deg,#22c55e,#16a34a)"
+                                  : "linear-gradient(90deg,#0ea5e9,#6366f1)",
+                              borderRadius: "999px",
+                              transition: "width 0.5s ease",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </button>
                 );
               })}
