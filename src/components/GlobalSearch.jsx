@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import { supabase } from "../supabase";
@@ -28,16 +29,58 @@ export default function GlobalSearch() {
   const [results, setResults] = useState(null); // grouped: { group: [entries] }
   const [jobs, setJobs] = useState(null); // null = not fetched yet
   const [materials, setMaterials] = useState(null);
+  const [loadingDynamic, setLoadingDynamic] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
+  const dropdownRef = useRef(null);
   const fetchedRef = useRef(false);
+  const mountedRef = useRef(true);
 
-  /* -------- lazy Supabase fetch (once per session) -------- */
+  const [rect, setRect] = useState(null);
+
+  // True while the dropdown should be visible (typed query or pending results).
+  // Declared before the scroll-anchor effect below so it is never in the
+  // temporal dead zone when that effect's dependency array is evaluated.
+  const isOpen = Boolean(query.trim() || results);
+
+  // Track unmount so an in-flight fetch never sets state afterwards.
+  useEffect(() => () => { mountedRef.current = false; }, []);
+
+  // The dropdown is rendered as a fixed-position portal anchored to the input,
+  // so it can never be clipped by the hero's overflow:hidden and always floats
+  // above the fixed navbar. The anchor refreshes while the dropdown is open.
+  const refreshRect = useCallback(() => {
+    const r = inputRef.current?.getBoundingClientRect();
+    if (r) {
+      setRect({
+        top: Math.max(8, r.bottom + 10),
+        left: r.left,
+        width: r.width,
+      });
+    }
+  }, []);
+
   useEffect(() => {
+    if (!isOpen) return;
+    const onMove = () => refreshRect();
+    window.addEventListener("scroll", onMove, { passive: true });
+    window.addEventListener("resize", onMove);
+    return () => {
+      window.removeEventListener("scroll", onMove);
+      window.removeEventListener("resize", onMove);
+    };
+  }, [isOpen, refreshRect]);
+
+  /* -------- lazy Supabase fetch (once per session, on first focus) --------
+     Static content answers instantly. Jobs and uploaded study materials are
+     fetched only when the student actually interacts with the search, so the
+     homepage makes zero extra network requests until search is used. */
+  const ensureDynamicData = () => {
     if (fetchedRef.current) return;
     fetchedRef.current = true;
+    setLoadingDynamic(true);
 
     let cancelled = false;
 
@@ -56,15 +99,12 @@ export default function GlobalSearch() {
       .catch(() => (cancelled ? null : []));
 
     Promise.all([loadJobs, loadMaterials]).then(([j, m]) => {
-      if (cancelled) return;
+      if (cancelled || !mountedRef.current) return;
       setJobs(j);
       setMaterials(m);
+      setLoadingDynamic(false);
     });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  };
 
   /* -------- full entry list (static + fetched) -------- */
   const allEntries = useMemo(() => {
@@ -111,7 +151,11 @@ export default function GlobalSearch() {
   /* -------- click outside closes -------- */
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target) &&
+        !(dropdownRef.current && dropdownRef.current.contains(e.target))
+      ) {
         setQuery("");
         setResults(null);
       }
@@ -181,15 +225,20 @@ export default function GlobalSearch() {
           type="text"
           placeholder="Search notes, subjects, semesters, blogs, tools, jobs..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            refreshRect();
+          }}
           onFocus={(e) => {
+            ensureDynamicData();
+            refreshRect();
             if (e.target.value.trim()) setActiveIndex(-1);
           }}
           onKeyDown={handleKeyDown}
           aria-label="Search the entire website"
           autoComplete="off"
           role="combobox"
-          aria-expanded={Boolean(hasResults)}
+          aria-expanded={isOpen}
         />
 
         {query && (
@@ -207,10 +256,21 @@ export default function GlobalSearch() {
         )}
       </div>
 
-      {(results || query.trim()) && (
-        <div className="global-search-dropdown">
+      {isOpen &&
+        createPortal(
+        <div
+          ref={dropdownRef}
+          className="global-search-dropdown"
+          style={{
+            "--gs-top": rect ? `${rect.top}px` : undefined,
+            "--gs-left": rect ? `${rect.left}px` : undefined,
+            "--gs-width": rect ? `${rect.width}px` : undefined,
+          }}
+        >
           {!results && (
-            <p className="gs-hint">Searching…</p>
+            <p className="gs-hint">
+              {loadingDynamic ? "Loading latest resources…" : "Searching…"}
+            </p>
           )}
 
           {hasResults ? (
@@ -278,7 +338,8 @@ export default function GlobalSearch() {
               No results found. Try another keyword.
             </p>
           )}
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

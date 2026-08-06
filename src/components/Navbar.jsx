@@ -5,6 +5,8 @@ import { Menu, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { isAdminRole } from "../utils/security";
 import { isBranchSemester } from "../data/semesterBranches";
+import GlobalSearch from "./GlobalSearch";
+import ErrorBoundary from "./ErrorBoundary";
 
 // Semester ids offered on the platform. Navigation URLs are built with
 // semesterPath() so branch-based semesters (e.g. Semester 3) route through
@@ -32,6 +34,7 @@ export default function Navbar() {
   const contentRef = useRef(null);
   const notesRef = useRef(null);
   const desktopNavRef = useRef(null);
+  const stackRef = useRef(null);
   const mobileTimerRef = useRef(null);
 
   const navigate = useNavigate();
@@ -96,6 +99,23 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Expose the real height of the fixed header (nav row + search bar) so
+  // .app-main can offset its content exactly — no hardcoded pixel guess.
+  useEffect(() => {
+    const el = stackRef.current;
+    if (!el) return undefined;
+    const update = () => {
+      document.documentElement.style.setProperty(
+        "--header-height",
+        `${el.offsetHeight}px`,
+      );
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const openMobile = () => {
     clearTimeout(mobileTimerRef.current);
     setMobileOpen(true);
@@ -145,9 +165,10 @@ export default function Navbar() {
 
   return (
     <>
-      <nav
-        className={`site-navbar${isTransparent ? " site-navbar--transparent" : ""}`}
-      >
+      <div className="site-navbar-stack" ref={stackRef}>
+        <nav
+          className={`site-navbar${isTransparent ? " site-navbar--transparent" : ""}`}
+        >
         {/* LOGO */}
         <div
           className="navbar-brand"
@@ -536,7 +557,19 @@ export default function Navbar() {
         >
           {mobileOpen ? <X size={28} /> : <Menu size={28} />}
         </div>
-      </nav>
+        </nav>
+
+        {/* GLOBAL SEARCH — slim sticky bar below the navbar on every page */}
+        <div
+          className={`site-navbar-searchbar${
+            isTransparent ? " site-navbar-searchbar--transparent" : ""
+          }`}
+        >
+          <ErrorBoundary>
+            <GlobalSearch />
+          </ErrorBoundary>
+        </div>
+      </div>
 
       {/* MOBILE DRAWER */}
       {mobileOpen && (

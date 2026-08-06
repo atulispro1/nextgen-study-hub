@@ -103,23 +103,33 @@ function scoreEntry(entry, tokens) {
       entry.keywords || []
     ).join(" ")}`,
   );
+
+  // Individual words from the raw title + keywords (split on non-alphanumeric
+  // boundaries, each lowercased) used for typo tolerance. Normalizing the
+  // whole string first would collapse everything into a single giant word.
   const hayWords = new Set(
-    normalize(`${entry.title} ${entry.keywords || []}`).match(/[a-z0-9]{3,}/g) ||
-      [],
+    `${entry.title} ${(entry.keywords || []).join(" ")}`
+      .toLowerCase()
+      .match(/[a-z0-9]{3,}/g) || [],
   );
 
   let score = 0;
   let anyFuzzy = false;
 
   for (const token of tokens) {
-    if (hay.includes(token)) {
-      score += token.length >= 3 ? 3 : 2;
+    // Normalize each token the same way as the hay, so "DCS-301" === "dcs301"
+    // and "semester 3" === "semester3".
+    const ntoken = normalize(token);
+    if (!ntoken) return 0;
+
+    if (hay.includes(ntoken)) {
+      score += ntoken.length >= 3 ? 3 : 2;
     } else {
       // Typo tolerance: allow ≤1 edit on words ≥ 4 chars.
-      if (token.length >= 4) {
+      if (ntoken.length >= 4) {
         let fuzzy = false;
         for (const w of hayWords) {
-          if (editDistance(token, w) <= 1) {
+          if (editDistance(ntoken, w) <= 1) {
             fuzzy = true;
             break;
           }
@@ -139,7 +149,7 @@ function scoreEntry(entry, tokens) {
   if (score === 0) return 0;
 
   const normTitle = normalize(entry.title);
-  const normQuery = tokens.join("");
+  const normQuery = tokens.map(normalize).join("");
 
   if (normTitle === normQuery) score += 20;
   else if (normTitle.startsWith(normQuery)) score += 8;
@@ -507,9 +517,10 @@ const findBranchForSubject = (semester, subjectName) => {
   return null;
 };
 
-/** Materials rows → search entries. */
-export const buildMaterialEntries = (materials = []) =>
-  materials
+/** Materials rows → search entries. (null-safe: dynamic data starts as null
+    until the lazy Supabase fetch resolves.) */
+export const buildMaterialEntries = (materials) =>
+  (materials || [])
     .filter((m) => m?.subject || m?.unit_name)
     .map((m) => {
       const branchSlug = findBranchForSubject(m.semester, m.subject);
@@ -543,9 +554,10 @@ export const buildMaterialEntries = (materials = []) =>
       };
     });
 
-/** Jobs rows → search entries. */
-export const buildJobEntries = (jobs = []) =>
-  jobs
+/** Jobs rows → search entries. (null-safe: dynamic data starts as null
+    until the lazy Supabase fetch resolves.) */
+export const buildJobEntries = (jobs) =>
+  (jobs || [])
     .filter((j) => j?.title)
     .map((j) => ({
       id: `job-${j.id}`,

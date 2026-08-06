@@ -5,7 +5,14 @@ import { supabase } from "../supabase";
 import CreateUnit from "../components/CreateUnit";
 import UnitFeedback from "../components/UnitFeedback";
 import { useAuth } from "../context/AuthContext";
-import { getProgress, toggleUnitProgress } from "../utils/progressUtils";
+import {
+  buildScopeKey,
+  countCompleted,
+  GENERAL_BRANCH,
+  isUnitCompleted,
+  toggleUnitProgress,
+  useProgressVersion,
+} from "../utils/progressUtils";
 
 import { Check } from "lucide-react";
 import SearchFilterBar from "../components/SearchFilterBar";
@@ -36,6 +43,14 @@ export default function SemesterPage() {
   const branch = isBranchFlow ? getBranchBySlug(branchSlug) : null;
 
   const isAdmin = profileReady && isAdminRole(role);
+
+  // Reactively re-render whenever unit progress changes (no DB refetch needed).
+  const progressVersion = useProgressVersion();
+
+  // Progress is stored per scope: course :: branch :: semester :: category :: subject.
+  // Non-branch semesters use the "general" branch key so the branch flow and
+  // non-branch flow can never share completion state.
+  const branchKey = isBranchFlow && branchSlug ? branchSlug : GENERAL_BRANCH;
 
   const [semesterProgress, setSemesterProgress] = useState(0);
   const [activeCategory, setActiveCategory] = useState(categoryParam || null);
@@ -205,19 +220,25 @@ export default function SemesterPage() {
 
     let completedCount = 0;
 
-    subjects.forEach((sub) => {
-      const subjectProgress = getProgress(sub);
-
-      allRelevantUnits
-        .filter((unit) => unit.subject === sub)
-        .forEach((unit) => {
-          if (subjectProgress[unit.id]) completedCount++;
-        });
+    allRelevantUnits.forEach((unit) => {
+      if (
+        isUnitCompleted(unit.id, {
+          scopeKey: buildScopeKey({
+            branch: branchKey,
+            semester: id,
+            category: unit.category,
+            subject: unit.subject,
+          }),
+          subject: unit.subject,
+        })
+      ) {
+        completedCount++;
+      }
     });
 
     const percent = Math.round((completedCount / total) * 100);
     setSemesterProgress(percent);
-  }, [materials, id, subjects, isBranchFlow]);
+  }, [materials, id, subjects, isBranchFlow, branchKey, progressVersion]);
 
   return (
     <>
@@ -755,6 +776,28 @@ semester wise subject notes
 
     const style = getSubjectStyle();
 
+    // 📊 Per-subject completion within this category — computed from the
+    // correctly scoped progress so every branch / subject stays independent.
+    const subjectUnits = materials.filter(
+      (item) =>
+        item.semester === id &&
+        item.category === activeCategory &&
+        item.subject === sub,
+    );
+    const subjectDone = countCompleted(subjectUnits, {
+      scopeKey: buildScopeKey({
+        branch: branchKey,
+        semester: id,
+        category: activeCategory,
+        subject: sub,
+      }),
+      subject: sub,
+    });
+    const subjectPercent =
+      subjectUnits.length > 0
+        ? Math.round((subjectDone / subjectUnits.length) * 100)
+        : 0;
+
     return (
       <div
         key={sub}
@@ -830,6 +873,53 @@ semester wise subject notes
           Open {activeCategory.toLowerCase()} resources for this subject and
           continue directly to the uploaded material.
         </p>
+
+        {subjectUnits.length > 0 && (
+          <div style={{ marginTop: "18px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontSize: "12px",
+                fontWeight: "800",
+                marginBottom: "6px",
+                color: style.color || "white",
+                opacity: 0.92,
+              }}
+            >
+              <span>
+                ✅ {subjectDone}/{subjectUnits.length}{" "}
+                {activeCategory.toLowerCase()} done
+              </span>
+              <span>{subjectPercent}%</span>
+            </div>
+            <div
+              style={{
+                height: "8px",
+                width: "100%",
+                borderRadius: "999px",
+                background: isLightTheme
+                  ? "rgba(15,23,42,0.10)"
+                  : "rgba(255,255,255,0.12)",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: `${subjectPercent}%`,
+                  background:
+                    subjectPercent === 100
+                      ? "linear-gradient(90deg,#22c55e,#16a34a)"
+                      : "linear-gradient(90deg,#0ea5e9,#6366f1)",
+                  borderRadius: "999px",
+                  transition: "width 0.5s ease",
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     );
   })}
@@ -860,6 +950,94 @@ semester wise subject notes
             </button>
 
             <h2 style={{ marginBottom: "20px" }}>{activeSubject}</h2>
+
+            {/* 📊 SUBJECT PROGRESS */}
+            {(() => {
+              const subjectUnits = materials.filter(
+                (item) =>
+                  item.semester === id &&
+                  item.category === activeCategory &&
+                  item.subject === activeSubject,
+              );
+              const done = countCompleted(subjectUnits, {
+                scopeKey: buildScopeKey({
+                  branch: branchKey,
+                  semester: id,
+                  category: activeCategory,
+                  subject: activeSubject,
+                }),
+                subject: activeSubject,
+              });
+              const pct =
+                subjectUnits.length > 0
+                  ? Math.round((done / subjectUnits.length) * 100)
+                  : 0;
+
+              if (subjectUnits.length === 0) return null;
+
+              return (
+                <div
+                  className="glass"
+                  style={{
+                    padding: "16px 22px",
+                    borderRadius: "16px",
+                    marginBottom: "22px",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    gap: "14px",
+                    border:
+                      pct === 100
+                        ? "1px solid rgba(34,197,94,0.4)"
+                        : undefined,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontWeight: "800",
+                      fontSize: "15px",
+                      color: pct === 100 ? "#22c55e" : "inherit",
+                    }}
+                  >
+                    {pct === 100 ? "🎉 " : ""}
+                    {done}/{subjectUnits.length} {activeCategory} completed
+                  </div>
+                  <div
+                    style={{
+                      flex: "1 1 160px",
+                      height: "10px",
+                      borderRadius: "999px",
+                      background: isLightTheme
+                        ? "rgba(15,23,42,0.10)"
+                        : "rgba(255,255,255,0.12)",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: "100%",
+                        width: `${pct}%`,
+                        background:
+                          pct === 100
+                            ? "linear-gradient(90deg,#22c55e,#16a34a)"
+                            : "linear-gradient(90deg,#0ea5e9,#6366f1)",
+                        borderRadius: "999px",
+                        transition: "width 0.5s ease",
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      fontWeight: "800",
+                      fontSize: "15px",
+                      color: "var(--primary)",
+                    }}
+                  >
+                    {pct}%
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* 🔍 SEARCH + FILTER BAR (ADD HERE) */}
             <SearchFilterBar
@@ -978,6 +1156,9 @@ semester wise subject notes
                       image={item.image_url}
                       file={item.file_url}
                       subject={item.subject}
+                      category={item.category}
+                      semester={id}
+                      branchKey={branchKey}
                       isAdmin={isAdmin}
                       refresh={fetchData}
                     />
@@ -1042,6 +1223,9 @@ semester wise subject notes
                       image={item.image_url}
                       file={item.file_url}
                       subject={item.subject}
+                      category={item.category}
+                      semester={id}
+                      branchKey={branchKey}
                       isAdmin={isAdmin}
                       refresh={fetchData}
                     />
@@ -1263,10 +1447,30 @@ semester wise subject notes
 
 /* ================= CONTENT CARD ================= */
 
-function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
+function ContentCard({
+  id,
+  title,
+  image,
+  file,
+  subject,
+  category,
+  semester,
+  branchKey,
+  isAdmin,
+  refresh,
+}) {
   const navigate = useNavigate();
-  const subjectProgress = getProgress(subject);
-  const isCompleted = subjectProgress[id] === true;
+
+  // Re-render this card the moment progress changes anywhere (same or other tab).
+  useProgressVersion();
+
+  const scopeKey = buildScopeKey({
+    branch: branchKey,
+    semester,
+    category,
+    subject,
+  });
+  const isCompleted = isUnitCompleted(id, { scopeKey, subject });
 
   const handleDelete = async () => {
     confirmDelete(async () => {
@@ -1377,8 +1581,7 @@ function ContentCard({ id, title, image, file, subject, isAdmin, refresh }) {
 
           <button
             onClick={() => {
-              toggleUnitProgress(subject, id);
-              refresh();
+              toggleUnitProgress(id, scopeKey, { subject });
             }}
             style={{
               background: isCompleted ? "#22c55e" : "#facc15",

@@ -10,7 +10,14 @@ import { ThemeContext } from "../context/ThemeContext";
 import { supabase } from "../supabase";
 import { isAdminRole, openSafeExternalUrl } from "../utils/security";
 import { confirmDelete } from "../utils/deleteConfirm";
-import { getProgress, toggleUnitProgress } from "../utils/progressUtils";
+import {
+  buildScopeKey,
+  countCompleted,
+  GENERAL_BRANCH,
+  isUnitCompleted,
+  toggleUnitProgress,
+  useProgressVersion,
+} from "../utils/progressUtils";
 import {
   BRANCHES,
   getBranchBySlug,
@@ -204,12 +211,30 @@ export default function LastMinuteResources() {
 
   const isAdmin = profileReady && isAdminRole(role);
 
+  // Reactively re-render whenever unit progress changes (no DB refetch needed).
+  useProgressVersion();
+
   // Semester 3 is branch-based: students pick a branch before categories.
   const isSem3BranchFlow = isBranchSemester(selectedSemester);
   const needsBranch = isSem3BranchFlow && !selectedBranch;
   const activeBranch = selectedBranch
     ? getBranchBySlug(selectedBranch)
     : null;
+
+  // Progress scope: course :: branch :: semester :: category :: subject.
+  // Branch semesters use their branch slug; everything else uses "general"
+  // so revision tracking stays isolated per branch / semester / subject.
+  const branchKey =
+    isSem3BranchFlow && selectedBranch ? selectedBranch : GENERAL_BRANCH;
+  const activeScopeKey =
+    selectedSemester && selectedCategory && selectedSubject
+      ? buildScopeKey({
+          branch: branchKey,
+          semester: selectedSemester,
+          category: selectedCategory,
+          subject: selectedSubject,
+        })
+      : null;
 
   const resourceKey =
     selectedSemester && selectedCategory && selectedSubject
@@ -830,6 +855,14 @@ export default function LastMinuteResources() {
               >
                 <StatChip label="Semester" value={`Sem ${selectedSemester}`} isDark={isDark} />
                 <StatChip label="Section" value={selectedCategory} isDark={isDark} />
+                <StatChip
+                  label="Revised"
+                  value={`${countCompleted(selectedResources, {
+                    scopeKey: activeScopeKey,
+                    legacyKey: resourceKey,
+                  })}/${selectedResources.length}`}
+                  isDark={isDark}
+                />
                 <StatChip label="Primary PDFs" value={String(primaryResources.length)} isDark={isDark} />
                 <StatChip label="Extra PDFs" value={String(extraResources.length)} isDark={isDark} />
               </div>
@@ -883,7 +916,8 @@ export default function LastMinuteResources() {
               items={primaryResources}
               emptyTitle="No main resources uploaded yet"
               emptyText="Upload the core PDF notes, top MCQs, or most important questions here first."
-              progressKey={resourceKey}
+              scopeKey={activeScopeKey}
+              legacyKey={resourceKey}
               isAdmin={isAdmin}
               refresh={fetchMaterials}
               subject={selectedSubject}
@@ -896,7 +930,8 @@ export default function LastMinuteResources() {
               items={extraResources}
               emptyTitle="No extra resources uploaded yet"
               emptyText="You can add extra support PDFs here for students who want one more practice layer."
-              progressKey={resourceKey}
+              scopeKey={activeScopeKey}
+              legacyKey={resourceKey}
               isAdmin={isAdmin}
               refresh={fetchMaterials}
               subject={selectedSubject}
@@ -1300,7 +1335,8 @@ function ResourceSection({
   items,
   emptyTitle,
   emptyText,
-  progressKey,
+  scopeKey,
+  legacyKey,
   isAdmin,
   refresh,
   subject,
@@ -1359,7 +1395,8 @@ function ResourceSection({
             <LastMinuteContentCard
               key={item.id}
               item={item}
-              progressKey={progressKey}
+              scopeKey={scopeKey}
+              legacyKey={legacyKey}
               isAdmin={isAdmin}
               refresh={refresh}
               subject={subject}
@@ -1373,15 +1410,19 @@ function ResourceSection({
 
 function LastMinuteContentCard({
   item,
-  progressKey,
+  scopeKey,
+  legacyKey,
   isAdmin,
   refresh,
   subject,
 }) {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
-  const progress = getProgress(progressKey);
-  const isCompleted = progress[item.id] === true;
+
+  // Re-render this card the moment progress changes anywhere (same or other tab).
+  useProgressVersion();
+
+  const isCompleted = isUnitCompleted(item.id, { scopeKey, legacyKey });
   const isDark = theme === "dark";
 
   const handleDelete = async () => {
@@ -1547,8 +1588,7 @@ function LastMinuteContentCard({
 
           <button
             onClick={() => {
-              toggleUnitProgress(progressKey, item.id);
-              refresh();
+              toggleUnitProgress(item.id, scopeKey, { legacyKey });
             }}
             style={{
               background: isCompleted ? "#22c55e" : "#facc15",
